@@ -3,6 +3,7 @@
     <AdminNabvar
       @filter-students="loadStudents"
       @clear-filter-students="loadStudents"
+      style="display: none"
     ></AdminNabvar>
   </div>
   <div class="container-fluid">
@@ -519,10 +520,10 @@ export default defineComponent({
 
       let url = "";
       type == "general"
-        ? (url = `http://localhost:3000/admin/alumnos/${typeEstadia}/excel-general`)
+        ? (url = `./admin/alumnos/${typeEstadia}/excel-general`)
         : "";
       type == "specific"
-        ? (url = `http://localhost:3000/admin/alumnos/${typeEstadia}/excel`)
+        ? (url = `./admin/alumnos/${typeEstadia}/excel`)
         : "";
       api
         .post(

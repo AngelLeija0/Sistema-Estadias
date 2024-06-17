@@ -1,6 +1,5 @@
 <template>
-  <UserNavbar></UserNavbar>
-  <div class="container-fluid">
+  <div class="container-fluid" style="padding-top: 80;">
     <q-card-actions style="display: flex; justify-content: start">
       <q-btn
         flat
@@ -435,13 +434,9 @@ import { useFilterStore } from "src/stores/filter-store";
 import { useDataApiStore } from "src/stores/data-api-store";
 import { useRouter } from "vue-router";
 import { api } from "src/boot/axios";
-import UserNavbar from "src/components/UserNavbar.vue";
 
 export default defineComponent({
   name: "vinculacion-alumnos",
-  components: {
-    UserNavbar,
-  },
   setup() {
     const dataApiStore = useDataApiStore();
     const filterStore = useFilterStore();
@@ -493,7 +488,7 @@ export default defineComponent({
 
     function searchCareers() {
       api
-        .get("http://localhost:3000/carreras")
+        .get("./carreras")
         .then((res) => {
           if (res.data.msg) {
             console.log(res.data.msg);

@@ -1,5 +1,4 @@
 <template>
-  <UserNavbar></UserNavbar>
   <div class="container-fluid">
     <q-card-actions style="display: flex; justify-content: start">
       <q-btn
@@ -13,19 +12,6 @@
     </q-card-actions>
   </div>
   <div class="container text-center" style="padding-top: 0;">
-    <div class="small-box" @click="redirectToSection('etapas')" style="margin-top: 0;">
-      <div class="img-container">
-        <img
-          src="../../assets/admin/card-etapas.jpg"
-          alt="Imagen 2"
-          class="img-fluid"
-          @load="adjustContainerPosition"
-        />
-      </div>
-      <p class="box-text">
-        <strong>Etapas</strong>
-      </p>
-    </div>
     <div class="small-box" @click="redirectToSection('lista-administradores')" style="margin-top: 0;">
       <div class="img-container">
         <img
@@ -47,13 +33,9 @@ import { defineComponent } from "vue";
 import { useFilterStore } from "src/stores/filter-store";
 import { useDataApiStore } from "src/stores/data-api-store";
 import { useRouter } from "vue-router";
-import UserNavbar from "src/components/UserNavbar.vue";
 
 export default defineComponent({
   name: "admin-administracion",
-  components: {
-    UserNavbar,
-  },
   setup() {
     const dataApiStore = useDataApiStore();
     const filterStore = useFilterStore();

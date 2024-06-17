@@ -1,5 +1,4 @@
 <template>
-  <UserNavbar></UserNavbar>
   <div class="container-fluid" style="background-color: #f5f5f5">
     <q-card-actions style="display: flex; justify-content: start">
       <q-btn
@@ -30,12 +29,12 @@
   </div>
   <div
     class="container-fluid q-pt-sm q-pl-xl q-pr-xl q-pb-xl"
-    style="background-color: #f5f5f5; min-height: 370px"
+    style="background-color: #f5f5f5; min-height: 73vh"
     v-else
   >
     <div
       class="row q-ml-xl q-mr-xl"
-      style="background-color: white; border-radius: 15px; height: 455px"
+      style="background-color: white; border-radius: 15px; height: 60vh"
     >
       <div class="col-3 q-pt-lg" style="border-right: 1px solid lightgray">
         <div
@@ -245,7 +244,7 @@
           </div>
           <div class="col-12 flex justify-end" style="padding-bottom: 10px">
             <q-card-actions>
-              <q-btn-group flat v-if="!isEditingProject">
+              <q-btn-group flat v-if="!isEditingProject && existAnteproyecto">
                 <q-btn
                   color="secondary"
                   icon="settings"
@@ -478,7 +477,7 @@
                   "
                 ></q-btn>
               </q-btn-group>
-              <q-btn-group flat v-else>
+              <q-btn-group flat v-else-if="isEditingProject">
                 <q-btn
                   color="positive"
                   icon="save"
@@ -655,12 +654,6 @@
               <p>No se encontro anteproyecto</p>
             </div>
           </div>
-          <div class="col-12">
-            <div class="row" v-if="existAnteproyecto"></div>
-            <div class="row" v-else>
-              <p>No se encontro anteproyecto</p>
-            </div>
-          </div>
         </div>
         <div class="row" v-if="actualSection === 5">
           <div class="col-12">
@@ -717,13 +710,9 @@ import { useFilterStore } from "src/stores/filter-store";
 import { useDataApiStore } from "src/stores/data-api-store";
 import { api } from "src/boot/axios";
 import { format } from "date-fns";
-import UserNavbar from "src/components/UserNavbar.vue";
 
 export default defineComponent({
   name: "asesor-alumnoId",
-  components: {
-    UserNavbar,
-  },
   setup() {
     const dataApiStore = useDataApiStore();
     const filterStore = useFilterStore();
@@ -759,7 +748,7 @@ export default defineComponent({
         studentsLoaded.value = true;
         api
           .post(
-            `http://localhost:3000/asesor/alumno/perfil`,
+            `./asesor/alumno/perfil`,
             {
               idAlumno: idStudent._value,
             }
@@ -824,19 +813,22 @@ export default defineComponent({
     }
 
     function defineProgressBackground(phase) {
-      if (phase === "anteproyecto" || phase === "revision") {
-        return "#000";
+      if (phase === "anteproyecto") {
+        return "#ff0000";
       }
       if (phase === "25%") {
-        return "#F44336";
+        return "#ff2f2f";
       }
       if (phase === "50%") {
-        return "#FF9800";
+        return "#FF8C00";
       }
       if (phase === "75%") {
-        return "#ffc107";
+        return "#FFA500";
       }
       if (phase === "100%") {
+        return "#ffc107";
+      }
+      if (phase === "revision") {
         return "#8BC34A";
       }
     }
@@ -875,10 +867,10 @@ export default defineComponent({
         fecha: new Date()
       }
       console.log(project);
-      // http://localhost:3000/asesor/alumno/perfil/anteproyecto/toggle
+      // ./asesor/alumno/perfil/anteproyecto/toggle
       api
         .post(
-          `http://localhost:3000/asesor/alumno/perfil/anteproyecto/toggle`,
+          `./asesor/alumno/perfil/anteproyecto/toggle`,
           {
             idAlumno: idStudent._value,
             estado: project,
@@ -910,7 +902,7 @@ export default defineComponent({
       const finalState = stateBool.toString();
       api
         .post(
-          `http://localhost:3000/asesor/alumno/perfil/avance/etapa-toggle`,
+          `./asesor/alumno/perfil/avance/etapa-toggle`,
           {
             idAlumno: idStudent._value,
             etapa: phase,

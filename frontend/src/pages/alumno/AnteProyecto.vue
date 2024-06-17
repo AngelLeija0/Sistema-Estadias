@@ -1,41 +1,399 @@
 <template>
   <div>
-    <UserNavbar></UserNavbar>
-    <div class="container-fluid">
+    <div class="container-fluid" v-if="!applicationStarted || applicationFinish"
+      :style="{ paddingTop: isMobile ? '20px' : '' }">
       <q-card-actions style="display: flex; justify-content: start">
-        <q-btn
-          flat
-          color="black"
-          label="Regresar"
-          icon="arrow_left"
-          style="margin: 3px; text-transform: capitalize; font-size: 16px"
-          @click="toBack"
-        ></q-btn>
+        <q-btn flat color="black" label="Regresar" icon="arrow_left"
+          style="margin: 3px; text-transform: capitalize; font-size: 16px" @click="toBack"></q-btn>
       </q-card-actions>
     </div>
   </div>
   <div v-if="pageLoaded">
-    <div>
-      <div class="container-fluid">
-        <div
-          style="
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-          "
-        >
-          <h1
-            style="
-              font-size: 35px;
-              padding-left: 60px;
-              font-weight: bold;
-              margin-right: 20px;
-            "
-          >
-            Anteproyecto
-          </h1>
-          <div
-            :style="{
+    <div v-if="isMobile">
+      <div>
+        <div class="container-fluid">
+          <div class="col-12 q-pb-md">
+            <h1 style="
+                  font-size: 24px;
+                  padding-left: 60px;
+                  padding-right: 60px;
+                  font-weight: bold;
+                  margin-right: 20px;
+                  margin-top: 5px;
+                  line-height: normal;
+                ">
+              Anteproyecto
+            </h1>
+          </div>
+
+          <!--
+          <div col="col-12" style="padding-bottom: 30px;">
+            <div style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding-left: 60px;
+                padding-right: 60px;
+              ">
+              <div :style="{
+                backgroundColor: projectState.color,
+                color: 'white',
+                width: '80vw',
+                height: '50px',
+                fontSize: '20px',
+                borderRadius: '10px',
+                display: 'flex',
+                justifyContent: 'center',
+                padding: '10px',
+              }" v-if="!applicationStarted || applicationFinish">
+                <p>{{ projectState.label }}</p>
+                <q-btn v-if="projectState.label === 'Rechazada'" flat color="white" icon="more_horiz" size="12px"
+                  style="margin: 0;" @click="dialogProjectState = true"></q-btn>
+                <q-dialog v-model="dialogProjectState">
+                  <q-card class="q-pt-md q-pl-md q-pr-md" style="width: 500px; max-width: 60vw; height: 45vh">
+                    <div class="row q-ma-md">
+                      <div class="col-12" style="display: flex; justify-content: end">
+                        <q-card-actions>
+                          <q-btn align="right" flat color="red" icon="close" v-close-popup style="
+                              margin: 3px;
+                              padding-left: 25px;
+                              padding-right: 25px;
+                              text-transform: capitalize;
+                              font-size: 16px;
+                            " />
+                        </q-card-actions>
+                      </div>
+                      <div class="col-12 q-pa-sm">
+                        <div class="text-h6 text-center" style="font-size: 22px; font-weight: 500">
+                          Estado de anteproyecto
+                        </div>
+                      </div>
+                      <div class="col-12 q-pa-md q-mt-md">
+                        <p style="font-size: 14px">
+                          <span style="font-weight: 500">Estado: </span>{{ projectState.label }}
+                        </p>
+                        <p style="font-size: 14px">
+                          <span style="font-weight: 500">Fecha de revisión: </span>{{ projectState.date }}
+                        </p>
+                        <p style="font-size: 14px">
+                          <span style="font-weight: 500">Motivo: </span>{{ projectState.motive }}
+                        </p>
+                      </div>
+                    </div>
+                  </q-card>
+                </q-dialog>
+              </div>
+            </div>
+          </div>
+          -->
+
+          <p style="padding-left: 60px; font-size: 20px; padding-right: 60px"
+            v-if="!applicationStarted || applicationFinish">
+            En esta seccion puedes verificar la informacion de tu anteproyecto,
+            asi como tener la posibilidad de modificarla y ver el
+            <br />
+            estado en la que se encuentra.
+          </p>
+        </div>
+      </div>
+      <div class="container-fluid" v-show="showSections" v-if="!applicationFinish"
+        style="padding-left: 60px; padding-right: 60px">
+        <div class="row">
+          <div class="col">
+            <h2 :class="{ 'active-section': currentSection === 'personal' }" class="section-title">
+              <span class="circle" style="font-size: 24px">1</span>
+              <div class="progress-bar" :style="{
+                width:
+                  currentSection === 'AcademicAdvisor' ||
+                    currentSection === 'BusinessAdvisor' ||
+                    currentSection === 'project' ||
+                    currentSection === 'confirmation'
+                    ? '100%'
+                    : '0',
+              }"></div>
+            </h2>
+          </div>
+
+          <div class="col">
+            <h2 :class="{ 'active-section': currentSection === 'BusinessAdvisor' }" class="section-title">
+              <span class="circle" style="font-size: 24px">2</span>
+              <div class="progress-bar" :style="{
+                width:
+                  currentSection === 'BusinessAdvisor' ||
+                    currentSection === 'project' ||
+                    currentSection === 'confirmation'
+                    ? '100%'
+                    : '0',
+              }"></div>
+            </h2>
+          </div>
+
+          <div class="col">
+            <h2 :class="{ 'active-section': currentSection === 'project' }" class="section-title">
+              <span class="circle" style="font-size: 24px; margin-right: 10px">3</span>
+              <div class="progress-bar" :style="{
+                width:
+                  currentSection === 'project' ||
+                    currentSection === 'confirmation'
+                    ? '100%'
+                    : '0',
+              }"></div>
+            </h2>
+          </div>
+
+          <div class="col">
+            <h2 :class="{ 'active-section': currentSection === 'confirmation' }" class="section-title">
+              <span class="circle" style="font-size: 24px; margin-right: 10px">4</span>
+              <div class="progress-bar" :style="{
+                width: currentSection === 'confirmation' ? '100%' : '0',
+              }"></div>
+            </h2>
+          </div>
+        </div>
+      </div>
+      <p style="font-size: 22px; text-align: left; margin: 5px 60px; font-weight: 500;"
+        v-if="currentSection === 'confirmation'">
+        Confirmación
+      </p>
+      <p style="font-size: 16px; text-align: left; margin: 5px 60px;" v-if="currentSection === 'confirmation'">
+        Asegurate que todos los datos estan correctos. En caso de querer modificar
+        algun dato, puedes oprimir el boton de regresar para navegar a esa
+        sección.
+      </p>
+      <div class="container-fluid text-center q-pt-md">
+        <p v-if="!applicationStarted && !showSections && !currentSection === 'final'
+          " style="margin-top: 100px; font-size: 20px">
+          Aun no se ha realizado ninguna solicitud
+        </p>
+        <q-btn color="black" label="Comenzar solicitud" class="btn btn-primary" @click="startApplication"
+          v-if="!applicationStarted && currentSection !== 'final'" style="
+            color: white;
+            border-radius: 20px;
+            width: 70vw;
+            height: 70px;
+            font-size: 20px;
+          " />
+      </div>
+      <div class="container-fluid" style="padding-left: 60px; padding-right: 60px;">
+        <form @submit.prevent="submitPersonalInfo" v-if="currentSection === 'AcademicAdvisor'">
+          <!-- Campos del formulario de datos personales -->
+          <div class="row">
+            <div class="col-12 q-pt-md">
+              <p style="font-size: 22px; font-weight: 600;">Datos del asesor academico</p>
+            </div>
+            <div class="col-12 q-py-sm">
+              <q-select filled v-model="advisor" :options="advisorOptions" @update:model-value="loadAdvisor()"
+                label="Selecciona un asesor academico" color="black" />
+            </div>
+            <div class="col-12">
+              <label for="curp">Nombre completo:</label>
+              <q-input type="text" id="firstName" v-model="personalInfo.fullname" :rules="fullnameRules" disable />
+            </div>
+            <div class="col-12">
+              <label for="curp">Correo electrónico:</label>
+              <q-input type="text" id="lastName" v-model="personalInfo.email" :rules="emailRules" disable />
+            </div>
+            <div class="col-12">
+              <label for="curp">Teléfono celular:</label>
+              <q-input type="text" id="middleName" v-model="personalInfo.mobilePhone" :rules="mobilePhoneRules" disable />
+            </div>
+          </div>
+
+          <div class="text-center q-pb-xl">
+            <q-btn class="q-pa-md q-mr-sm" icon="navigate_before" label="Regresar" size="lg" rounded
+              style="background: #1ab192; color: white;" @click="homeApplication">
+            </q-btn>
+            <q-btn class="q-pa-md q-ml-sm" icon-right="navigate_next" label="Siguiente" size="lg" rounded
+              style="background: #1ab192; color: white;" type="submit" :disabled="!personalInfoIsValid"></q-btn>
+          </div>
+        </form>
+
+        <form v-if="currentSection === 'BusinessAdvisor'" @submit.prevent="submitAcademicInfo">
+          <div class="row">
+            <div class="col-12 q-py-md">
+              <p style="font-size: 22px; font-weight: 600;">Datos del asesor empresarial</p>
+            </div>
+            <div class="col-12">
+              <label for="fullname">Nombre completo:</label>
+              <q-input type="text" id="fullname" v-model="academicInfo.fullname" :rules="fullnameRules" required />
+            </div>
+
+            <div class="col-12">
+              <label for="email">Correo electrónico:</label>
+              <q-input type="text" id="email" v-model="academicInfo.email" :rules="emailRules" required />
+            </div>
+
+            <div class="col-12">
+              <label for="mobilePhone">Teléfono celular:</label>
+              <q-input type="text" id="mobilePhone" v-model="academicInfo.mobilePhone" :rules="mobilePhoneRules"
+                required />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-4 q-pa-sm">
+              <q-btn class="q-pa-md q-mr-sm" icon="navigate_before" label="Regresar" size="lg" rounded
+                style="background: #1ab192; color: white;" @click="goToPersonalSection">
+              </q-btn>
+            </div>
+            <div class="col-4 q-pa-sm">
+              <q-btn class="q-pa-md q-ml-sm" icon-right="navigate_next" label="Siguiente" size="lg" rounded
+                style="background: #1ab192; color: white;" type="submit" :disabled="!academicInfoIsValid"></q-btn>
+            </div>
+          </div>
+
+        </form>
+        <form v-if="currentSection === 'project'" @submit.prevent="submitCompanyInfo">
+
+          <div class="row">
+            <div class="col-12">
+              <label for="nameProject">Nombre del proyecto:</label>
+              <q-input type="text" id="nameProject" v-model="companyInfo.nameProject" :rules="nameProjectRules"
+                required />
+            </div>
+
+            <div class="col-12">
+              <label for="objective">Objetivo:</label>
+              <q-input type="text" id="objective" v-model="companyInfo.objective" :rules="objectiveRules" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col-12">
+              <label for="description">Descripción:</label>
+              <q-input type="text" id="description" v-model="companyInfo.description" :rules="descriptionRules"
+                required />
+            </div>
+          </div>
+
+          <!-- Botón para finalizar la solicitud -->
+
+          <div class="row">
+            <div class="col-4 q-pa-sm">
+              <q-btn class="q-pa-md q-mr-sm" icon="navigate_before" label="Regresar" size="lg" rounded
+                style="background: #1ab192; color: white;" @click="goToAcademicSection">
+              </q-btn>
+            </div>
+            <div class="col-4 q-pa-sm">
+              <q-btn class="q-pa-md q-ml-sm" icon-right="navigate_next" label="Siguiente" size="lg" rounded
+                style="background: #1ab192; color: white;" type="submit" :disabled="!companyInfoIsValid"></q-btn>
+            </div>
+          </div>
+        </form>
+        <div class="container" style="display: flex">
+
+          <div class="row q-pt-md" v-if="currentSection === 'confirmation'">
+            <p style="font-size: 16px; font-weight: bold;">Datos del asesor academico</p>
+            <p class="table-title-mobile">Nombre</p>
+            <p class="table-data-mobile">{{ personalInfo.fullname }}</p>
+            <p class="table-title-mobile">Correo electronico</p>
+            <p class="table-data-mobile">{{ personalInfo.email }}</p>
+            <p class="table-title-mobile">Numero de celular</p>
+            <p class="table-data-mobile">{{ personalInfo.mobilePhone }}</p>
+          </div>
+
+          <div class="row q-pt-md" v-if="currentSection === 'confirmation'">
+            <p style="font-size: 16px; font-weight: bold;">Datos del asesor empresarial</p>
+            <p class="table-title-mobile">Nombre</p>
+            <p class="table-data-mobile">{{ academicInfo.fullname }}</p>
+            <p class="table-title-mobile">Correo electronico</p>
+            <p class="table-data-mobile">{{ academicInfo.email }}</p>
+            <p class="table-title-mobile">Numero de celular</p>
+            <p class="table-data-mobile">{{ academicInfo.mobilePhone }}</p>
+          </div>
+
+          <div class="row q-pt-md q-pb-lg" v-if="currentSection === 'confirmation'">
+            <p style="font-size: 16px; font-weight: bold;">Datos del proyecto</p>
+            <p class="table-title-mobile">Nombre del proyecto</p>
+            <p class="table-data-mobile">{{ companyInfo.nameProject }}</p>
+            <p class="table-title-mobile">Correo electronico</p>
+            <p class="table-data-mobile">{{ companyInfo.objective }}</p>
+            <p class="table-title-mobile">Numero de celular</p>
+            <p class="table-data-mobile">{{ companyInfo.description }}</p>
+          </div>
+
+        </div>
+        <div style="display: flex; justify-content: center" v-if="currentSection === 'confirmation'">
+          <div class="q-pa-sm">
+            <q-btn class="q-pa-md q-mr-sm" icon="navigate_before" label="Regresar" size="lg" rounded
+              style="background: #1ab192; color: white;" @click="goToCompanySection">
+            </q-btn>
+          </div>
+          <div class="q-pa-sm">
+            <q-btn class="q-pa-md q-ml-sm" icon-right="navigate_next" label="Siguiente" size="lg" rounded
+              style="background: #1ab192; color: white;" @click="finishApplication"></q-btn>
+          </div>
+        </div>
+        <div class="container" style="display: flex">
+          <!-- Código agregado -->
+          <!-- Fin del código agregado -->
+
+          <div class="row q-pt-md" v-if="currentSection === 'final'">
+            <p style="font-size: 16px; font-weight: bold;">Datos del asesor academico</p>
+            <p class="table-title-mobile">Nombre completo</p>
+            <p class="table-data-mobile">{{ personalInfo.fullname }}</p>
+            <p class="table-title-mobile">Correo electronico</p>
+            <p class="table-data-mobile">{{ personalInfo.email }}</p>
+            <p class="table-title-mobile">Numero de celular</p>
+            <p class="table-data-mobile">{{ personalInfo.mobilePhone }}</p>
+          </div>
+
+          <div class="row q-pt-md" v-if="currentSection === 'final'">
+            <p style="font-size: 16px; font-weight: bold;">Datos del asesor empresarial</p>
+            <p class="table-title-mobile">Nombre completo</p>
+            <p class="table-data-mobile">{{ academicInfo.fullname }}</p>
+            <p class="table-title-mobile">Correo electronico</p>
+            <p class="table-data-mobile">{{ academicInfo.email }}</p>
+            <p class="table-title-mobile">Numero de celular</p>
+            <p class="table-data-mobile">{{ academicInfo.mobilePhone }}</p>
+          </div>
+
+          <div class="row q-pt-md" v-if="currentSection === 'final'">
+            <p style="font-size: 16px; font-weight: bold;">Datos del proyecto</p>
+            <p class="table-title-mobile">Nombre completo</p>
+            <p class="table-data-mobile">{{ companyInfo.nameProject }}</p>
+            <p class="table-title-mobile">Correo electronico</p>
+            <p class="table-data-mobile">{{ companyInfo.objective }}</p>
+            <p class="table-title-mobile">Numero de celular</p>
+            <p class="table-data-mobile">{{ companyInfo.description }}</p>
+          </div>
+
+        </div>
+        <div class="text-center">
+          <q-btn color="black" label="Editar solicitud" class="btn btn-primary" style="
+              background: #1ab192;
+              color: white;
+              border-radius: 20px;
+              width: 230px;
+              height: 70px;
+              font-size: 18px;
+              margin-top: 40px;
+              margin-bottom: 40px;
+            " :disable="projectState.label === 'Aceptada'" v-if="currentSection === 'final'"
+            @click="startApplication" />
+        </div>
+      </div>
+    </div>
+    <div v-else>
+      <div>
+        <div class="container-fluid">
+          <div style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            ">
+            <h1 style="
+                font-size: 35px;
+                padding-left: 60px;
+                font-weight: bold;
+                margin-right: 20px;
+                margin-top: 5px;
+              ">
+              Anteproyecto
+            </h1>
+
+            <!--
+            <div :style="{
               backgroundColor: projectState.color,
               color: 'white',
               padding: '10px',
@@ -47,602 +405,334 @@
               borderRadius: '10px',
               display: 'flex',
               justifyContent: 'center',
-            }"
-            v-if="!applicationStarted || applicationFinish"
-          >
-            <p>{{ projectState.label }}</p>
-            <q-btn
-              v-if="projectState.label === 'Rechazada'"
-              flat
-              color="white"
-              icon="more_horiz"
-              size="12px"
-              style="margin: 0;"
-              @click="dialogProjectState = true"
-            ></q-btn>
-            <q-dialog v-model="dialogProjectState">
-              <q-card
-                class="q-pt-md q-pl-md q-pr-md"
-                style="width: 500px; max-width: 60vw; height: 45vh"
-              >
-                <div class="row q-ma-md">
-                  <div
-                    class="col-12"
-                    style="display: flex; justify-content: end"
-                  >
-                    <q-card-actions>
-                      <q-btn
-                        align="right"
-                        flat
-                        color="red"
-                        icon="close"
-                        v-close-popup
-                        style="
-                          margin: 3px;
-                          padding-left: 25px;
-                          padding-right: 25px;
-                          text-transform: capitalize;
-                          font-size: 16px;
-                        "
-                      />
-                    </q-card-actions>
-                  </div>
-                  <div class="col-12 q-pa-sm">
-                    <div
-                      class="text-h6 text-center"
-                      style="font-size: 22px; font-weight: 500"
-                    >
-                      Estado de anteproyecto
+            }" v-if="(!applicationStarted || applicationFinish) && projectState.label !== 'Sin comenzar'">
+              <p>{{ projectState.label }}</p>
+              <q-btn v-if="projectState.label === 'Rechazada'" flat color="white" icon="more_horiz" size="12px"
+                style="margin: 0;" @click="dialogProjectState = true"></q-btn>
+              <q-dialog v-model="dialogProjectState">
+                <q-card class="q-pt-md q-pl-md q-pr-md" style="width: 500px; max-width: 60vw; height: 45vh">
+                  <div class="row q-ma-md">
+                    <div class="col-12" style="display: flex; justify-content: end">
+                      <q-card-actions>
+                        <q-btn align="right" flat color="red" icon="close" v-close-popup style="
+                            margin: 3px;
+                            padding-left: 25px;
+                            padding-right: 25px;
+                            text-transform: capitalize;
+                            font-size: 16px;
+                          " />
+                      </q-card-actions>
+                    </div>
+                    <div class="col-12 q-pa-sm">
+                      <div class="text-h6 text-center" style="font-size: 22px; font-weight: 500">
+                        Estado de anteproyecto
+                      </div>
+                    </div>
+                    <div class="col-12 q-pa-md q-mt-md">
+                      <p style="font-size: 14px">
+                        <span style="font-weight: 500">Estado: </span>{{ projectState.label }}
+                      </p>
+                      <p style="font-size: 14px">
+                        <span style="font-weight: 500">Fecha de revisión: </span>{{ projectState.date }}
+                      </p>
+                      <p style="font-size: 14px">
+                        <span style="font-weight: 500">Motivo: </span>{{ projectState.motive }}
+                      </p>
                     </div>
                   </div>
-                  <div class="col-12 q-pa-md q-mt-md">
-                    <p style="font-size: 14px">
-                      <span style="font-weight: 500">Estado: </span
-                      >{{ projectState.label }}
-                    </p>
-                    <p style="font-size: 14px">
-                      <span style="font-weight: 500">Fecha de revisión: </span
-                      >{{ projectState.date }}
-                    </p>
-                    <p style="font-size: 14px">
-                      <span style="font-weight: 500">Motivo: </span
-                      >{{ projectState.motive }}
-                    </p>
-                  </div>
-                </div>
-              </q-card>
-            </q-dialog>
+                </q-card>
+              </q-dialog>
+            </div>
+            -->
+
+          </div>
+          <div v-if="projectState.label === 'Sin comenzar' && !applicationStarted"
+            style="padding-left: 60px; padding-right: 60px;">
+            <p style="font-size: 20px;">
+              En esta seccion puedes verificar la informacion de tu anteproyecto,
+              asi como tener la posibilidad de modificarla y ver el
+              estado en la que se encuentra.
+            </p>
+            <div class="text-center">
+              <img src="../../assets/alumno/requisitos-anteproyecto.png" style="height: 240px;">
+            </div>
           </div>
         </div>
-        <p
-          style="padding-left: 60px; font-size: 20px; padding-right: 60px"
-          v-if="!applicationStarted || currentSection === 'final'"
-        >
-          En esta seccion puedes verificar la informacion de tu anteproyecto,
-          asi como tener la posibilidad de modificarla y ver el
-          <br />
-          estado en la que se encuentra.
-        </p>
       </div>
-    </div>
-    <div
-      class="container-fluid"
-      v-show="showSections"
-      v-if="!applicationFinish"
-      style="padding-left: 60px"
-    >
-      <div class="row">
-        <div class="col">
-          <h2
-            :class="{ 'active-section': currentSection === 'personal' }"
-            class="section-title"
-          >
-            <span class="circle" style="font-size: 24px">1</span> Datos del
-            asesor academico
-            <div
-              class="progress-bar"
-              :style="{
+      <div class="container-fluid" v-show="showSections" v-if="!applicationFinish" style="padding-left: 60px">
+        <div class="row">
+          <div class="col">
+            <h2 :class="{ 'active-section': currentSection === 'personal' }" class="section-title">
+              <span class="circle" style="font-size: 24px">1</span> Datos del
+              asesor academico
+              <div class="progress-bar" :style="{
                 width:
                   currentSection === 'AcademicAdvisor' ||
-                  currentSection === 'BusinessAdvisor' ||
-                  currentSection === 'project' ||
-                  currentSection === 'confirmation'
+                    currentSection === 'BusinessAdvisor' ||
+                    currentSection === 'project' ||
+                    currentSection === 'confirmation'
                     ? '100%'
                     : '0',
-              }"
-            ></div>
-          </h2>
-        </div>
+              }"></div>
+            </h2>
+          </div>
 
-        <div class="col">
-          <h2
-            :class="{ 'active-section': currentSection === 'BusinessAdvisor' }"
-            class="section-title"
-          >
-            <span class="circle" style="font-size: 24px">2</span> Datos del
-            asesor empresarial
-            <div
-              class="progress-bar"
-              :style="{
+          <div class="col">
+            <h2 :class="{ 'active-section': currentSection === 'BusinessAdvisor' }" class="section-title">
+              <span class="circle" style="font-size: 24px">2</span> Datos del
+              asesor empresarial
+              <div class="progress-bar" :style="{
                 width:
                   currentSection === 'BusinessAdvisor' ||
-                  currentSection === 'project' ||
-                  currentSection === 'confirmation'
+                    currentSection === 'project' ||
+                    currentSection === 'confirmation'
                     ? '100%'
                     : '0',
-              }"
-            ></div>
-          </h2>
-        </div>
+              }"></div>
+            </h2>
+          </div>
 
-        <div class="col">
-          <h2
-            :class="{ 'active-section': currentSection === 'project' }"
-            class="section-title"
-          >
-            <span class="circle" style="font-size: 24px; margin-right: 10px"
-              >3</span
-            >
-            Datos del proyecto
-            <div
-              class="progress-bar"
-              :style="{
+          <div class="col">
+            <h2 :class="{ 'active-section': currentSection === 'project' }" class="section-title">
+              <span class="circle" style="font-size: 24px; margin-right: 10px">3</span>
+              Datos del proyecto
+              <div class="progress-bar" :style="{
                 width:
                   currentSection === 'project' ||
-                  currentSection === 'confirmation'
+                    currentSection === 'confirmation'
                     ? '100%'
                     : '0',
-              }"
-            ></div>
-          </h2>
-        </div>
+              }"></div>
+            </h2>
+          </div>
 
-        <div class="col">
-          <h2
-            :class="{ 'active-section': currentSection === 'confirmation' }"
-            class="section-title"
-          >
-            <span class="circle" style="font-size: 24px; margin-right: 10px"
-              >4</span
-            >
-            Confirmación
-            <div
-              class="progress-bar"
-              :style="{
-                width: currentSection === 'confirmation' ? '100%' : '0',
-              }"
-            ></div>
-          </h2>
         </div>
       </div>
-    </div>
-    <p
-      style="font-size: 35px; text-align: left; margin-left: 90px"
-      v-if="currentSection === 'confirmation'"
-    >
-      Confirmación
-    </p>
-    <p
-      style="font-size: 18px; text-align: left; margin-left: 90px"
-      v-if="currentSection === 'confirmation'"
-    >
-      Asegurate que todos los datos estan correctos. En caso de querer modificar
-      algun dato, puedes oprimir el boton de regresar para navegar a esa
-      sección.
-    </p>
-    <div class="container-fluid text-center">
-      <p
-        v-if="
-          !applicationStarted && !showSections && !currentSection === 'final'
-        "
-        style="margin-top: 100px; font-size: 20px"
-      >
-        Aun no se ha realizado ninguna solicitud
+      <p style="font-size: 35px; text-align: left; margin-left: 90px" v-if="currentSection === 'confirmation'">
+        Confirmación
       </p>
-      <q-btn
-        color="black"
-        label="Comenzar solicitud"
-        class="btn btn-primary"
-        @click="startApplication"
-        v-if="!applicationStarted && currentSection !== 'final'"
-        style="
-          color: white;
-          border-radius: 20px;
-          width: 300px;
-          height: 100px;
-          font-size: 22px;
-        "
-      />
-    </div>
-    <div class="container-fluid" style="padding-left: 60px">
-      <form
-        @submit.prevent="submitPersonalInfo"
-        v-if="currentSection === 'AcademicAdvisor'"
-      >
-        <!-- Campos del formulario de datos personales -->
-        <div class="form-row">
-          <div class="form-group" style="padding-right: 50%">
-            <q-select
-              filled
-              v-model="advisor"
-              :options="advisorOptions"
-              @update:model-value="loadAdvisor()"
-              label="Selecciona un asesor academico"
-              color="black"
-            />
+      <p style="font-size: 18px; text-align: left; margin-left: 90px" v-if="currentSection === 'confirmation'">
+        Asegurate que todos los datos estan correctos. En caso de querer modificar
+        algun dato, puedes oprimir el boton de regresar para navegar a esa
+        sección.
+      </p>
+      <div class="container-fluid text-center">
+        <p v-if="!applicationStarted && !showSections && !currentSection === 'final'
+          " style="margin-top: 100px; font-size: 20px">
+          Aun no se ha realizado ninguna solicitud
+        </p>
+        <q-btn label="Comenzar solicitud" class="btn btn-primary" @click="startApplication"
+          v-if="!applicationStarted && currentSection !== 'final'" style="
+            background: #1ab192;
+            border-radius: 20px;
+            padding: 20px 30px;
+            font-size: 18px;
+          " />
+      </div>
+      <div class="container-fluid" style="padding-left: 60px; padding-right: 60px; display: flex;">
+        <form @submit.prevent="submitPersonalInfo" v-if="currentSection === 'AcademicAdvisor'">
+          <!-- Campos del formulario de datos personales -->
+          <div class="form-row">
+            <div class="form-group" style="padding-right: 50%">
+              <q-select filled v-model="advisor" :options="advisorOptions" @update:model-value="loadAdvisor()"
+                label="Selecciona un asesor academico" color="black" />
+            </div>
           </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="curp">Nombre completo:</label>
+              <q-input type="text" id="firstName" v-model="personalInfo.fullname" :rules="fullnameRules" disable />
+            </div>
+            <div class="form-group">
+              <label for="curp">Correo electrónico:</label>
+              <q-input type="text" id="lastName" v-model="personalInfo.email" :rules="emailRules" disable />
+            </div>
+            <div class="form-group">
+              <label for="curp">Teléfono celular:</label>
+              <q-input type="text" id="middleName" v-model="personalInfo.mobilePhone" :rules="mobilePhoneRules" disable />
+            </div>
+          </div>
+
+          <!-- Botón para pasar a la siguiente sección -->
+          <div class="text-center q-pb-xl">
+            <q-btn class="q-pa-md q-mr-sm" icon="navigate_before" label="Regresar" size="lg" rounded
+              style="background: #1ab192; color: white;" @click="homeApplication">
+            </q-btn>
+            <q-btn class="q-pa-md q-ml-sm" icon-right="navigate_next" label="Siguiente" size="lg" rounded
+              style="background: #1ab192; color: white;" type="submit" :disabled="!personalInfoIsValid"></q-btn>
+          </div>
+        </form>
+
+        <form v-if="currentSection === 'BusinessAdvisor'" @submit.prevent="submitAcademicInfo">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fullname">Nombre completo:</label>
+              <q-input type="text" id="fullname" v-model="academicInfo.fullname" :rules="fullnameRules" required />
+            </div>
+
+            <div class="form-group">
+              <label for="email">Correo electrónico:</label>
+              <q-input type="text" id="email" v-model="academicInfo.email" :rules="emailRules" required />
+            </div>
+
+            <div class="form-group">
+              <label for="mobilePhone">Teléfono celular:</label>
+              <q-input type="text" id="mobilePhone" v-model="academicInfo.mobilePhone" :rules="mobilePhoneRules"
+                required />
+            </div>
+          </div>
+
+          <div class="text-center q-pb-xl">
+            <q-btn class="q-pa-md q-mr-sm" icon="navigate_before" label="Regresar" size="lg" rounded
+              style="background: #1ab192; color: white;" @click="goToPersonalSection">
+            </q-btn>
+            <q-btn class="q-pa-md q-ml-sm" icon-right="navigate_next" label="Siguiente" size="lg" rounded
+              style="background: #1ab192; color: white;" type="submit" :disabled="!academicInfoIsValid"></q-btn>
+          </div>
+
+        </form>
+        <form v-if="currentSection === 'project'" @submit.prevent="submitCompanyInfo">
+          <!-- Campos del formulario de datos de la empresa -->
+          <div class="row" style="margin-top: 30px;">
+            <div class="col-4" style="padding: 5px">
+              <label for="nameProject">Nombre del proyecto:</label>
+              <q-input type="text" autogrow id="nameProject" v-model="companyInfo.nameProject" :rules="nameProjectRules"
+                required />
+            </div>
+            <div class="col-4" style="padding: 5px">
+              <label for="objective">Objetivo:</label>
+              <q-input type="text" autogrow id="objective" v-model="companyInfo.objective" :rules="objectiveRules"
+                required />
+            </div>
+            <div class="col-4" style="padding: 5px">
+              <label for="description">Descripción:</label>
+              <q-input type="text" autogrow id="description" v-model="companyInfo.description" :rules="descriptionRules"
+                required />
+            </div>
+          </div>
+
+
+          <div class="text-center q-pb-xl">
+            <q-btn class="q-pa-md q-mr-sm" icon="navigate_before" label="Regresar" size="lg" rounded
+              style="background: #1ab192; color: white;" @click="goToAcademicSection">
+            </q-btn>
+            <q-btn class="q-pa-md q-ml-sm" icon-right="navigate_next" label="Siguiente" size="lg" rounded
+              style="background: #1ab192; color: white;" type="submit" :disabled="!companyInfoIsValid"></q-btn>
+          </div>
+
+        </form>
+
+        <q-dialog v-model="dialogConfirmation">
+          <q-card class="q-pt-md q-pl-md q-pr-md" style="width: 500px; max-width: 60vw; height: 40vh">
+            <div class="row q-ma-sm">
+              <div class="col-12" style="display: flex; justify-content: end">
+                <q-card-actions>
+                  <q-btn align="right" flat color="red" icon="close" v-close-popup style="
+                              margin: 3px;
+                              padding-left: 25px;
+                              padding-right: 25px;
+                              text-transform: capitalize;
+                              font-size: 16px;
+                            " />
+                </q-card-actions>
+              </div>
+              <div class="col-12 q-pa-md">
+                <div class="text-h6 text-center" style="font-size: 22px; font-weight: 500">
+                  ¿Estas seguro de enviarlo?
+                </div>
+                <div class="text-left q-pt-sm" style="font-size: 16px;">
+                  Revisa que los datos esten correctos antes de enviarlos.
+                </div>
+              </div>
+              <div class="col-12 q-pt-md">
+                <q-card-actions class="bg-white text-teal" align="center">
+                  <q-btn-group flat="">
+                    <q-btn color="primary" label="Enviar" icon-right="send" style="
+                      margin: 3px;
+                      padding: 10px 20px;
+                      text-transform: capitalize;
+                      font-size: 16px;
+                    " @click="finishApplication" />
+                    <q-btn color="black" label="Cancelar" icon-right="undo" style="
+                      margin: 3px;
+                      padding: 10px 20px;
+                      text-transform: capitalize;
+                      font-size: 16px;
+                    " v-close-popup />
+                  </q-btn-group>
+                </q-card-actions>
+              </div>
+            </div>
+          </q-card>
+        </q-dialog>
+
+        <div class="container" style="display: flex;">
+          <table v-if="currentSection === 'final'" class="table table-hover table-borderless"
+            style="flex: 1; margin-left: 40px">
+            <thead>
+              <tr style="font-size: 14px">
+                <th>Nombre completo</th>
+                <th>Correo electronico</th>
+                <th>Número de celular</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="font-size: 14px">
+                <td>{{ personalInfo.fullname }}</td>
+                <td>{{ personalInfo.email }}</td>
+                <td>{{ personalInfo.mobilePhone }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <table v-if="currentSection === 'final'" class="table table-hover table-borderless"
+            style="flex: 1; margin-left: 40px">
+            <thead>
+              <tr style="font-size: 14px">
+                <th>Nombre completo</th>
+                <th>Correo electronico</th>
+                <th>Número de celular</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="font-size: 14px">
+                <td>{{ academicInfo.fullname }}</td>
+                <td>{{ academicInfo.email }}</td>
+                <td>{{ academicInfo.mobilePhone }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label for="curp">Nombre completo:</label>
-            <q-input
-              type="text"
-              id="firstName"
-              v-model="personalInfo.fullname"
-              :rules="fullnameRules"
-              disable
-            />
-          </div>
-          <div class="form-group">
-            <label for="curp">Correo electrónico:</label>
-            <q-input
-              type="text"
-              id="lastName"
-              v-model="personalInfo.email"
-              :rules="emailRules"
-              disable
-            />
-          </div>
-          <div class="form-group">
-            <label for="curp">Teléfono celular:</label>
-            <q-input
-              type="text"
-              id="middleName"
-              v-model="personalInfo.mobilePhone"
-              :rules="mobilePhoneRules"
-              disable
-            />
-          </div>
+        <div class="container" style="display: flex">
+          <table v-if="currentSection === 'final'" class="table table-hover table-borderless"
+            style="flex: 1; margin-right: 40px">
+            <thead>
+              <tr style="font-size: 14px">
+                <th style="padding: 10px">Nombre del proyecto</th>
+                <th style="padding: 10px">Objetivo</th>
+                <th style="padding: 10px">Descripcion</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="font-size: 14px">
+                <td style="padding: 10px">{{ companyInfo.nameProject }}</td>
+                <td style="padding: 10px">{{ companyInfo.objective }}</td>
+                <td style="padding: 10px">{{ companyInfo.description }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-
-        <!-- Botón para pasar a la siguiente sección -->
-        <div class="text-center" style="position: relative; bottom: 20px">
-          <button
-            style="
-              color: white;
-              border-radius: 20px;
-              width: 140px;
-              height: 50px;
-              font-size: 20px;
-              background-color: black;
-            "
-            class="btn btn-primary"
-            :disabled="!personalInfoIsValid"
-          >
-            SIGUIENTE
-          </button>
-        </div>
-      </form>
-
-      <form
-        v-if="currentSection === 'BusinessAdvisor'"
-        @submit.prevent="submitAcademicInfo"
-      >
-        <div class="form-row">
-          <div class="form-group">
-            <label for="fullname">Nombre completo:</label>
-            <q-input
-              type="text"
-              id="fullname"
-              v-model="academicInfo.fullname"
-              :rules="fullnameRules"
-              required
-            />
-          </div>
-
-          <div class="form-group">
-            <label for="email">Correo electrónico:</label>
-            <q-input
-              type="text"
-              id="email"
-              v-model="academicInfo.email"
-              :rules="emailRules"
-              required
-            />
-          </div>
-
-          <div class="form-group">
-            <label for="mobilePhone">Teléfono celular:</label>
-            <q-input
-              type="text"
-              id="mobilePhone"
-              v-model="academicInfo.mobilePhone"
-              :rules="mobilePhoneRules"
-              required
-            />
-          </div>
-        </div>
-
         <div class="text-center">
-          <button
-            style="
+          <q-btn label="Editar solicitud" class="btn btn-primary" style="
+              background: #1ab192;
               color: white;
               border-radius: 20px;
-              width: 140px;
-              height: 50px;
-              font-size: 20px;
-              background-color: black;
-            "
-            class="btn btn-primary"
-            @click="goToPersonalSection"
-          >
-            REGRESAR
-          </button>
-          <button
-            style="
-              color: white;
-              border-radius: 20px;
-              width: 140px;
-              height: 50px;
-              font-size: 20px;
-              background-color: black;
-            "
-            class="btn btn-primary"
-            :disabled="!academicInfoIsValid"
-          >
-            SIGUIENTE
-          </button>
+              width: 230px;
+              height: 70px;
+              font-size: 18px;
+              margin-top: 60px;
+            " :disable="projectState.label === 'Aceptada'"
+            v-if="currentSection === 'final' && projectState.label === 'Rechazada'" @click="startApplication" />
         </div>
-      </form>
-      <form
-        v-if="currentSection === 'project'"
-        @submit.prevent="submitCompanyInfo"
-      >
-        <!-- Campos del formulario de datos de la empresa -->
-        <div class="form-row">
-          <div class="form-group">
-            <label for="nameProject">Nombre del proyecto:</label>
-            <q-input
-              type="text"
-              id="nameProject"
-              v-model="companyInfo.nameProject"
-              :rules="nameProjectRules"
-              required
-            />
-          </div>
-
-          <div class="form-group">
-            <label for="objective">Objetivo:</label>
-            <q-input
-              type="text"
-              id="objective"
-              v-model="companyInfo.objective"
-              :rules="objectiveRules"
-              required
-            />
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label for="description">Descripción:</label>
-            <q-input
-              type="text"
-              id="description"
-              v-model="companyInfo.description"
-              :rules="descriptionRules"
-              required
-            />
-          </div>
-        </div>
-
-        <!-- Botón para finalizar la solicitud -->
-        <div class="text-center">
-          <button
-            class="btn btn-secondary text-center"
-            @click="goToAcademicSection"
-            style="
-              color: white;
-              border-radius: 20px;
-              width: 140px;
-              height: 50px;
-              font-size: 20px;
-              background-color: black;
-            "
-          >
-            REGRESAR
-          </button>
-          <button
-            class="btn btn-primary text-center"
-            :disabled="!companyInfoIsValid"
-            style="
-              color: white;
-              border-radius: 20px;
-              width: 140px;
-              height: 50px;
-              font-size: 20px;
-              background-color: black;
-            "
-          >
-            SIGUIENTE
-          </button>
-        </div>
-      </form>
-      <div class="container" style="display: flex">
-        <table
-          v-if="currentSection === 'confirmation'"
-          class="table table-hover table-borderless"
-          style="flex: 1; margin-left: 40px"
-        >
-          <thead>
-            <tr style="font-size: 14px">
-              <th>Nombre completo</th>
-              <th>Correo electronico</th>
-              <th>Número de celular</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="font-size: 14px">
-              <td>{{ personalInfo.fullname }}</td>
-              <td>{{ personalInfo.email }}</td>
-              <td>{{ personalInfo.mobilePhone }}</td>
-            </tr>
-          </tbody>
-        </table>
-        <table
-          v-if="currentSection === 'confirmation'"
-          class="table table-hover table-borderless"
-          style="flex: 1"
-        >
-          <thead>
-            <tr style="font-size: 14px">
-              <th>Nombre completo</th>
-              <th>Correo electronico</th>
-              <th>Número de celular</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="font-size: 14px">
-              <td>{{ academicInfo.fullname }}</td>
-              <td>{{ academicInfo.email }}</td>
-              <td>{{ academicInfo.mobilePhone }}</td>
-            </tr>
-          </tbody>
-        </table>
-        <table
-          v-if="currentSection === 'confirmation'"
-          class="table table-hover table-borderless"
-          style="flex: 1; margin-right: 40px"
-        >
-          <thead>
-            <tr style="font-size: 14px">
-              <th style="padding: 10px">Nombre del proyecto</th>
-              <th style="padding: 10px">Objetivo</th>
-              <th style="padding: 10px">Descripcion</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="font-size: 14px">
-              <td style="padding: 10px">{{ companyInfo.nameProject }}</td>
-              <td style="padding: 10px">{{ companyInfo.objective }}</td>
-              <td style="padding: 10px">{{ companyInfo.description }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div
-        style="display: flex; justify-content: center"
-        v-if="currentSection === 'confirmation'"
-      >
-        <q-btn
-          color="black"
-          label="Regresar"
-          class="btn btn-primary"
-          style="
-            color: white;
-            border-radius: 20px;
-            width: 130px;
-            height: 5px;
-            font-size: 18px;
-          "
-          @click="goToCompanySection"
-        />
-        <q-btn
-          color="black"
-          label="siguiente"
-          class="btn btn-primary"
-          style="
-            color: white;
-            border-radius: 20px;
-            width: 130px;
-            height: 5px;
-            font-size: 18px;
-          "
-          @click="finishApplication"
-        />
-      </div>
-      <div class="container" style="display: flex">
-        <!-- Código agregado -->
-        <!-- Fin del código agregado -->
-
-        <table
-          v-if="currentSection === 'final'"
-          class="table table-hover table-borderless"
-          style="flex: 1; margin-left: 40px"
-        >
-          <thead>
-            <tr style="font-size: 14px">
-              <th>Nombre completo</th>
-              <th>Correo electronico</th>
-              <th>Número de celular</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="font-size: 14px">
-              <td>{{ personalInfo.fullname }}</td>
-              <td>{{ personalInfo.email }}</td>
-              <td>{{ personalInfo.mobilePhone }}</td>
-            </tr>
-          </tbody>
-        </table>
-        <table
-          v-if="currentSection === 'final'"
-          class="table table-hover table-borderless"
-          style="flex: 1; margin-left: 40px"
-        >
-          <thead>
-            <tr style="font-size: 14px">
-              <th>Nombre completo</th>
-              <th>Correo electronico</th>
-              <th>Número de celular</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="font-size: 14px">
-              <td>{{ academicInfo.fullname }}</td>
-              <td>{{ academicInfo.email }}</td>
-              <td>{{ academicInfo.mobilePhone }}</td>
-            </tr>
-          </tbody>
-        </table>
-        <table
-          v-if="currentSection === 'final'"
-          class="table table-hover table-borderless"
-          style="flex: 1; margin-right: 40px"
-        >
-          <thead>
-            <tr style="font-size: 14px">
-              <th style="padding: 10px">Nombre del proyecto</th>
-              <th style="padding: 10px">Objetivo</th>
-              <th style="padding: 10px">Descripcion</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="font-size: 14px">
-              <td style="padding: 10px">{{ companyInfo.nameProject }}</td>
-              <td style="padding: 10px">{{ companyInfo.objective }}</td>
-              <td style="padding: 10px">{{ companyInfo.description }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="text-center">
-        <q-btn
-          color="black"
-          label="Modificar solicitud"
-          class="btn btn-primary"
-          style="
-            color: white;
-            border-radius: 20px;
-            width: 230px;
-            height: 70px;
-            font-size: 18px;
-            margin-top: 60px;
-          "
-          :disable="projectState.label === 'Aceptada'"
-          v-if="currentSection === 'final'"
-          @click="startApplication"
-        />
       </div>
     </div>
   </div>
@@ -658,16 +748,23 @@ import { useRouter } from "vue-router";
 import { useUserStore } from "src/stores/user-store";
 import { api } from "src/boot/axios";
 import { format } from "date-fns";
-import UserNavbar from "src/components/UserNavbar.vue";
 import LoadingPage from "src/components/LoadingPage.vue";
 
 export default defineComponent({
   name: "alumno-anteproyecto",
   components: {
-    UserNavbar,
     LoadingPage,
   },
   setup() {
+
+    const isMobile = ref(isUsingMobile());
+
+    function isUsingMobile() {
+      const validation1 = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      const finalValidation = validation1;
+      return finalValidation;
+    }
+
     const router = useRouter();
     const pageLoaded = ref(true);
     const userStore = useUserStore();
@@ -684,7 +781,9 @@ export default defineComponent({
       date: "",
     });
 
-    const currentSection = ref();
+    const currentSection = ref("");
+
+    const dialogConfirmation = ref(false);
 
     const advisor = ref();
     const idAdvisor = ref(null);
@@ -716,7 +815,7 @@ export default defineComponent({
       console.log("Searching state ...");
       pageLoaded.value = false;
       api
-        .post(`http://localhost:3000/alumno/academico/anteproyecto`, {
+        .post(`./alumno/academico/anteproyecto`, {
           idAlumno: idStudent,
         })
         .then((res) => {
@@ -724,7 +823,7 @@ export default defineComponent({
           if (res.data === "No se encontro ningun anteproyecto") {
             projectState.value.label = "Sin comenzar";
             projectState.value.color = definePhaseColor(
-            projectState.value.label
+              projectState.value.label
             );
           } else {
             const project = res.data;
@@ -761,7 +860,7 @@ export default defineComponent({
     function searchAdvisors() {
       console.log("Searching advisors ...");
       api
-        .post(`http://localhost:3000/alumno/academico/anteproyecto/asesores`, {
+        .post(`./alumno/academico/anteproyecto/asesores`, {
           idAlumno: idStudent,
         })
         .then((res) => {
@@ -828,8 +927,11 @@ export default defineComponent({
         console.log(project);
         console.log(action);
 
-        if (action === "create") {
-          url = "http://localhost:3000/alumno/academico/anteproyecto/crear";
+        if (action === "save") {
+          url = "./alumno/academico/anteproyecto/guardar";
+          if (isProjectFinished() === false) {
+            project.estado.nombre = "Sin finalizar";
+          }
           api
             .post(url, {
               idAlumno: idStudent,
@@ -843,8 +945,25 @@ export default defineComponent({
             .catch((err) => {
               console.error(err);
             });
-        } else if (action === "update") {
-          url = "http://localhost:3000/alumno/academico/anteproyecto/modificar";
+        }
+        if (action === "create") {
+          url = "./alumno/academico/anteproyecto/crear";
+          api
+            .post(url, {
+              idAlumno: idStudent,
+              idAsesor: idAdvisor.value,
+              anteproyecto: project,
+            })
+            .then((res) => {
+              console.log(res.data.anteproyecto);
+              fillData(res.data.anteproyecto);
+            })
+            .catch((err) => {
+              console.error(err);
+            });
+        }
+        else if (action === "update") {
+          url = "./alumno/academico/anteproyecto/modificar";
           api
             .patch(url, {
               idAlumno: idStudent,
@@ -864,8 +983,46 @@ export default defineComponent({
       }
     }
 
+    function isProjectFinished() {
+      let isPersonalInfoCompleted = 0;
+      let isAcademicInfoCompleted = 0;
+      let isCompanyInfoCompleted = 0;
+
+      Object.keys(personalInfo.value).map((key) => {
+        console.log(personalInfo.value[key]);
+        personalInfo.value[key] === "" ? isPersonalInfoCompleted += 1 : '';
+      });
+
+      if (isPersonalInfoCompleted !== 0) {
+        console.log(isPersonalInfoCompleted);
+        return false;
+      }
+
+      Object.keys(academicInfo.value).map((key) => {
+        console.log(academicInfo.value[key]);
+        academicInfo.value[key] === "" ? isAcademicInfoCompleted += 1 : '';
+      });
+
+      if (isAcademicInfoCompleted !== 0) {
+        console.log(isAcademicInfoCompleted);
+        return false;
+      }
+
+      Object.keys(companyInfo.value).map((key) => {
+        console.log(companyInfo.value[key]);
+        companyInfo.value[key] === "" ? isCompanyInfoCompleted += 1 : '';
+      });
+
+      if (isCompanyInfoCompleted !== 0) {
+        console.log(isCompanyInfoCompleted);
+        return false;
+      }
+
+      return true;
+    }
+
     function definePhaseColor(state) {
-      if (state === "Sin comenzar") {
+      if (state === "Sin comenzar" || state === "Sin finalizar") {
         return "#FFC107";
       }
       if (state === "En revision" || state === "En revisión") {
@@ -910,6 +1067,8 @@ export default defineComponent({
       loadAdvisor,
       allAdvisors,
       idAdvisor,
+      isMobile,
+      dialogConfirmation,
     };
   },
   data() {
@@ -999,11 +1158,27 @@ export default defineComponent({
     toBack() {
       this.router.go(-1);
     },
+    homeApplication() {
+      this.applicationStarted = false;
+      this.showSections = false;
+      if (this.companyInfoIsValid) {
+        this.currentSection = "final";
+      } else {
+        this.currentSection = "";
+      }
+      this.searchState();
+    },
     startApplication() {
       this.applicationStarted = true;
       this.showSections = true;
       this.currentSection = "AcademicAdvisor";
       this.searchAdvisors();
+    },
+    saveProject() {
+      this.applicationFinish = true;
+      this.showSections = true;
+      this.currentSection = "final";
+      this.submitProject("save");
     },
     finishApplication() {
       this.applicationFinish = true;
@@ -1014,6 +1189,7 @@ export default defineComponent({
       } else {
         this.submitProject("update");
       }
+      this.dialogConfirmation = false;
     },
     submitPersonalInfo() {
       if (this.personalInfoIsValid) {
@@ -1027,7 +1203,7 @@ export default defineComponent({
     },
     submitCompanyInfo() {
       if (this.companyInfoIsValid) {
-        this.currentSection = "confirmation";
+        this.dialogConfirmation = true;
       }
     },
     goToAcademicAdvisorSection() {
@@ -1039,6 +1215,9 @@ export default defineComponent({
     goToCompanySection() {
       this.currentSection = "project";
     },
+    goToPersonalSection() {
+      this.currentSection = "AcademicAdvisor"
+    }
   },
 });
 
@@ -1132,23 +1311,30 @@ input {
   padding: 5px;
   border-radius: 4px;
   border: 1px solid #000;
-  background-color: #ddd; /* Fondo gris por defecto */
-  font-size: 20px; /* Tamaño de fuente más grande */
+  background-color: #ddd;
+  /* Fondo gris por defecto */
+  font-size: 20px;
+  /* Tamaño de fuente más grande */
 }
 
 input:focus {
-  background-color: #fff; /* Fondo blanco al recibir clic */
+  background-color: #fff;
+  /* Fondo blanco al recibir clic */
 }
+
 .custom-select .q-field__native {
-  font-size: 20px; /* Tamaño de fuente más grande */
+  font-size: 20px;
+  /* Tamaño de fuente más grande */
 }
 
 .custom-select .q-field__native:focus {
-  outline: none; /* Quita el contorno por defecto al enfocar */
+  outline: none;
+  /* Quita el contorno por defecto al enfocar */
 }
 
 .custom-select .q-field__native::selection {
-  background-color: transparent; /* Evita el recuadro adicional al seleccionar texto */
+  background-color: transparent;
+  /* Evita el recuadro adicional al seleccionar texto */
 }
 
 button {
@@ -1178,6 +1364,7 @@ button {
   border: none;
   color: #fff;
 }
+
 .circle {
   display: inline-block;
   width: 30px;
@@ -1190,6 +1377,7 @@ button {
   margin-right: 10px;
   vertical-align: middle;
 }
+
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -1247,5 +1435,24 @@ button {
   font-weight: bold;
   margin-right: 20px;
   margin-top: 5px;
+}
+
+.table-data-mobile {
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  background-color: #f4f4f4;
+  padding: 10px;
+  margin: 0;
+}
+
+.table-title-mobile {
+  width: 100%;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px;
+  background-color: #3b3b3b;
+  color: white;
+  margin: 0;
 }
 </style>

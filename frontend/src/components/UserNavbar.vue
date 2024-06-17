@@ -22,7 +22,7 @@
       <q-card-actions>
         <q-btn-dropdown
           v-if="isLogin"
-          :label="user.nombre + ' ' + user.apPaterno"
+          :label="user.nombre == undefined ? user.username : user.nombre + ' ' + user.apPaterno"
           flat
           icon="account_circle"
           class="flex"

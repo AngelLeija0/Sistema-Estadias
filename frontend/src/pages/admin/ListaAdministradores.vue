@@ -3,6 +3,7 @@
     ref="adminNavbar"
     @filter-admins="loadAdmins"
     @clear-filter-admins="loadAdmins"
+    style="display: none;"
   ></AdminNabvar>
   <div class="container-fluid">
     <q-card-actions
@@ -610,7 +611,7 @@ export default defineComponent({
         this.dialogStateAdminAdded = true;
         api
           .post(
-            `http://localhost:3000/admin/administrador/crear`,
+            `./admin/administrador/crear`,
             {
               administrador: newAdmin,
             }
@@ -679,7 +680,7 @@ export default defineComponent({
       }
       api
         .post(
-          `http://localhost:3000/admin/administradores/excel`,
+          `./admin/administradores/excel`,
           {
             filtro: filterToSend,
           },

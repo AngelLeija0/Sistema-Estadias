@@ -14,9 +14,10 @@
             font-weight: 400;
             text-transform: capitalize;
             padding: 8px 30px;
+            background: #1ab192;
+            color: white;
           "
           rounded
-          color="black"
           label="Ver perfil"
           :to="{ name: 'admin-alumnoId', params: {id: idAlumno} }"
         ></q-btn>

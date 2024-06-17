@@ -23,7 +23,7 @@ const alumnoSchema = new mongoose.Schema(
       grado: String,
       grupo: String
     },
-    cambiarPassoword: {
+    cambiarPassword: {
       type: Object,
       default: null,
       required: false

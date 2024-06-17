@@ -149,7 +149,7 @@
       <q-card-actions>
         <q-btn-dropdown
           v-if="isLogin"
-          :label="user.nombre + ' ' + user.apPaterno"
+          :label="user.nombre == undefined ? user.username : user.nombre + ' ' + user.apPaterno"
           flat
           icon="account_circle"
           class="flex"
@@ -235,7 +235,7 @@ export default defineComponent({
 
     function searchCareers() {
       api
-        .get("http://localhost:3000/carreras")
+        .get("./carreras")
         .then((res) => {
           if (res.data.msg) {
             console.log(res.data.msg);
@@ -285,7 +285,7 @@ export default defineComponent({
       try {
         api
           .post(
-            `http://localhost:3000/admin/alumnos/${typeEstadia}`,
+            `./admin/alumnos/${typeEstadia}`,
             {
               filtro: filter,
             }

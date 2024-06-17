@@ -1,5 +1,4 @@
 <template>
-  <UserNavbar></UserNavbar>
   <div class="container-fluid" style="background-color: #f5f5f5">
     <q-card-actions style="display: flex; justify-content: start">
       <q-btn
@@ -30,12 +29,12 @@
   </div>
   <div
     class="container-fluid q-pt-sm q-pl-xl q-pr-xl q-pb-xl"
-    style="background-color: #f5f5f5; min-height: 370px"
+    style="background-color: #f5f5f5; min-height: 73vh"
     v-else
   >
     <div
       class="row q-ml-xl q-mr-xl"
-      style="background-color: white; border-radius: 15px; height: 455px"
+      style="background-color: white; border-radius: 15px; height: 65vh"
     >
       <div class="col-3 q-pt-lg" style="border-right: 1px solid lightgray">
         <div
@@ -505,14 +504,12 @@ import { useRouter } from "vue-router";
 import { useFilterStore } from "src/stores/filter-store";
 import { useDataApiStore } from "src/stores/data-api-store";
 import { api } from "src/boot/axios";
-import UserNavbar from "src/components/UserNavbar.vue";
 import full from "core-js/full";
 import CardMiniAlumno from "src/components/CardMiniAlumno.vue";
 
 export default defineComponent({
   name: "admin-asesorId",
   components: {
-    UserNavbar,
     CardMiniAlumno,
   },
   setup() {
@@ -559,12 +556,14 @@ export default defineComponent({
           advisorsLoaded.value = true;
           api
             .post(
-              `http://localhost:3000/admin/asesor/perfil`,
+              `./admin/asesor/perfil`,
               {
                 asesor: idAdvisor.value,
               }
             )
             .then((res) => {
+              console.log(res.data)
+              console.log(idAdvisor.value)
               advisor.value = res.data;
               advisorState.value = res.data.estado;
               res.data.estado === "Activo" ? advisorState.value = true : '';
@@ -615,7 +614,7 @@ export default defineComponent({
       };
       api
         .patch(
-          `http://localhost:3000/admin/asesor/perfil/modificar`,
+          `./admin/asesor/perfil/modificar`,
           {
             asesor: updatedAdvisor,
           }
@@ -632,7 +631,7 @@ export default defineComponent({
     function deleteAdvisor() {
       api
         .post(
-          `http://localhost:3000/admin/asesor/perfil/borrar`,
+          `./admin/asesor/perfil/borrar`,
           {
             asesor: idAdvisor._value,
           }
@@ -715,7 +714,7 @@ export default defineComponent({
       advisorsLoaded.value = true;
       api
         .patch(
-          `http://localhost:3000/admin/asesor/perfil/modificar`,
+          `./admin/asesor/perfil/modificar`,
           {
             asesor: updatedAdvisor,
           }
@@ -737,22 +736,22 @@ export default defineComponent({
     function searchMentoredStudents() {
       emptyStudents.value = false;
       studentsLoaded.value = true;
+      console.log("Buscando alumnos asesorados");
       api
         .post(
-          `http://localhost:3000/admin/asesor/perfil/alumnos`,
+          `./admin/asesor/perfil/alumnos`,
           {
             idAsesor: idAdvisor._value,
           }
         )
         .then((res) => {
           console.log(res.data);
-          studentsToShow(res.data);
-          setTimeout(() => {
-            studentsLoaded.value = false;
-            if (res.data === [] || res.data.length === 0) {
-              return (emptyStudents.value = true);
-            }
-          }, 2000);
+          studentsLoaded.value = false;
+          if (res.data.length > 0) {
+            studentsToShow(res.data);
+          } else {
+            emptyStudents.value = true
+          }
         })
         .catch((err) => {
           console.error(err);

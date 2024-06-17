@@ -1,6 +1,5 @@
 <template>
-  <UserNavbar></UserNavbar>
-  <div class="container text-center">
+  <div class="container text-center" style="padding-top: 80px;">
     <div class="small-box" @click="redirectToSection('solicitud-carta')">
       <div class="img-container">
         <img
@@ -11,7 +10,20 @@
         />
       </div>
       <p class="box-text">
-        <strong>Carta</strong><br /><strong>presentación</strong>
+        <strong>Carta</strong><br /><strong>Presentación</strong>
+      </p>
+    </div>
+    <div class="small-box" @click="redirectToSection('seguimiento-academico')">
+      <div class="img-container">
+        <img
+          src="../../assets/alumno/card-seguimiento-academico.jpg"
+          alt="Imagen 3"
+          class="img-fluid"
+          @load="adjustContainerPosition"
+        />
+      </div>
+      <p class="box-text">
+        <strong>Seguimiento</strong><br /><strong>Académico</strong>
       </p>
     </div>
     <div
@@ -27,20 +39,20 @@
         />
       </div>
       <p class="box-text">
-        <strong>Seguimiento</strong><br /><strong>administrativo</strong>
+        <strong>Seguimiento</strong><br /><strong>Administrativo</strong>
       </p>
     </div>
-    <div class="small-box" @click="redirectToSection('seguimiento-academico')">
+    <div class="small-box" @click="redirectToSection('')" style="opacity: 0.7;">
       <div class="img-container">
         <img
-          src="../../assets/alumno/card-seguimiento-academico.jpg"
+          src="../../assets/alumno/card-encuesta.jpg"
           alt="Imagen 3"
           class="img-fluid"
           @load="adjustContainerPosition"
         />
       </div>
       <p class="box-text">
-        <strong>Seguimiento</strong><br /><strong>académico</strong>
+        <strong>Encuesta de</strong><br /><strong>Seguimiento</strong>
       </p>
     </div>
   </div>
@@ -48,13 +60,9 @@
 
 <script>
 import { defineComponent } from "vue";
-import UserNavbar from "src/components/UserNavbar.vue";
 
 export default defineComponent({
   name: "alumno-inicio",
-  components: {
-    UserNavbar,
-  },
   methods: {
     redirectToSection(section) {
       this.$router.push(section);
@@ -83,7 +91,7 @@ export default defineComponent({
   height: 500px;
   border: 1px solid #ccc;
   border-radius: 10px;
-  margin: 80px;
+  margin: 45px;
   margin-top: 0px;
   margin-bottom: 40px;
   background-color: #fff;

@@ -1,22 +1,11 @@
 <template>
-  <UserNavbar></UserNavbar>
   <div class="container-fluid" style="background-color: #f5f5f5">
     <q-card-actions style="display: flex; justify-content: start">
-      <q-btn
-        flat
-        color="black"
-        label="Regresar"
-        icon="arrow_left"
-        style="margin: 3px; text-transform: capitalize; font-size: 16px"
-        @click="toBack"
-      ></q-btn>
+      <q-btn flat color="black" label="Regresar" icon="arrow_left"
+        style="margin: 3px; text-transform: capitalize; font-size: 16px" @click="toBack"></q-btn>
     </q-card-actions>
   </div>
-  <div
-    class="container-fluid"
-    style="background-color: #f5f5f5; height: 500px; margin-top: 0"
-    v-if="studentsLoaded"
-  >
+  <div class="container-fluid" style="background-color: #f5f5f5; height: 500px; margin-top: 0" v-if="studentsLoaded">
     <div class="row">
       <div class="col-12" style="display: flex; justify-content: center">
         <q-card class="q-ma-lg">
@@ -28,23 +17,15 @@
       </div>
     </div>
   </div>
-  <div
-    class="container-fluid q-pt-sm q-pl-xl q-pr-xl q-pb-xl"
-    style="background-color: #f5f5f5; min-height: 370px"
-    v-else
-  >
-    <div
-      class="row q-ml-xl q-mr-xl"
-      style="background-color: white; border-radius: 15px; height: 455px"
-    >
+  <div class="container-fluid q-pt-sm q-pl-xl q-pr-xl q-pb-xl" style="background-color: #f5f5f5; min-height: 73vh"
+    v-else>
+    <div class="row q-ml-xl q-mr-xl" style="background-color: white; border-radius: 15px; height: 65vh">
       <div class="col-3 q-pt-lg" style="border-right: 1px solid lightgray">
-        <div
-          style="
+        <div style="
             padding: 5px;
             text-align: center;
             border-bottom: 1px solid lightgray;
-          "
-        >
+          ">
           <p style="font-size: 16px; font-weight: 500; margin-bottom: 0">
             {{ student.nombre }}
           </p>
@@ -58,38 +39,26 @@
         </div>
         <div>
           <q-card-actions style="flex-direction: column; align-items: start">
-            <q-btn
-              flat
-              color="black"
-              label="Informacion general"
-              :style="{
-                margin: '3px',
-                textTransform: 'capitalize',
-                fontSize: '16px',
-                fontWeight: 'normal',
-                width: '100%',
-                alignItems: 'start',
-                background: actualSection === 1 ? '#e8e8e8' : '',
-              }
-              "
-              @click="showSection(1)"
-            ></q-btn>
-            <q-btn
-              flat
-              color="black"
-              label="Documentación"
-              :style="{
-                margin: '3px',
-                textTransform: 'capitalize',
-                fontSize: '16px',
-                fontWeight: 'normal',
-                width: '100%',
-                alignItems: 'start',
-                background: actualSection === 2 ? '#e8e8e8' : '',
-              }
-              "
-              @click="showSection(2)"
-            ></q-btn>
+            <q-btn flat color="black" label="Informacion general" :style="{
+              margin: '3px',
+              textTransform: 'capitalize',
+              fontSize: '16px',
+              fontWeight: 'normal',
+              width: '100%',
+              alignItems: 'start',
+              background: actualSection === 1 ? '#e8e8e8' : '',
+            }
+              " @click="showSection(1)"></q-btn>
+            <q-btn flat color="black" label="Documentación" :style="{
+              margin: '3px',
+              textTransform: 'capitalize',
+              fontSize: '16px',
+              fontWeight: 'normal',
+              width: '100%',
+              alignItems: 'start',
+              background: actualSection === 2 ? '#e8e8e8' : '',
+            }
+              " @click="showSection(2)"></q-btn>
           </q-card-actions>
         </div>
       </div>
@@ -100,101 +69,87 @@
           </div>
           <div class="col-4">
             <p style="margin: 5px; font-size: 16px">Nombre</p>
-            <p
-              style="
+            <p style="
                 background-color: #d9d9d9;
                 padding: 8px;
                 width: 90%;
                 font-size: 14px;
                 border-radius: 5px;
-              "
-            >
+              ">
               {{ student.nombre }} {{ student.apPaterno }}
               {{ student.apMaterno }}
             </p>
           </div>
           <div class="col-4">
             <p style="margin: 5px; font-size: 16px">Carrera</p>
-            <p
-              style="
+            <p style="
                 background-color: #d9d9d9;
                 padding: 8px;
                 width: 90%;
                 font-size: 14px;
                 border-radius: 5px;
-              "
-            >
+              ">
               {{ student.carrera }}
             </p>
           </div>
           <div class="col-4">
             <p style="margin: 5px; font-size: 16px">Area</p>
-            <p
-              style="
+            <p style="
                 background-color: #d9d9d9;
                 padding: 8px;
                 width: 90%;
                 font-size: 14px;
                 border-radius: 5px;
-              "
-            >
+              ">
               {{ student.area }}
             </p>
           </div>
           <div class="col-12"></div>
           <div class="col-3">
             <p style="margin: 5px; font-size: 16px">Matricula</p>
-            <p
-              style="
+            <p style="
                 background-color: #d9d9d9;
                 padding: 8px;
                 width: 90%;
                 font-size: 14px;
                 border-radius: 5px;
-              "
-            >
+              ">
               {{ student.matricula }}
             </p>
           </div>
           <div class="col-2">
             <p style="margin: 5px; font-size: 16px">Grado</p>
-            <p
-              style="
+            <p style="
                 background-color: #d9d9d9;
                 padding: 8px;
                 width: 90%;
                 font-size: 14px;
                 border-radius: 5px;
-              "
-            >
+              ">
               {{ student.grado }}
             </p>
           </div>
           <div class="col-2">
             <p style="margin: 5px; font-size: 16px">Grupo</p>
-            <p
-              style="
+            <p style="
                 background-color: #d9d9d9;
                 padding: 8px;
                 width: 90%;
                 font-size: 14px;
                 border-radius: 5px;
-              "
-            >
+              ">
               {{ student.grupo }}
             </p>
           </div>
           <div class="col-5">
             <p style="margin: 5px; font-size: 16px">Nivel academico</p>
-            <p
-              style="
+            <p style="
                 background-color: #d9d9d9;
                 padding: 8px;
                 width: 90%;
                 font-size: 14px;
                 border-radius: 5px;
-              "
-            >
+              ">
               {{ student.nivelAcademico }}
             </p>
           </div>
@@ -226,105 +181,43 @@
             <h5 style="font-weight: 500">Documentación</h5>
           </div>
           <div class="col-12 q-pt-md">
-            <div class="row" v-if="existsDocumentos">
-              <div class="col-md-12">
-                <div class="row justify-between" v-if="actualPhase == 0">
-                  <div
-                    class="col-md-2"
-                    v-for="(phase, i) in phases"
-                    :key="i + 1"
-                  >
-                    <q-card
-                      v-ripple
-                      dark
-                      bordered
-                      class="bg-grey-4 my-card cursor-pointer q-hoverable"
-                      style="height: 205px"
-                      @click="toShowPhase(phase)"
-                    >
-                      <q-card-section>
-                        <div class="text-subtitle2 text-black">
-                          Etapa {{ phase }}
-                        </div>
-                      </q-card-section>
-                      <q-separator color="grey-5" inset />
-                      <q-card-section>
-                        <div v-for="(document, i) in documents" :key="i + 1">
-                          <p class="text-black" v-if="document.phase === phase">
-                            ∙ {{ document.label }}
-                          </p>
-                        </div>
-                      </q-card-section>
-                    </q-card>
-                  </div>
+            <div class="row" v-if="existsDocumentos" style="overflow-y: scroll; height: 45vh">
+              <div class="col-11 q-ma-sm" v-for="(document, i) in documents" :key="i + 1"
+                style="display: flex; align-items: center;">
+                <div style="width: 45%; background: lightgray; padding: 7px 10px; border-radius: 5px;">
+                  <p style="margin: 0; height: 100%;">{{ document.label }}</p>
                 </div>
-                <div class="col-md-12" v-else>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <p style="font-weight: 500; font-size: 18px">
-                        Etapa {{ actualPhase }}
-                      </p>
-                    </div>
-                    <div class="col-md-6 flex justify-end">
-                      <q-card-actions>
-                        <q-btn-group flat>
-                          <q-btn
-                            color="black"
-                            label="Regresar"
-                            icon="arrow_left"
-                            style="
-                              margin: 3px;
-                              padding-right: 15px;
-                              text-transform: capitalize;
-                              font-size: 12px;
-                            "
-                            @click="toBackPhase"
-                          ></q-btn>
-                        </q-btn-group>
-                      </q-card-actions>
-                    </div>
-                    <div class="col-md-12 q-pt-xl"></div>
-                    <div
-                      class="col-4"
-                      style="padding-bottom: 30px"
-                      v-for="(document, i) in documentsToShow"
-                      :key="i + 1"
-                    >
-                      <div
-                        style="
-                          background-color: #d9d9d9;
-                          padding: 0 8px;
-                          width: 90%;
-                          border-radius: 5px;
-                          display: inline-flex;
-                          align-items: center;
-                          justify-content: space-between;
-                        "
-                      >
-                        <p style="font-size: 14px; margin: 0">
-                          {{ document.label }}
-                        </p>
-                        <q-card-actions style="justify-content: end">
-                          <q-btn-group flat>
-                            <q-btn
-                              flat
-                              color="black"
-                              icon="visibility"
-                              style="
-                                padding-right: 10px;
-                                text-transform: capitalize;
-                                font-size: 12px;
-                                font-weight: normal;
-                              "
-                              @click="
-                                toDownloadDocument(document.name, document.path)
-                              "
-                            ></q-btn>
-                          </q-btn-group>
-                        </q-card-actions>
-                      </div>
-                    </div>
-                  </div>
+                <!--ptm -->
+                <q-btn-group flat>
+                  <q-btn flat color="black" icon="visibility" style="
+                    padding-right: 10px;
+                    text-transform: capitalize;
+                    font-size: 12px;
+                    font-weight: normal;
+                  " :disable="document.state === 'Sin entregar'"
+                    @click="toDownloadDocument(document.name, document.path)" />
+                  <q-btn color="secondary" icon="settings" label="Cambiar estado" style="
+                    margin: 3px;
+                    padding: 7px 15px;
+                    text-transform: capitalize;
+                    font-size: 12px;
+                    font-weight: normal;
+                    border-radius: 3px;
+                  " disable @click="setActualDocument(document.name), dialogChangePhaseState = true" />
+                </q-btn-group>
+                <div :style="{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: '30%',
+                  color: 'white',
+                  background: defineDocumentStateColor(document.state),
+                  padding: '5px 10px',
+                  borderRadius: '5px'
+                }">
+                  <p style="margin: 2px; height: 100%;">{{ document.state }}</p>
+                  <q-btn v-if="document.state === 'Rechazada'" flat color="white" icon="more_horiz" size="10px"
+                    style="margin: 0 4px;" @click="setActualDocument(document.name), dialogPhaseState = true"></q-btn>
                 </div>
               </div>
             </div>
@@ -336,6 +229,40 @@
       </div>
     </div>
   </div>
+
+  <q-dialog v-model="dialogPhaseState">
+    <q-card class="q-pt-md q-pl-md q-pr-md" style="width: 500px; max-width: 60vw; height: 45vh">
+      <div class="row q-ma-sm">
+        <div class="col-12" style="display: flex; justify-content: end">
+          <q-card-actions>
+            <q-btn align="right" flat color="red" icon="close" v-close-popup style="
+                        margin: 3px;
+                        padding-left: 25px;
+                        padding-right: 25px;
+                        text-transform: capitalize;
+                        font-size: 16px;
+                      " />
+          </q-card-actions>
+        </div>
+        <div class="col-12 q-pa-md">
+          <div class="text-h6 text-center" style="font-size: 22px; font-weight: 500">
+            Estado de etapa {{ actualDocument.label }}
+          </div>
+        </div>
+        <div class="col-12 q-pa-md q-mt-md">
+          <p style="font-size: 14px">
+            <span style="font-weight: 500">Estado: </span>{{ actualDocument.state.name }}
+          </p>
+          <p style="font-size: 14px">
+            <span style="font-weight: 500">Fecha de revisión: </span>{{ actualDocument.state.date }}
+          </p>
+          <p style="font-size: 14px">
+            <span style="font-weight: 500">Motivo: </span>{{ actualDocument.state.motive }}
+          </p>
+        </div>
+      </div>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script>
@@ -346,13 +273,9 @@ import { useFilterStore } from "src/stores/filter-store";
 import { useDataApiStore } from "src/stores/data-api-store";
 import { api } from "src/boot/axios";
 import { format } from "date-fns";
-import UserNavbar from "src/components/UserNavbar.vue";
 
 export default defineComponent({
   name: "vinculacion-alumnoId",
-  components: {
-    UserNavbar,
-  },
   setup() {
     const dataApiStore = useDataApiStore();
     const filterStore = useFilterStore();
@@ -420,71 +343,109 @@ export default defineComponent({
       color: "",
     });
     const documentsToShow = ref(null);
+
     const documents = ref([
       {
-        label: "Curriculum Vitae",
-        name: "curriculum",
+        label: "Curriculum Vitae Español",
+        name: "cve",
+        icon: "description",
+        state: "Sin entregar",
+        motive: "",
+        date: "",
         path: "",
-        phase: 1,
-        dialog: false,
       },
       {
-        label: "Seguro facultativo",
-        name: "nss",
+        label: "Curriculum Vitae Inglés",
+        name: "cvi",
+        icon: "description",
+        state: "Sin entregar",
+        motive: "",
+        date: "",
         path: "",
-        phase: 1,
-        dialog: false,
       },
       {
-        label: "Carta presentación",
+        label: "Carta Presentación",
         name: "cpa",
+        icon: "mail",
+        state: "Sin entregar",
+        motive: "",
+        date: "",
         path: "",
-        phase: 1,
-        dialog: false,
       },
       {
-        label: "Carta de aceptación",
+        label: "Carta Aceptación",
         name: "caa",
+        icon: "mail",
+        state: "Sin entregar",
+        motive: "",
+        date: "",
         path: "",
-        phase: 2,
-        dialog: false,
       },
       {
-        label: "Reporte de proyecto",
-        name: "reporte",
+        label: "Constancia de Vigencia de Seguro Social",
+        name: "nss",
+        icon: "contact_page",
+        state: "Sin entregar",
+        motive: "",
+        date: "",
         path: "",
-        phase: 3,
-        dialog: false,
       },
       {
-        label: "Rubrica de evaluación",
-        name: "rubrica",
-        path: "",
-        phase: 4,
-        dialog: false,
-      },
-      {
-        label: "Dictamen",
+        label: "F-PSE-DICA-17 Estadias en Sector Productivo",
         name: "dictamen",
+        icon: "summarize",
+        state: "Sin entregar",
+        motive: "",
+        date: "",
         path: "",
-        phase: 4,
-        dialog: false,
       },
       {
-        label: "Protesta de ley",
+        label: "F-PSE-DICA-18 Protesta de ley",
         name: "protesta",
+        icon: "gavel",
+        state: "Sin entregar",
+        motive: "",
+        date: "",
         path: "",
-        phase: 4,
-        dialog: false,
       },
       {
-        label: "Carta terminación",
-        name: "cta",
+        label: "F-PSE-DICA-19 Rubrica de Evaluación",
+        name: "rubrica",
+        icon: "assignment",
+        state: "Sin entregar",
+        motive: "",
+        date: "",
         path: "",
-        phase: 5,
-        dialog: false,
+      },
+      {
+        label: "Reporte Proyecto de Estadias",
+        name: "reporte",
+        icon: "article",
+        state: "Sin entregar",
+        motive: "",
+        date: "",
+        path: "",
+      },
+      {
+        label: "Carta Terminación Proyecto",
+        name: "ctp",
+        icon: "mail",
+        state: "Sin entregar",
+        motive: "",
+        date: "",
+        path: "",
       },
     ]);
+
+    const actualDocument = ref({
+      label: "",
+      name: "",
+      state: {
+        name: "",
+        motive: "",
+        date: "",
+      },
+    });
 
     const downloadingError = ref(false);
     const downloadingDocument = ref(false);
@@ -509,7 +470,7 @@ export default defineComponent({
         studentsLoaded.value = true;
         api
           .post(
-            `http://localhost:3000/admin/alumno/perfil`,
+            `./admin/alumno/perfil`,
             {
               idAlumno: idStudent._value,
             }
@@ -560,15 +521,14 @@ export default defineComponent({
               }
               if (res.data.documentos) {
                 existsDocumentos.value = true;
-                const documentos = res.data.documentos;
-                allPhasesState.value = documentos.etapas;
-                Object.keys(documentos).map((key, i) => {
-                  const allDocuments = documents.value;
-                  allDocuments.map((document) => {
-                    if (key === document.name) {
-                      document.path = documentos[key].archivo;
-                    }
-                  });
+                const documentsData = res.data.documentos;
+                Object.keys(documentsData).map((document) => {
+                  const name = document.replace('.pdf', '');
+                  const foundDocument = documents.value.findIndex(document => document.name === name);
+                  documents.value[foundDocument].path = documentsData[document].archivo;
+                  documents.value[foundDocument].state = documentsData[document].estado;
+                  documents.value[foundDocument].motive = documentsData[document].motivo !== undefined ? documentsData[document].motivo : "";
+                  documents.value[foundDocument].date = documentsData[document].fecha;
                 });
               } else {
                 existsDocumentos.value = false;
@@ -684,7 +644,7 @@ export default defineComponent({
       };
       api
         .patch(
-          `http://localhost:3000/admin/alumno/perfil/cpa/modificar`,
+          `./admin/alumno/perfil/cpa/modificar`,
           {
             idAlumno: idStudent._value,
             cpa,
@@ -755,7 +715,7 @@ export default defineComponent({
 
       api
         .patch(
-          `http://localhost:3000/admin/alumno/perfil/anteproyecto/modificar`,
+          `./admin/alumno/perfil/anteproyecto/modificar`,
           {
             idAlumno: idStudent._value,
             anteproyecto: anteproyecto,
@@ -800,7 +760,7 @@ export default defineComponent({
         }, 1000);
         return;
       }
-      const nameFile = `${name}_${extractNameFromPath(path)}`;
+      const nameFile = `${name}`;
       downloadingDocument.value = true;
 
       console.log({
@@ -811,7 +771,7 @@ export default defineComponent({
 
       api
         .post(
-          `http://localhost:3000/admin/alumno/perfil/documento/descargar`,
+          `./admin/alumno/perfil/documento/descargar`,
           {
             idAlumno: idStudent._value,
             nombreDocumento: name,
@@ -861,6 +821,9 @@ export default defineComponent({
     }
 
     function definePhaseColor(state) {
+      if (state === "Sin comenzar" || state === "Sin finalizar") {
+        return "#FFC107";
+      }
       if (state === "En revision" || state === "En revisión") {
         return "#FF8D4D";
       }
@@ -873,6 +836,35 @@ export default defineComponent({
       return "black";
     }
 
+    function defineDocumentStateColor(state) {
+      if (state === "Sin entregar") {
+        return "#FFC107";
+      }
+      if (state === "En revision" || state === "En revisión" || state === "Guardado") {
+        return "#FF8D4D";
+      }
+      if (state === "Aceptada") {
+        return "#0ECC43";
+      }
+      if (state === "Rechazada") {
+        return "#F44336";
+      }
+      return "black";
+    }
+
+    function setActualDocument(nameDocument) {
+      console.log(nameDocument);
+      const foundDocument = documents.value.find(document => document.name === nameDocument);
+      console.log(foundDocument);
+      actualDocument.value.label = foundDocument.label;
+      actualDocument.value.name = foundDocument.name;
+      actualDocument.value.path = foundDocument.path;
+      actualDocument.value.state.name = foundDocument.state;
+      actualDocument.value.state.motive = foundDocument.motive !== undefined ? foundDocument.motive : '';
+      actualDocument.value.state.date = foundDocument.date;
+      console.log(actualDocument.value.state);
+    }
+
     function formatDate(dateString) {
       const dateObj = new Date(dateString);
       return format(dateObj, "dd-MM-yyyy HH:mm:ss");
@@ -881,7 +873,7 @@ export default defineComponent({
     function setPhaseState(state, motive = "") {
       api
         .post(
-          `http://localhost:3000/admin/alumno/perfil/documentos/etapa-toggle`, // http://localhost:3000/admin/alumno/perfil/documentos/etapa-toggle
+          `./admin/alumno/perfil/documentos/etapa-toggle`, // ./admin/alumno/perfil/documentos/etapa-toggle
           {
             idAlumno: idStudent._value,
             etapa: actualPhase.value,
@@ -953,7 +945,7 @@ export default defineComponent({
       };
       api
         .patch(
-          `http://localhost:3000/admin/alumno/perfil/cpa/modificar`,
+          `./admin/alumno/perfil/cpa/modificar`,
           {
             idAlumno: idStudent._value,
             cpa,
@@ -1056,6 +1048,9 @@ export default defineComponent({
       dialogDenyPhase,
       allPhasesState,
       toBackPhase,
+      defineDocumentStateColor,
+      actualDocument,
+      setActualDocument,
     };
   },
 });
@@ -1157,24 +1152,30 @@ input {
   padding: 5px;
   border-radius: 4px;
   border: 1px solid #000;
-  background-color: #ddd; /* Fondo gris por defecto */
-  font-size: 20px; /* Tamaño de fuente más grande */
+  background-color: #ddd;
+  /* Fondo gris por defecto */
+  font-size: 20px;
+  /* Tamaño de fuente más grande */
 }
 
 input:focus {
-  background-color: #fff; /* Fondo blanco al recibir clic */
+  background-color: #fff;
+  /* Fondo blanco al recibir clic */
 }
 
 .custom-select .q-field__native {
-  font-size: 20px; /* Tamaño de fuente más grande */
+  font-size: 20px;
+  /* Tamaño de fuente más grande */
 }
 
 .custom-select .q-field__native:focus {
-  outline: none; /* Quita el contorno por defecto al enfocar */
+  outline: none;
+  /* Quita el contorno por defecto al enfocar */
 }
 
 .custom-select .q-field__native::selection {
-  background-color: transparent; /* Evita el recuadro adicional al seleccionar texto */
+  background-color: transparent;
+  /* Evita el recuadro adicional al seleccionar texto */
 }
 
 @media (max-width: 768px) {
@@ -1258,17 +1259,11 @@ input:focus {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:hover:before {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:hover:before {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:hover:after {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:hover:after {
     background-color: transparent;
   }
 
@@ -1276,17 +1271,11 @@ input:focus {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:active:before {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:active:before {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:active:after {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:active:after {
     background-color: transparent;
   }
 
@@ -1294,17 +1283,11 @@ input:focus {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:focus:before {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:focus:before {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:focus:after {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:focus:after {
     background-color: transparent;
   }
 
@@ -1312,17 +1295,11 @@ input:focus {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:visited:before {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:visited:before {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:visited:after {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:visited:after {
     background-color: transparent;
   }
 
@@ -1330,17 +1307,11 @@ input:focus {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:disabled:before {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:disabled:before {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:disabled:after {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:disabled:after {
     background-color: transparent;
   }
 
@@ -1387,17 +1358,11 @@ input:focus {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:hover:before {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:hover:before {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:hover:after {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:hover:after {
     background-color: transparent;
   }
 
@@ -1405,17 +1370,11 @@ input:focus {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:active:before {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:active:before {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:active:after {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:active:after {
     background-color: transparent;
   }
 
@@ -1423,17 +1382,11 @@ input:focus {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:focus:before {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:focus:before {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:focus:after {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:focus:after {
     background-color: transparent;
   }
 
@@ -1441,17 +1394,11 @@ input:focus {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:visited:before {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:visited:before {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:visited:after {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:visited:after {
     background-color: transparent;
   }
 
@@ -1459,17 +1406,11 @@ input:focus {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:disabled:before {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:disabled:before {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:disabled:after {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:disabled:after {
     background-color: transparent;
   }
 

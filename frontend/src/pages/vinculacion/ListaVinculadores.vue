@@ -3,6 +3,7 @@
     ref="vinculadorNavbar"
     @filter-admins="loadVinculadores"
     @clear-filter-admins="loadVinculadores"
+    style="display: none;"
   ></AdminNabvar>
   <div class="container-fluid">
     <q-card-actions
@@ -620,7 +621,7 @@ export default defineComponent({
         this.dialogStateVinculadorAdded = true;
         api
           .post(
-            `http://localhost:3000/vinculacion/vinculador/crear`,
+            `./vinculacion/vinculador/crear`,
             {
               vinculador: newVinculador,
             }
@@ -689,7 +690,7 @@ export default defineComponent({
       }
       api
         .post(
-          `http://localhost:3000/vinculacion/vinculadores/excel`,
+          `./vinculacion/vinculadores/excel`,
           {
             filtro: filterToSend,
           },

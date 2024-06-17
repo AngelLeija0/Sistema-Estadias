@@ -7,11 +7,11 @@
         </div>
         <div class="login-form">
           <div class="login-form-header">Iniciar Sesión</div>
-          <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
+          <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md" style="margin: 0;">
             <q-input
               v-model="user_name"
               type="text"
-              label="Usuario"
+              label="Usuario o matricula"
               dense
               outlined
               class="login-input"
@@ -33,11 +33,8 @@
               prefix-icon="mdi-lock"
               style="margin-bottom: 0;"
             ></q-input>
-            <!--
-            Recuperacion de contraseña
-            <q-btn flat text-color="black" label="¿Olvidaste tu contraseña?" size="sm" padding="7px" @click="toRecuperationPage"/>
-            -->
-            <div class="login-form-actions q-pt-md">
+            <q-btn flat text-color="black" label="¿Olvidaste tu contraseña?" size="sm" padding="5px" @click="toRecuperationPage"/>
+            <div class="login-form-actions">
               <q-btn
                 label="Ingresar"
                 type="submit"
@@ -45,18 +42,16 @@
                 class="login-btn"
                 rounded
                 small
-              />
-              <q-btn
-                label="Limpiar"
-                type="reset"
-                color="dark"
-                flat
-                class="login-btn"
-                rounded
-                small
+                style="margin-left: 0;"
               />
             </div>
           </q-form>
+          <q-btn
+          class="q-mt-md"
+          label="Registrarse"
+          flat
+          to="registro"
+          />
         </div>
       </div>
     </div>
@@ -100,7 +95,7 @@ export default defineComponent({
     function onSubmit() {
       try {
         api
-          .post("http://localhost:3000/login", {
+          .post("./login", {
             usuario: user_name.value,
             password: password.value,
           })
@@ -114,7 +109,7 @@ export default defineComponent({
               loginError.value = true;
               setTimeout(() => {
                 loginError.value = false;
-              }, 3000);
+              }, 1500);
             }
           });
       } catch (error) {
@@ -139,6 +134,9 @@ export default defineComponent({
       }
       if (view === "administrador") {
         router.push({ name: "admin-inicio" });
+      }
+      if (view === "superAdministrador") {
+        router.push({ name: "superAdmin-inicio" });
       }
     }
 

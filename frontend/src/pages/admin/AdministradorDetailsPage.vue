@@ -1,5 +1,4 @@
 <template>
-  <UserNavbar></UserNavbar>
   <div class="container-fluid" style="background-color: #f5f5f5">
     <q-card-actions style="display: flex; justify-content: start">
       <q-btn
@@ -32,12 +31,12 @@
   </div>
   <div
     class="container-fluid q-pt-sm q-pl-xl q-pr-xl q-pb-xl"
-    style="background-color: #f5f5f5; min-height: 370px"
+    style="background-color: #f5f5f5; min-height: 73vh"
     v-else
   >
     <div
       class="row q-ml-xl q-mr-xl"
-      style="background-color: white; border-radius: 15px; height: 455px"
+      style="background-color: white; border-radius: 15px; height: 65vh"
     >
       <div class="col-3 q-pt-lg" style="border-right: 1px solid lightgray">
         <div
@@ -319,13 +318,9 @@ import { useRouter } from "vue-router";
 import { useFilterStore } from "src/stores/filter-store";
 import { useDataApiStore } from "src/stores/data-api-store";
 import { api } from "src/boot/axios";
-import UserNavbar from "src/components/UserNavbar.vue";
 
 export default defineComponent({
   name: "admin-administradorId",
-  components: {
-    UserNavbar
-  },
   setup() {
     const dataApiStore = useDataApiStore();
     const filterStore = useFilterStore();
@@ -354,7 +349,7 @@ export default defineComponent({
           adminsLoaded.value = true;
           api
             .post(
-              `http://localhost:3000/admin/administrador/perfil`,
+              `./admin/administrador/perfil`,
               {
                 administrador: idAdmin.value,
               }
@@ -378,7 +373,7 @@ export default defineComponent({
     function deleteAdmin() {
       api
         .post(
-          `http://localhost:3000/admin/administrador/perfil/borrar`,
+          `./admin/administrador/perfil/borrar`,
           {
             administrador: idAdmin._value,
           }
@@ -445,7 +440,7 @@ export default defineComponent({
       adminsLoaded.value = true;
       api
         .patch(
-          `http://localhost:3000/admin/administrador/perfil/modificar`,
+          `./admin/administrador/perfil/modificar`,
           {
             administrador: updatedAdmin,
           }

@@ -39,7 +39,7 @@
       <q-card-actions>
         <q-btn-dropdown
           v-if="isLogin"
-          :label="user.nombre + ' ' + user.apPaterno"
+          :label="user.nombre === '' || user.apPaterno === '' ? user.username : user.nombre + ' ' + user.apPaterno"
           flat
           icon="account_circle"
           class="flex"
@@ -109,7 +109,7 @@ export default defineComponent({
       try {
         console.log("Buscando asesores ...");
         api
-          .post(`http://localhost:3000/admin/asesores`, {
+          .post(`./admin/asesores`, {
             filtro: filter,
           })
           .then((res) => {
@@ -143,18 +143,19 @@ export default defineComponent({
         if (router.currentRoute.value.name === "asesor-inicio") {
           idAsesor = userStore.getUser.id;
           body.idAsesor = idAsesor;
-          url = "http://localhost:3000/asesor/inicio";
+          url = "./asesor/inicio";
         } else if (
           router.currentRoute.value.name === "admin-listaAlumnos" ||
           router.currentRoute.value.name === "vinculacion-listaAlumnos" ||
           router.currentRoute.value.name === "asesor-inicio"
         ) {
-          url = `http://localhost:3000/admin/alumnos/${body.filtro.estado}`;
+          url = `./admin/alumnos/${body.filtro.estado}`;
         }
         console.log(body);
         api
           .post(url, body)
           .then((res) => {
+            console.log(res.data);
             if (res.data.msg) {
               //console.log(res.data.msg);
             } else {
@@ -178,7 +179,7 @@ export default defineComponent({
         console.log("Buscando administradores ...");
         api
           .post(
-            `http://localhost:3000/admin/administradores`,
+            `./admin/administradores`,
             {
               filtro: filter,
             }
@@ -210,7 +211,7 @@ export default defineComponent({
         console.log("Buscando vinculandores ...");
         api
           .post(
-            `http://localhost:3000/vinculacion/vinculadores`,
+            `./vinculacion/vinculadores`,
             {
               filtro: filter,
             }
@@ -343,6 +344,7 @@ export default defineComponent({
     handleKeyUp(event) {
       if (event.keyCode === 13 || event.keyCode === 8) {
         this.submitFilter();
+        this.$emit('reload-students');
       }
     },
   },

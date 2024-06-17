@@ -1,6 +1,5 @@
 <template>
-  <UserNavbar></UserNavbar>
-  <div class="container text-center">
+  <div class="container text-center" style="padding-top: 80;">
     <div class="small-box" @click="redirectToSection('vinculacion-alumnos')" style="margin-top: 0;">
       <div class="img-container">
         <img
@@ -36,13 +35,9 @@ import { useFilterStore } from "src/stores/filter-store";
 import { useDataApiStore } from "src/stores/data-api-store";
 import { useRouter } from "vue-router";
 import { useUserStore } from "src/stores/user-store";
-import UserNavbar from "src/components/UserNavbar.vue";
 
 export default defineComponent({
   name: "vinculacion-inicio",
-  components: {
-    UserNavbar,
-  },
   setup() {
     const dataApiStore = useDataApiStore();
     const filterStore = useFilterStore();

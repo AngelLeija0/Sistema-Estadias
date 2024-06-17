@@ -1,6 +1,5 @@
 <template>
-  <UserNavbar></UserNavbar>
-  <div class="container text-center">
+  <div class="container text-center" style="padding-top: 100px;">
     <div class="small-box" @click="redirectToSection('alumnos')" style="margin-top: 0;">
       <div class="img-container">
         <img
@@ -27,19 +26,6 @@
         <strong>Asesores</strong>
       </p>
     </div>
-    <div class="small-box" @click="redirectToSection('administracion')" style="margin-top: 0;">
-      <div class="img-container">
-        <img
-          src="../../assets/admin/card-vinculacion.jpg"
-          alt="Imagen 2"
-          class="img-fluid"
-          @load="adjustContainerPosition"
-        />
-      </div>
-      <p class="box-text">
-        <strong>Administración</strong>
-      </p>
-    </div>
   </div>
 </template>
 
@@ -49,13 +35,10 @@ import { useFilterStore } from "src/stores/filter-store";
 import { useDataApiStore } from "src/stores/data-api-store";
 import { useRouter } from "vue-router";
 import { useUserStore } from "src/stores/user-store";
-import UserNavbar from "src/components/UserNavbar.vue";
 
 export default defineComponent({
   name: "admin-inicio",
-  components: {
-    UserNavbar,
-  },
+
   setup() {
     const dataApiStore = useDataApiStore();
     const filterStore = useFilterStore();
@@ -89,6 +72,7 @@ export default defineComponent({
       typeUser === "asesor" ? type = "asesor" : '';
       typeUser === "vinculacion" ? type = "vinculacion" : '';
       typeUser === "administrador" ? type = "admin" : '';
+      typeUser === "superAdministrador" ? type = "superAdmin" : '';
       const nameSection = `${type}-${section}`;
       console.log(nameSection);
       this.$router.push({ name: nameSection });

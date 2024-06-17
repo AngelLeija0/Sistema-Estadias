@@ -1,6 +1,5 @@
 <template>
-  <UserNavbar></UserNavbar>
-  <div class="container-fluid">
+  <div class="container-fluid" :style="{ paddingTop: isMobile ? '20px' : '' }">
     <q-card-actions
       style="display: flex; justify-content: start"
     >
@@ -14,7 +13,7 @@
       ></q-btn>
     </q-card-actions>
   </div>
-  <div class="container text-center">
+  <div class="container text-center" style="padding-top: 25px;">
     <div class="small-box" @click="redirectToSection('anteproyecto')">
       <div class="img-container">
         <img
@@ -41,20 +40,25 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import { useRouter } from "vue-router";
-import UserNavbar from "src/components/UserNavbar.vue";
 
 export default defineComponent({
   name: "alumno-seguimientoAcademico",
-  components: {
-    UserNavbar,
-  },
   setup() {
     const router = useRouter();
 
+    const isMobile = ref(isUsingMobile());
+
+    function isUsingMobile() {
+      const validation1 = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      const finalValidation = validation1;
+      return finalValidation;
+    }
+
     return {
-      router
+      router,
+      isMobile,
     }
   },
   methods: {
@@ -88,7 +92,7 @@ export default defineComponent({
   height: 500px;
   border: 1px solid #ccc;
   border-radius: 10px;
-  margin: 80px;
+  margin: 45px;
   margin-top: 0px;
   margin-bottom: 40px;
   background-color: #fff;

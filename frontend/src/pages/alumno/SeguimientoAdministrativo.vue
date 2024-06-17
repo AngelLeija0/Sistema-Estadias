@@ -1,806 +1,258 @@
 <template>
-  <UserNavbar></UserNavbar>
-  <div class="container-fluid">
+  <div class="container-fluid" :style="{ paddingTop: isMobile ? '20px' : '' }">
     <q-card-actions style="display: flex; justify-content: start">
-      <q-btn
-        flat
-        color="black"
-        label="Regresar"
-        icon="arrow_left"
-        style="margin: 3px; text-transform: capitalize; font-size: 16px"
-        @click="toBack"
-      ></q-btn>
+      <q-btn flat color="black" label="Regresar" icon="arrow_left"
+        style="margin: 3px; text-transform: capitalize; font-size: 16px" @click="toBack"></q-btn>
     </q-card-actions>
   </div>
   <div v-if="pageLoaded">
-    <div class="container-fluid">
-      <div
-        style="
+    <div v-if="isMobile">
+      <div class="container-fluid">
+        <div style="
           display: flex;
           justify-content: space-between;
           align-items: center;
-        "
-      >
-        <h1
-          style="
+        ">
+          <h1 style="
             font-size: 35px;
             padding-left: 60px;
             font-weight: bold;
             margin-right: 20px;
             margin-top: 5px;
-          "
-        >
-          Seguimiento administrativo
-        </h1>
-        <div
-          :style="{
-            backgroundColor: phaseStatus.bgColor,
-            padding: '10px',
-            width: '300px',
-            height: '50px',
-            marginLeft: 'auto',
-            marginRight: '200px',
-            borderRadius: '10px',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }"
-        >
-          <p style="font-size: 20px; color: white; margin: 0">
-            {{ phaseStatus.label }}
-          </p>
-          <q-btn
-            v-if="phaseStatus.label == 'Rechazada'"
-            flat
-            color="white"
-            icon="more_horiz"
-            size="12px"
-            style="margin-top: 0"
-            @click="dialogPhaseState = true"
-          ></q-btn>
-          <q-dialog v-model="dialogPhaseState">
-            <q-card
-              class="q-pt-md q-pl-md q-pr-md"
-              style="width: 500px; max-width: 60vw; height: 45vh"
-            >
-              <div class="row q-ma-md">
-                <div class="col-12" style="display: flex; justify-content: end">
-                  <q-card-actions>
-                    <q-btn
-                      align="right"
-                      flat
-                      color="red"
-                      icon="close"
-                      v-close-popup
-                      style="
-                        margin: 3px;
-                        padding-left: 25px;
-                        padding-right: 25px;
-                        text-transform: capitalize;
-                        font-size: 16px;
-                      "
-                    />
-                  </q-card-actions>
-                </div>
-                <div class="col-12 q-pa-md">
-                  <div
-                    class="text-h6 text-center"
-                    style="font-size: 22px; font-weight: 500"
-                  >
-                    Estado de etapa {{ currentSection.slice(-1) }}
-                  </div>
-                </div>
-                <div class="col-12 q-pa-md q-mt-md">
-                  <p style="font-size: 14px">
-                    <span style="font-weight: 500">Estado: </span
-                    >{{ phaseStatus.label }}
-                  </p>
-                  <p style="font-size: 14px">
-                    <span style="font-weight: 500">Fecha de revisión: </span
-                    >{{ phaseStatus.date }}
-                  </p>
-                  <p style="font-size: 14px">
-                    <span style="font-weight: 500">Motivo: </span
-                    >{{ phaseStatus.motive }}
-                  </p>
-                </div>
+            line-height: normal;
+          ">
+            Seguimiento administrativo
+          </h1>
+        </div>
+      </div>
+      <div class="container-fluid" style="padding-left: 60px; padding-right: 60px;">
+        <div class="row q-pb-md" style="justify-content: space-between;">
+          <div class="col-lg-5 col-md-6 col-11 q-ma-sm q-pt-md row" v-for="(document, i) in documents" :key="i + 1"
+            style="display: flex; align-items: center;">
+            <div class="col-12" style="background: lightgray; padding: 7px 10px; border-radius: 5px;">
+              <p style="margin: 0; height: 100%; line-height: normal;">{{ document.label }}</p>
+            </div>
+            <div class="col-6 q-pr-sm">
+              <input :id="'pdf-upload-' + document.name" :type="document.state !== 'Aceptada' ? 'file' : 'button'" accept=".pdf" role="button"
+                @change="uploadDocuments(document.name, $event)" style="display: none;" />
+              <label :for="'pdf-upload-' + document.name" class="custom-upload-button"
+                style="padding: 7px 15px; width: 100%; justify-content: center; display: flex; align-items: center;">
+                <span class="button-label">Subir</span>
+                <q-icon name="file_upload" class="q-icon-sm q-pl-sm"></q-icon>
+              </label>
+            </div>
+            <div class="col-6 q-pl-sm" :style="{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              color: 'white',
+              background: definePhaseColor(document.state),
+              padding: '7px 10px',
+              borderRadius: '5px'
+            }">
+              <p style="margin: 0; height: 100%;">{{ document.state }}</p>
+              <q-btn v-if="document.state === 'Rechazada'" flat color="white" icon="more_horiz" size="10px"
+                style="margin: 0 4px;" @click="setActualDocument(document.name), dialogPhaseState = true"></q-btn>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <q-dialog v-model="dialogPhaseState">
+        <q-card class="q-pt-md q-pl-md q-pr-md" style="width: 500px; max-width: 60vw; height: 45vh">
+          <div class="row q-ma-sm">
+            <div class="col-12" style="display: flex; justify-content: end">
+              <q-card-actions>
+                <q-btn align="right" flat color="red" icon="close" v-close-popup style="
+                          margin: 3px;
+                          padding-left: 25px;
+                          padding-right: 25px;
+                          text-transform: capitalize;
+                          font-size: 16px;
+                        " />
+              </q-card-actions>
+            </div>
+            <div class="col-12 q-pa-md">
+              <div class="text-h6 text-center" style="font-size: 22px; font-weight: 500">
+                Estado de etapa {{ actualDocument.label }}
               </div>
+            </div>
+            <div class="col-12 q-pa-md q-mt-md">
+              <p style="font-size: 14px">
+                <span style="font-weight: 500">Estado: </span>{{ actualDocument.state.name }}
+              </p>
+              <p style="font-size: 14px">
+                <span style="font-weight: 500">Fecha de revisión: </span>{{ actualDocument.state.date }}
+              </p>
+              <p style="font-size: 14px">
+                <span style="font-weight: 500">Motivo: </span>{{ actualDocument.state.motive }}
+              </p>
+            </div>
+          </div>
+        </q-card>
+      </q-dialog>
+
+      <q-dialog v-model="uploadingFiles" persistent>
+        <q-card class="q-pa-lg" style="width: 300px">
+          <q-card-section>
+            <div class="text-h6 text-center">Subiendo documentos</div>
+          </q-card-section>
+          <q-card-section class="q-pt-none text-center">
+            <q-circular-progress indeterminate rounded size="50px" color="blue" class="q-ma-md" />
+          </q-card-section>
+        </q-card>
+      </q-dialog>
+
+      <q-dialog v-model="uploadedFiles" persistent>
+        <q-card class="q-pa-lg" style="width: 300px">
+          <q-card-section>
+            <div class="text-h6 text-center">
+              Documento subido correctamente
+            </div>
+          </q-card-section>
+          <q-card-section class="q-pt-none text-center">
+            <q-icon name="check_circle" color="green" size="50px" />
+          </q-card-section>
+        </q-card>
+      </q-dialog>
+
+      <q-dialog v-model="errorUploadingFiles" persistent>
+        <q-card class="q-pa-lg" style="width: 300px">
+          <q-card-section>
+            <div class="text-h6 text-center">Ha ocurrido un error</div>
+          </q-card-section>
+          <q-card-section class="q-pt-none text-center">
+            <q-icon name="cancel" color="red" size="50px" />
+          </q-card-section>
+        </q-card>
+      </q-dialog>
+    </div>
+    <div v-else>
+      <div class="container-fluid">
+        <div style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        ">
+          <h1 style="
+            font-size: 35px;
+            padding-left: 60px;
+            font-weight: bold;
+            margin-right: 20px;
+            margin-top: 5px;
+            margin-bottom: 7px;
+          ">
+            Seguimiento Administrativo
+          </h1>
+        </div>
+        <div style="padding: 15px 60px;">
+          <p>En esta sección podras adjuntar todos los documentos necesarios en el proceso de estadias. Oprime cada recuadro para subir un archivo. Los documentos tienen que ser en formato PDF y pesar menos de 5 MB</p>
+        </div>
+      </div>
+      <div class="container-fluid" style="padding-left: 60px; padding-right: 60px;">
+        <div class="row" style="justify-content: space-between;">
+          <div class="col-2 q-ma-sm row" v-for="(document, i) in documents" :key="i + 1"
+            style="display: flex; align-items: center;">
+            <q-card class="my-card" style="width: 100%; color: white; border: 1px solid #0000001c;">
+              <q-card-section
+                style="height: 80px; -background: #e9e9e9; display: flex; justify-content: center; align-items: center; margin: 0; padding: 0;">
+                <input :id="'pdf-upload-' + document.name" :type="document.state !== 'Aceptada' ? 'file' : 'button'" accept=".pdf" role="button"
+                  @change="uploadDocuments(document.name, $event)" style="display: none;" />
+                <label :for="'pdf-upload-' + document.name" class="document-label">
+                  <q-icon :name="document.icon" size="45px" color="dark"></q-icon>
+                </label>
+              </q-card-section>
+              <q-card-actions flat vertical style="padding: 0">
+                <div :style="{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  color: 'white',
+                  background: definePhaseColor(document.state),
+                  padding: '7px 10px',
+                  borderRadius: '0 0 4px 4px'
+                }">
+                  <p style="margin: 0; height: 100%;">{{ document.state }}</p>
+                  <q-btn v-if="document.state === 'Rechazada'" flat color="white" icon="more_horiz" size="10px"
+                    style="margin: 0 4px;" @click="setActualDocument(document.name), dialogPhaseState = true"></q-btn>
+                </div>
+              </q-card-actions>
             </q-card>
-          </q-dialog>
-        </div>
-      </div>
-    </div>
-    <div
-      class="container-fluid"
-      v-show="showSections && !applicationFinish"
-      style="padding-left: 60px"
-    >
-      <div class="row">
-        <div
-          class="col"
-          :class="{ 'locked-section': currentSection !== 'etapa1' }"
-        >
-          <h2
-            :class="{ 'active-section': currentSection === 'etapa1' }"
-            class="section-title"
-          >
-            Etapa 1
-            <div
-              class="progress-bar"
-              :style="{
-                width:
-                  currentSection === 'etapa1' ||
-                  currentSection === 'etapa2' ||
-                  currentSection === 'etapa3' ||
-                  currentSection === 'etapa4' ||
-                  currentSection === 'etapa5'
-                    ? '100%'
-                    : '0',
-              }"
-            ></div>
-          </h2>
-        </div>
-        <div
-          class="col"
-          :class="{ 'locked-section': currentSection !== 'etapa2' }"
-        >
-          <h2
-            :class="{ 'active-section': currentSection === 'etapa2' }"
-            class="section-title"
-          >
-            Etapa 2
-            <div
-              class="progress-bar"
-              :style="{
-                width:
-                  currentSection === 'etapa2' ||
-                  currentSection === 'etapa3' ||
-                  currentSection === 'etapa4' ||
-                  currentSection === 'etapa5'
-                    ? '100%'
-                    : '0',
-              }"
-            ></div>
-          </h2>
-        </div>
-        <div
-          class="col"
-          :class="{ 'locked-section': currentSection !== 'etapa3' }"
-        >
-          <h2
-            :class="{ 'active-section': currentSection === 'etapa3' }"
-            class="section-title"
-          >
-            Etapa 3
-            <div
-              class="progress-bar"
-              :style="{
-                width:
-                  currentSection === 'etapa3' ||
-                  currentSection === 'etapa4' ||
-                  currentSection === 'etapa5'
-                    ? '100%'
-                    : '0',
-              }"
-            ></div>
-          </h2>
-        </div>
-        <div
-          class="col"
-          :class="{ 'locked-section': currentSection !== 'etapa4' }"
-        >
-          <h2
-            :class="{ 'active-section': currentSection === 'etapa4' }"
-            class="section-title"
-          >
-            Etapa 4
-            <div
-              class="progress-bar"
-              :style="{
-                width:
-                  currentSection === 'etapa4' || currentSection === 'etapa5'
-                    ? '100%'
-                    : '0',
-              }"
-            ></div>
-          </h2>
-        </div>
-        <div
-          class="col"
-          :class="{ 'locked-section': currentSection !== 'etapa5' }"
-        >
-          <h2
-            :class="{ 'active-section': currentSection === 'etapa5' }"
-            class="section-title"
-          >
-            Etapa 5
-            <div
-              class="progress-bar"
-              :style="{ width: currentSection === 'etapa5' ? '100%' : '0' }"
-            ></div>
-          </h2>
-        </div>
-        <!-- Repetir el código para las demás etapas si es necesario -->
-      </div>
-    </div>
-    <div class="container-fluid text-center">
-      <p
-        v-if="!applicationStarted && !showSections"
-        style="margin-top: 100px; font-size: 20px"
-      >
-        Aun no se ha realizado ninguna etapa
-      </p>
-      <q-btn
-        color="black"
-        label="Comenzar solicitud"
-        class="btn btn-primary"
-        @click="startApplication"
-        v-if="!applicationStarted"
-        style="
-          color: white;
-          border-radius: 20px;
-          width: 300px;
-          height: 100px;
-          font-size: 22px;
-        "
-      />
-    </div>
-
-    <q-dialog v-model="uploadingFiles" persistent>
-      <q-card class="q-pa-lg" style="width: 300px">
-        <q-card-section>
-          <div class="text-h6 text-center">Subiendo documentos</div>
-        </q-card-section>
-        <q-card-section class="q-pt-none text-center">
-          <q-circular-progress
-            indeterminate
-            rounded
-            size="50px"
-            color="blue"
-            class="q-ma-md"
-          />
-        </q-card-section>
-      </q-card>
-    </q-dialog>
-
-    <q-dialog v-model="uploadedFiles" persistent>
-      <q-card class="q-pa-lg" style="width: 300px">
-        <q-card-section>
-          <div class="text-h6 text-center">
-            Documentos subidos correctamente
-          </div>
-        </q-card-section>
-        <q-card-section class="q-pt-none text-center">
-          <q-icon name="check_circle" color="green" size="50px" />
-        </q-card-section>
-      </q-card>
-    </q-dialog>
-
-    <q-dialog v-model="errorUploadingFiles" persistent>
-      <q-card class="q-pa-lg" style="width: 300px">
-        <q-card-section>
-          <div class="text-h6 text-center">Ha ocurrido un error</div>
-        </q-card-section>
-        <q-card-section class="q-pt-none text-center">
-          <q-icon name="cancel" color="red" size="50px" />
-        </q-card-section>
-      </q-card>
-    </q-dialog>
-
-    <div class="container-fluid" style="padding-left: 60px">
-      <div v-if="currentSection === 'etapa1'">
-        <div
-          style="
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-          "
-        >
-          <p style="font-size: 20px">
-            En esta etapa deberás subir o escanear tu Curriculum Vitae,
-            <br />
-            seguro facultativo y carta de presentación en formato PDF.
-          </p>
-        </div>
-        <div class="container-group">
-          <!-- Etapa 1 -->
-          <div class="container">
-            <p class="document-label">Curriculum Vitae</p>
-
-            <div class="icon-container">
-              <label for="pdf-upload-cv">
-                <img class="pdf-icon" src="../../assets/Iconopdg.png" alt="" />
-              </label>
-              <input
-                id="pdf-upload-cv"
-                type="file"
-                accept=".pdf"
-                style="display: none"
-                @change="handlePDFUpload('CurriculumVitae', $event)"
-              />
+            <div class="text-subtitle1 text-center col-12" style="margin: 0; opacity: 0.6; height: 56px;">
+              {{ document.label }}
             </div>
-            <p class="file-name" v-if="selectedCVFileName">
-              {{ selectedCVFileName }}
-            </p>
-          </div>
-
-          <!-- Sección Seguro facultativo -->
-          <div class="container">
-            <p class="document-label">Seguro facultativo</p>
-            <div class="icon-container">
-              <label for="pdf-upload-seguro">
-                <img class="pdf-icon" src="../../assets/Iconopdg.png" alt="" />
-              </label>
-              <input
-                id="pdf-upload-seguro"
-                type="file"
-                accept=".pdf"
-                style="display: none"
-                @change="handlePDFUpload('Segurofacultativo', $event)"
-              />
-            </div>
-            <p class="file-name" v-if="selectedSeguroFileName">
-              {{ selectedSeguroFileName }}
-            </p>
-          </div>
-
-          <!-- Sección Carta presentación -->
-          <div class="container">
-            <p class="document-label">Carta presentación</p>
-            <div class="icon-container">
-              <label for="pdf-upload-carta">
-                <img class="pdf-icon" src="../../assets/Iconopdg.png" alt="" />
-              </label>
-              <input
-                id="pdf-upload-carta"
-                type="file"
-                accept=".pdf"
-                style="display: none"
-                @change="handlePDFUpload('Cartapresentacion', $event)"
-              />
-            </div>
-            <p class="file-name" v-if="selectedCartaFileName">
-              {{ selectedCartaFileName }}
-            </p>
-          </div>
-        </div>
-        <div
-          style="
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-          "
-        >
-          <q-btn
-            color="black"
-            label="Guardar"
-            class="btn btn-primary"
-            style="
-              color: white;
-              border-radius: 20px;
-              width: 280px;
-              height: 30px;
-              font-size: 22px;
-            "
-            :disabled="etapa1IsValid && etapa1IsAcepted"
-            @click="uploadDocuments(1)"
-          />
-
-          <div style="float: right; margin-right: 160px">
-            <q-btn
-              color="black"
-              label="Siguiente"
-              class="btn btn-primary"
-              style="
-                color: white;
-                border-radius: 20px;
-                width: 160px;
-                height: 25px;
-                font-size: 20px;
-              "
-              :disabled="!etapa1IsValid || !etapa1IsAcepted"
-              @click="goToNextSection"
-            />
           </div>
         </div>
       </div>
 
-      <div v-if="currentSection === 'etapa2'">
-        <div
-          style="
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-          "
-        >
-          <p style="font-size: 20px">
-            En esta etapa deberas subir o escanear.
-            <br />
-            tu carta aceptación en formato PDF.
-          </p>
-        </div>
-
-        <div class="container-group">
-          <!-- Sección Curriculum Vitae -->
-          <div class="container">
-            <p class="document-label">Carta aceptación</p>
-            <div class="icon-container">
-              <label for="pdf-upload-cv">
-                <img class="pdf-icon" src="../../assets/Iconopdg.png" alt="" />
-              </label>
-              <input
-                id="pdf-upload-cv"
-                type="file"
-                accept=".pdf"
-                style="display: none"
-                @change="handlePDFUpload('Cartaaceptacion', $event)"
-              />
+      <q-dialog v-model="dialogPhaseState">
+        <q-card class="q-pt-md q-pl-md q-pr-md" style="width: 500px; max-width: 60vw; height: 45vh">
+          <div class="row q-ma-sm">
+            <div class="col-12" style="display: flex; justify-content: end">
+              <q-card-actions>
+                <q-btn align="right" flat color="red" icon="close" v-close-popup style="
+                  margin: 3px;
+                  padding-left: 25px;
+                  padding-right: 25px;
+                  text-transform: capitalize;
+                  font-size: 16px;
+                " />
+              </q-card-actions>
             </div>
-            <p class="file-name" v-if="selectedAceptacionFileName">
-              {{ selectedAceptacionFileName }}
-            </p>
-          </div>
-        </div>
-
-        <div
-          style="
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-          "
-        >
-          <q-btn
-            color="black"
-            label="Guardar"
-            class="btn btn-primary"
-            style="
-              color: white;
-              border-radius: 20px;
-              width: 280px;
-              height: 30px;
-              font-size: 22px;
-            "
-            :disabled="etapa2IsValid && etapa2IsAcepted"
-            @click="uploadDocuments(2)"
-          />
-
-          <div style="float: right; margin-right: 160px">
-            <q-btn
-              color="black"
-              label="Regresar"
-              class="btn btn-primary"
-              style="
-                color: white;
-                border-radius: 20px;
-                width: 160px;
-                height: 25px;
-                font-size: 20px;
-              "
-              @click="goToPhase1"
-            />
-            <q-btn
-              color="black"
-              label="Siguiente"
-              class="btn btn-primary"
-              style="
-                color: white;
-                border-radius: 20px;
-                width: 160px;
-                height: 25px;
-                font-size: 20px;
-              "
-              :disabled="!etapa2InfoIsValid || !etapa2IsAcepted"
-              @click="goToNextSection"
-            />
-          </div>
-        </div>
-      </div>
-      <div v-if="currentSection === 'etapa3'">
-        <div
-          style="
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-          "
-        >
-          <p style="font-size: 20px">
-            En esta etapa deberas subir o escanear tu reporte de
-            <br />
-            proyecto en formato PDF.
-          </p>
-        </div>
-
-        <div class="container-group">
-          <!-- Sección Curriculum Vitae -->
-          <div class="container">
-            <p class="document-label">Reporte de proyecto</p>
-            <div class="icon-container">
-              <label for="pdf-upload-cv">
-                <img class="pdf-icon" src="../../assets/Iconopdg.png" alt="" />
-              </label>
-              <input
-                id="pdf-upload-cv"
-                type="file"
-                accept=".pdf"
-                style="display: none"
-                @change="handlePDFUpload('Reporteproyecto', $event)"
-              />
+            <div class="col-12 q-pa-md">
+              <div class="text-h6 text-center" style="font-size: 22px; font-weight: 500">
+                Estado de etapa {{ actualDocument.label }}
+              </div>
             </div>
-            <p class="file-name" v-if="selectedReporteFileName">
-              {{ selectedReporteFileName }}
-            </p>
-          </div>
-        </div>
-        <div
-          style="
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-          "
-        >
-          <q-btn
-            color="black"
-            label="Guardar"
-            class="btn btn-primary"
-            style="
-              color: white;
-              border-radius: 20px;
-              width: 280px;
-              height: 30px;
-              font-size: 22px;
-            "
-            :disabled="etapa3IsValid && etapa3IsAcepted"
-            @click="uploadDocuments(3)"
-          />
-
-          <div style="float: right; margin-right: 160px">
-            <q-btn
-              color="black"
-              label="Regresar"
-              class="btn btn-primary"
-              style="
-                color: white;
-                border-radius: 20px;
-                width: 160px;
-                height: 25px;
-                font-size: 20px;
-              "
-              @click="goToPhase2"
-            />
-            <q-btn
-              color="black"
-              label="Siguiente"
-              class="btn btn-primary"
-              style="
-                color: white;
-                border-radius: 20px;
-                width: 160px;
-                height: 25px;
-                font-size: 20px;
-              "
-              :disabled="!etapa3InfoIsValid || !etapa3IsAcepted"
-              @click="goToNextSection"
-            />
-          </div>
-        </div>
-      </div>
-      <div v-if="currentSection === 'etapa4'">
-        <div
-          style="
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-          "
-        >
-          <p style="font-size: 20px">
-            En esta etapa deberas subir o escanear tu rubrica de
-            <br />
-            evaluación, dictamen y protesta de ley en formato PDF.
-          </p>
-        </div>
-        <div class="container-group">
-          <!-- Sección Curriculum Vitae -->
-          <div class="container">
-            <p class="document-label">Rubrica de evaluación</p>
-            <div class="icon-container">
-              <label for="pdf-upload-cv">
-                <img class="pdf-icon" src="../../assets/Iconopdg.png" alt="" />
-              </label>
-              <input
-                id="pdf-upload-cv"
-                type="file"
-                accept=".pdf"
-                style="display: none"
-                @change="handlePDFUpload('Rubrica', $event)"
-              />
+            <div class="col-12 q-pa-md q-mt-md">
+              <p style="font-size: 14px">
+                <span style="font-weight: 500">Estado: </span>{{ actualDocument.state.name }}
+              </p>
+              <p style="font-size: 14px">
+                <span style="font-weight: 500">Fecha de revisión: </span>{{ actualDocument.state.date }}
+              </p>
+              <p style="font-size: 14px">
+                <span style="font-weight: 500">Motivo: </span>{{ actualDocument.state.motive }}
+              </p>
             </div>
-            <p class="file-name" v-if="selectedRubricaFileName">
-              {{ selectedRubricaFileName }}
-            </p>
           </div>
+        </q-card>
+      </q-dialog>
 
-          <!-- Sección Seguro facultativo -->
-          <div class="container">
-            <p class="document-label">Dictamen</p>
-            <div class="icon-container">
-              <label for="pdf-upload-seguro">
-                <img class="pdf-icon" src="../../assets/Iconopdg.png" alt="" />
-              </label>
-              <input
-                id="pdf-upload-seguro"
-                type="file"
-                accept=".pdf"
-                style="display: none"
-                @change="handlePDFUpload('Dictamen', $event)"
-              />
+      <q-dialog v-model="uploadingFiles" persistent>
+        <q-card class="q-pa-lg" style="width: 300px">
+          <q-card-section>
+            <div class="text-h6 text-center">Subiendo documentos</div>
+          </q-card-section>
+          <q-card-section class="q-pt-none text-center">
+            <q-circular-progress indeterminate rounded size="50px" color="blue" class="q-ma-md" />
+          </q-card-section>
+        </q-card>
+      </q-dialog>
+
+      <q-dialog v-model="uploadedFiles" persistent>
+        <q-card class="q-pa-lg" style="width: 300px">
+          <q-card-section>
+            <div class="text-h6 text-center">
+              Documentos subidos correctamente
             </div>
-            <p class="file-name" v-if="selectedDictamenFileName">
-              {{ selectedDictamenFileName }}
-            </p>
-          </div>
+          </q-card-section>
+          <q-card-section class="q-pt-none text-center">
+            <q-icon name="check_circle" color="green" size="50px" />
+          </q-card-section>
+        </q-card>
+      </q-dialog>
 
-          <!-- Sección Carta presentación -->
-          <div class="container">
-            <p class="document-label">Protesta de ley</p>
-            <div class="icon-container">
-              <label for="pdf-upload-carta">
-                <img class="pdf-icon" src="../../assets/Iconopdg.png" alt="" />
-              </label>
-              <input
-                id="pdf-upload-carta"
-                type="file"
-                accept=".pdf"
-                style="display: none"
-                @change="handlePDFUpload('Protesta', $event)"
-              />
-            </div>
-            <p class="file-name" v-if="selectedProtestaFileName">
-              {{ selectedProtestaFileName }}
-            </p>
-          </div>
-        </div>
-        <div
-          style="
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-          "
-        >
-          <q-btn
-            color="black"
-            label="Guardar"
-            class="btn btn-primary"
-            style="
-              color: white;
-              border-radius: 20px;
-              width: 280px;
-              height: 30px;
-              font-size: 22px;
-            "
-            :disabled="etapa4IsValid && etapa4IsAcepted"
-            @click="uploadDocuments(4)"
-          />
-
-          <div style="float: right; margin-right: 160px">
-            <q-btn
-              color="black"
-              label="Regresar"
-              class="btn btn-primary"
-              style="
-                color: white;
-                border-radius: 20px;
-                width: 160px;
-                height: 25px;
-                font-size: 20px;
-              "
-              @click="goToPhase3"
-            />
-            <q-btn
-              color="black"
-              label="Siguiente"
-              class="btn btn-primary"
-              style="
-                color: white;
-                border-radius: 20px;
-                width: 160px;
-                height: 25px;
-                font-size: 20px;
-              "
-              :disabled="!etapa4InfoIsValid || !etapa4IsAcepted"
-              @click="goToNextSection"
-            />
-          </div>
-        </div>
-      </div>
-
-      <div v-if="currentSection === 'etapa5'">
-        <div
-          style="
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-          "
-        >
-          <p style="font-size: 20px">
-            En esta etapa deberas subir o escanear tu carta de
-            <br />
-            terminación en formato PDF.
-          </p>
-        </div>
-
-        <div class="container-group">
-          <div class="container">
-            <p class="document-label">Carta de terminación</p>
-            <div class="icon-container">
-              <label for="pdf-upload-cv">
-                <img class="pdf-icon" src="../../assets/Iconopdg.png" alt="" />
-              </label>
-              <input
-                id="pdf-upload-cv"
-                type="file"
-                accept=".pdf"
-                style="display: none"
-                @change="handlePDFUpload('Terminacion', $event)"
-              />
-            </div>
-            <p class="file-name" v-if="selectedTerminacionFileName">
-              {{ selectedTerminacionFileName }}
-            </p>
-          </div>
-        </div>
-        <div
-          style="
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-          "
-        >
-          <q-btn
-            color="black"
-            label="Guardar"
-            class="btn btn-primary"
-            style="
-              color: white;
-              border-radius: 20px;
-              width: 280px;
-              height: 30px;
-              font-size: 22px;
-            "
-            :disabled="etapa5IsValid && etapa5IsAcepted"
-            @click="uploadDocuments(5)"
-          />
-
-          <div style="float: right; margin-right: 160px">
-            <q-btn
-              color="black"
-              label="Regresar"
-              class="btn btn-primary"
-              style="
-                color: white;
-                border-radius: 20px;
-                width: 160px;
-                height: 25px;
-                font-size: 20px;
-              "
-              @click="goToPhase4"
-            />
-            <q-btn
-              color="black"
-              label="Finalizar"
-              class="btn btn-primary"
-              style="
-                color: white;
-                border-radius: 20px;
-                width: 160px;
-                height: 25px;
-                font-size: 20px;
-              "
-              :disabled="!etapa5InfoIsValid || !etapa5IsAcepted"
-              @click="goToNextSection"
-            />
-          </div>
-        </div>
-      </div>
+      <q-dialog v-model="errorUploadingFiles" persistent>
+        <q-card class="q-pa-lg" style="width: 300px">
+          <q-card-section>
+            <div class="text-h6 text-center">Ha ocurrido un error</div>
+          </q-card-section>
+          <q-card-section class="q-pt-none text-center">
+            <q-icon name="cancel" color="red" size="50px" />
+          </q-card-section>
+        </q-card>
+      </q-dialog>
     </div>
   </div>
   <div v-else>
@@ -809,21 +261,30 @@
 </template>
 
 <script>
+/* eslint-disable */
+
 import { defineComponent, ref, onMounted, getCurrentInstance } from "vue";
 import { useRouter } from "vue-router";
 import { api } from "src/boot/axios";
 import { useUserStore } from "src/stores/user-store";
 import { format } from "date-fns";
-import UserNavbar from "src/components/UserNavbar.vue";
 import LoadingPage from "src/components/LoadingPage.vue";
 
 export default defineComponent({
   name: "alumno-seguimientoAdministrativo",
   components: {
-    UserNavbar,
     LoadingPage,
   },
   setup() {
+
+    const isMobile = ref(isUsingMobile());
+
+    function isUsingMobile() {
+      const validation1 = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      const finalValidation = validation1;
+      return finalValidation;
+    }
+
     const { ctx } = getCurrentInstance();
     const router = useRouter();
     const userStore = useUserStore();
@@ -837,6 +298,99 @@ export default defineComponent({
     const uploadedFiles = ref(false);
     const errorUploadingFiles = ref(false);
 
+    const documents = ref([
+      {
+        label: "Curriculum Vitae Español",
+        name: "cve",
+        icon: "description",
+        state: "Sin entregar",
+        motive: "",
+        date: "",
+      },
+      {
+        label: "Curriculum Vitae Inglés",
+        name: "cvi",
+        icon: "description",
+        state: "Sin entregar",
+        motive: "",
+        date: "",
+      },
+      {
+        label: "Carta Presentación",
+        name: "cpa",
+        icon: "mail",
+        state: "Sin entregar",
+        motive: "",
+        date: "",
+      },
+      {
+        label: "Carta Aceptación",
+        name: "caa",
+        icon: "mail",
+        state: "Sin entregar",
+        motive: "",
+        date: "",
+      },
+      {
+        label: "Constancia de Vigencia de Seguro Social",
+        name: "nss",
+        icon: "contact_page",
+        state: "Sin entregar",
+        motive: "",
+        date: "",
+      },
+      {
+        label: "F-PSE-DICA-17 Estadias en Sector Productivo",
+        name: "dictamen",
+        icon: "summarize",
+        state: "Sin entregar",
+        motive: "",
+        date: "",
+      },
+      {
+        label: "F-PSE-DICA-18 Protesta de ley",
+        name: "protesta",
+        icon: "gavel",
+        state: "Sin entregar",
+        motive: "",
+        date: "",
+      },
+      {
+        label: "F-PSE-DICA-19 Rubrica de Evaluación",
+        name: "rubrica",
+        icon: "assignment",
+        state: "Sin entregar",
+        motive: "",
+        date: "",
+      },
+      {
+        label: "Reporte Proyecto de Estadias",
+        name: "reporte",
+        icon: "article",
+        state: "Sin entregar",
+        motive: "",
+        date: "",
+      },
+      {
+        label: "Carta Terminación Proyecto",
+        name: "ctp",
+        icon: "mail",
+        state: "Sin entregar",
+        motive: "",
+        date: "",
+      },
+    ]);
+
+    const actualDocument = ref({
+      label: "",
+      name: "",
+      state: {
+        name: "",
+        motive: "",
+        date: "",
+      },
+    });
+
     const allPhasesData = ref();
     const phaseStatus = ref({
       label: "",
@@ -845,191 +399,53 @@ export default defineComponent({
       bgColor: "",
     });
 
-    const etapa1IsAcepted = ref(false);
-    const etapa2IsAcepted = ref(false);
-    const etapa3IsAcepted = ref(false);
-    const etapa4IsAcepted = ref(false);
-    const etapa5IsAcepted = ref(false);
-
-    const etapa1IsValid = ref(false);
-    const etapa2IsValid = ref(false);
-    const etapa3IsValid = ref(false);
-    const etapa4IsValid = ref(false);
-    const etapa5IsValid = ref(false);
-
-    const selectedCVFileName = ref("X");
-    const selectedSeguroFileName = ref("X");
-    const selectedCartaFileName = ref("X");
-    const selectedAceptacionFileName = ref("X");
-    const selectedReporteFileName = ref("X");
-    const selectedRubricaFileName = ref("X");
-    const selectedDictamenFileName = ref("X");
-    const selectedProtestaFileName = ref("X");
-    const selectedTerminacionFileName = ref("X");
-
     const documentsToSend = ref([]);
 
-    function loadPhases() {
-      console.log("Loading phases ...");
+    function loadDocuments() {
+      console.log("Loading documents ...");
       api
-        .post("http://localhost:3000/alumno/documentos", {
+        .post("./alumno/documentos", {
           idAlumno: idStudent,
         })
         .then((res) => {
           console.log(res.data);
-          allPhasesData.value = res.data;
           if (res.data === "No se encontraron documentos" || res.data === "") {
-            phaseStatus.value.label = "Sin comenzar";
-            phaseStatus.value.bgColor = "#FFC107";
-            phaseStatus.value.date = "";
-            phaseStatus.value.motive = "";
-            pageLoaded.value = true;
-            return;
+            return pageLoaded.value = true;
           }
 
-          const phasesData = res.data.etapas;
-
-          Object.keys(phasesData).map((key) => {
-            let isAccepted;
-            phasesData[key].estado === "Aceptada"
-              ? (isAccepted = true)
-              : (isAccepted = false);
-            key === "1" ? (etapa1IsAcepted.value = isAccepted) : "";
-            key === "2" ? (etapa2IsAcepted.value = isAccepted) : "";
-            key === "3" ? (etapa3IsAcepted.value = isAccepted) : "";
-            key === "4" ? (etapa4IsAcepted.value = isAccepted) : "";
-            key === "5" ? (etapa5IsAcepted.value = isAccepted) : "";
-          });
-
-          console.log({
-            "Etapa 1": etapa1IsAcepted.value,
-            "Etapa 2": etapa2IsAcepted.value,
-            "Etapa 3": etapa3IsAcepted.value,
-            "Etapa 4": etapa4IsAcepted.value,
-            "Etapa 5": etapa5IsAcepted.value,
-          });
-
-          loadPhaseState();
-
+          setDocuments(res.data);
           pageLoaded.value = true;
         })
         .catch((err) => console.error(err));
     }
 
-    function loadPhaseState(section = "") {
-      console.log("Loading phase state");
-      let actualSection = "";
-
-      if (section) {
-        if (section === 1) {
-          console.log(section);
-          phaseStatus.value.label = "Sin comenzar";
-          phaseStatus.value.motive = "";
-          phaseStatus.value.date = "";
-          phaseStatus.value.bgColor = definePhaseColor("Sin comenzar");
-          return;
-        } else {
-           console.log(section);
-           console.log(typeof section === "string");
-           if (section.toString().length > 1 && typeof section === "string"){
-            console.log("Entra");
-            actualSection = section.slice(-1);
-           } else {
-            console.log("Entra");
-            actualSection = section.toString();
-           }
-        }
-      } else {
-        console.log("Entra");
-        ctx.startApplication();
-        actualSection = ctx.getCurrentSection().slice(-1);
-      }
-      console.log(actualSection);
-
-      const phasesData = allPhasesData.value;
-      console.log(phasesData);
-
-      setFileName(actualSection, phasesData);
-      console.log(allPhasesData.value.etapas);
-      console.log(actualSection);
-      console.log(allPhasesData.value.etapas[actualSection]);
-      const dataActualSection = allPhasesData.value.etapas[actualSection];
-      console.log(dataActualSection);
-
-      if (dataActualSection === undefined) {
-        phaseStatus.value.label = "Sin comenzar";
-        phaseStatus.value.motive = "";
-        phaseStatus.value.date = "";
-        phaseStatus.value.bgColor = definePhaseColor("Sin comenzar");
-        return;
-      }
-
-      const sectionState = dataActualSection.estado;
-      const sectionMotive = dataActualSection.motivo;
-      const sectionDate = formatDate(dataActualSection.fecha);
-
-      phaseStatus.value.label = sectionState;
-      phaseStatus.value.motive = sectionMotive;
-      phaseStatus.value.date = sectionDate;
-      phaseStatus.value.bgColor = definePhaseColor(sectionState);
-    }
-
-    function setFileName(actualSection, phasesData) {
-      console.log(actualSection);
-      console.log(phasesData);
-
-      if (actualSection.toString() === '1') {
-        phasesData.curriculum && phasesData.curriculum.archivo
-          ? (selectedCVFileName.value = "✓")
-          : (selectedCVFileName.value = "X");
-        phasesData.nss && phasesData.nss.archivo
-          ? (selectedSeguroFileName.value = "✓")
-          : "X";
-        phasesData.cpa && phasesData.cpa.archivo
-          ? (selectedCartaFileName.value = "✓")
-          : "X";
-      } else if (actualSection.toString() === '2') {
-        phasesData.caa && phasesData.caa.archivo
-          ? (selectedAceptacionFileName.value = "✓")
-          : (selectedAceptacionFileName.value = "X");
-      } else if (actualSection.toString() === '3') {
-        phasesData.reporte && phasesData.reporte.archivo
-          ? (selectedReporteFileName.value = "✓")
-          : (selectedReporteFileName.value = "");
-      } else if (actualSection.toString() === '4') {
-        phasesData.rubrica && phasesData.rubrica.archivo
-          ? (selectedRubricaFileName.value = "✓")
-          : (selectedRubricaFileName.value = "X");
-        phasesData.dictamen && phasesData.dictamen.archivo
-          ? (selectedDictamenFileName.value = "✓")
-          : (selectedDictamenFileName.value = "X");
-        phasesData.protesta && phasesData.protesta.archivo
-          ? (selectedProtestaFileName.value = "✓")
-          : (selectedProtestaFileName.value = "X");
-      } else if (actualSection.toString() === '5') {
-        phasesData.cta && phasesData.cta.archivo
-          ? (selectedTerminacionFileName.value = "✓")
-          : (selectedTerminacionFileName.value = "X");
+    function setDocuments(response) {
+      try {
+        const documentsData = response;
+        Object.keys(documentsData).map((document) => {
+          const name = document.replace('.pdf', '');
+          const foundDocument = documents.value.findIndex(document => document.name === name);
+          console.log(documentsData[document]);
+          documents.value[foundDocument].state = documentsData[document].estado;
+          documents.value[foundDocument].motive = documentsData[document].motivo;
+          documents.value[foundDocument].date = documentsData[document].fecha;
+        });
+      } catch (error) {
+        console.error(error);
       }
     }
 
-    function searchAvailablePhases() {
-      console.log("Searching available phases ...");
-      api
-        .get("http://localhost:3000/alumno/etapas")
-        .then((res) => {
-          console.log(res.data);
-          const phases = res.data[0];
-          Object.keys(phases).map((key) => {
-            const phaseState = phases[key].estado;
-            key === "etapa1" ? (etapa1IsValid.value = phaseState) : "";
-            key === "etapa2" ? (etapa2IsValid.value = phaseState) : "";
-            key === "etapa3" ? (etapa3IsValid.value = phaseState) : "";
-            key === "etapa4" ? (etapa4IsValid.value = phaseState) : "";
-            key === "etapa5" ? (etapa5IsValid.value = phaseState) : "";
-          });
-        })
-        .catch((err) => console.error(err));
+    function setActualDocument(nameDocument) {
+      console.log(nameDocument);
+      const foundDocument = documents.value.find(document => document.name === nameDocument);
+      console.log(foundDocument);
+      actualDocument.value.label = foundDocument.label;
+      actualDocument.value.name = foundDocument.name;
+      actualDocument.value.path = foundDocument.path;
+      actualDocument.value.state.name = foundDocument.state;
+      actualDocument.value.state.motive = foundDocument.motive !== undefined ? foundDocument.motive : '';
+      actualDocument.value.state.date = foundDocument.date;
+      console.log(actualDocument.value.state);
     }
 
     function formatDate(dateString) {
@@ -1038,7 +454,7 @@ export default defineComponent({
     }
 
     function definePhaseColor(state) {
-      if (state === "Sin comenzar") {
+      if (state === "Sin entregar") {
         return "#FFC107";
       }
       if (state === "En revision" || state === "En revisión") {
@@ -1054,8 +470,7 @@ export default defineComponent({
     }
 
     onMounted(() => {
-      searchAvailablePhases();
-      loadPhases();
+      loadDocuments();
     });
 
     return {
@@ -1063,165 +478,49 @@ export default defineComponent({
       userStore,
       pageLoaded,
       phaseStatus,
-      searchAvailablePhases,
       documentsToSend,
-      etapa1IsValid,
-      etapa2IsValid,
-      etapa3IsValid,
-      etapa4IsValid,
-      etapa5IsValid,
-      etapa1IsAcepted,
-      etapa2IsAcepted,
-      etapa3IsAcepted,
-      etapa4IsAcepted,
-      etapa5IsAcepted,
+      loadDocuments,
       formatDate,
       uploadedFiles,
       uploadingFiles,
       errorUploadingFiles,
-      selectedCVFileName,
-      selectedSeguroFileName,
-      selectedCartaFileName,
-      selectedAceptacionFileName,
-      selectedReporteFileName,
-      selectedRubricaFileName,
-      selectedDictamenFileName,
-      selectedProtestaFileName,
-      selectedTerminacionFileName,
       dialogPhaseState,
       definePhaseColor,
-      loadPhaseState,
       allPhasesData,
-      setFileName,
+      isMobile,
+      documents,
+      setDocuments,
+      setActualDocument,
+      actualDocument,
     };
-  },
-  data() {
-    return {
-      filesUploaded: {
-        cv: false,
-        seguro: false,
-        carta: false,
-        aceptacion: false,
-        reporte: false,
-        rubrica: false,
-        dictamen: false,
-        protesta: false,
-        terminacion: false,
-      },
-      selectedCVFileName: "",
-      selectedSeguroFileName: "",
-      selectedCartaFileName: "",
-      selectedAceptacionFileName: "",
-      selectedReporteFileName: "",
-      selectedRubricaFileName: "",
-      selectedDictamenFileName: "",
-      selectedProtestaFileName: "",
-      selectedTerminacionFileName: "",
-      applicationStarted: false,
-      currentSection: "",
-      applicationFinish: false,
-      showSections: false,
-      etapa1Info: {
-        // Campos de la etapa 1
-      },
-      etapa2Info: {
-        // Campos de la etapa 2
-      },
-      etapa3Info: {
-        // Campos de la etapa 3
-      },
-      etapa4Info: {
-        // Campos de la etapa 4
-      },
-      etapa5Info: {
-        // Campos de la etapa 5
-      },
-      etapa6Info: {
-        // Campos de la etapa 6
-      },
-      etapa7Info: {
-        // Campos de la etapa 7
-      },
-      etapa8Info: {
-        // Campos de la etapa 8
-      },
-      etapa9Info: {
-        // Campos de la etapa 9
-      },
-      selectedFileName: "",
-      etapa1FilesUploaded: false,
-      etapa2FilesUploaded: false,
-      etapa3FilesUploaded: false,
-      etapa4FilesUploaded: false,
-      etapa5FilesUploaded: false,
-    };
-  },
-  computed: {
-    etapa1InfoIsValid() {
-      return (
-        this.filesUploaded.cv &&
-        this.filesUploaded.seguro &&
-        this.filesUploaded.carta
-      );
-    },
-    etapa2InfoIsValid() {
-      return this.filesUploaded.aceptacion;
-    },
-    etapa3InfoIsValid() {
-      return this.filesUploaded.reporte;
-    },
-    etapa4InfoIsValid() {
-      return (
-        this.filesUploaded.rubrica &&
-        this.filesUploaded.dictamen &&
-        this.filesUploaded.protesta
-      );
-    },
-    etapa5InfoIsValid() {
-      return this.filesUploaded.terminacion;
-    },
-    etapa6InfoIsValid() {
-      const { campo1, campo2, campo3 } = this.etapa6Info;
-      return campo1 && campo2 && campo3; // Ejemplo de validación: campos no deben estar vacíos
-    },
-    etapa7InfoIsValid() {
-      const { campo1, campo2, campo3 } = this.etapa7Info;
-      return campo1 && campo2 && campo3; // Ejemplo de validación: campos no deben estar vacíos
-    },
-    etapa8InfoIsValid() {
-      const { campo1, campo2, campo3 } = this.etapa8Info;
-      return campo1 && campo2 && campo3; // Ejemplo de validación: campos no deben estar vacíos
-    },
-    etapa9InfoIsValid() {
-      const { campo1, campo2, campo3 } = this.etapa9Info;
-      return campo1 && campo2 && campo3; // Ejemplo de validación: campos no deben estar vacíos
-    },
   },
   methods: {
-    uploadDocuments(phase) {
+    uploadDocuments(documentValue, event) {
       console.log("Uploading documents ...");
       this.uploadingFiles = true;
+      const nameDocument = documentValue;
+      console.log(nameDocument);
       const formData = new FormData();
       formData.append("idAlumno", this.userStore.user.id);
       formData.append("apellidoPaterno", this.userStore.user.apPaterno);
       formData.append("apellidoMaterno", this.userStore.user.apMaterno);
       formData.append("nombre", this.userStore.user.nombre);
-      formData.append("etapa", phase);
-      for (const documento of this.documentsToSend) {
-        formData.append("archivos", documento);
-      }
+
+      const file = event.target.files[0];
+      const newFile = new File([file], `${nameDocument}.pdf`, {
+        type: file.type,
+        lastModified: file.lastModified,
+      });
+      formData.append("archivos", newFile);
       api
-        .post("http://localhost:3000/alumno/documentos/subir", formData, {
+        .post("./alumno/documentos/subir", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         })
         .then((res) => {
           console.log(res.data);
-          const phases = res.data.etapas;
-          this.allPhasesData = { etapas: phases };
-          this.loadPhaseState(phase);
-          this.setFileName(phase, phases[phase]);
+          this.setDocuments(res.data);
           setTimeout(() => {
             this.uploadingFiles = false;
             this.uploadedFiles = true;
@@ -1239,7 +538,7 @@ export default defineComponent({
               this.errorUploadingFiles = false;
             }, 2000);
           }, 2000);
-        });
+        })
     },
     saveDocument(file, documentType) {
       const newFile = new File([file], `${documentType}.pdf`, {
@@ -1537,6 +836,7 @@ button {
   z-index: 1;
   position: relative;
 }
+
 .container {
   display: flex;
   justify-content: center;
@@ -1592,4 +892,35 @@ label {
   opacity: 0.8;
   text-transform: lowercase !important;
 }
+
+.custom-upload-button {
+  display: inline-block;
+  background-color: black;
+  color: white;
+  padding: 4px 15px;
+  margin: 3px;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  text-transform: none;
+}
+
+.custom-upload-button:hover {
+  background-color: #333;
+}
+
+.document-label {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.document-label:hover {
+  background: #5ec8b2;
+}
+
 </style>

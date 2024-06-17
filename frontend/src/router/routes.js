@@ -12,19 +12,26 @@ function verifyLogin(to, from, next) {
     (typeUser === 'alumno' && to.name.startsWith('alumno-')) ||
     (typeUser === 'asesor' && to.name.startsWith('asesor-')) ||
     (typeUser === 'vinculacion' && to.name.startsWith('vinculacion-')) ||
-    (typeUser === 'administrador' && to.name.startsWith('admin-'))
+    (typeUser === 'administrador' && to.name.startsWith('admin-')) ||
+    (typeUser === 'superAdministrador' && to.name.startsWith('superAdmin-'))
   ) {
     return next();
   }
 
   if (typeUser === 'alumno') {
     return next({ name: 'alumno-inicio' });
-  } else if (typeUser === 'asesor') {
+  }
+  if (typeUser === 'asesor') {
     return next({ name: 'asesor-inicio' });
-  } else if (typeUser === 'vinculacion') {
+  }
+  if (typeUser === 'vinculacion') {
     return next({ name: 'vinculacion-inicio' });
-  } else if (typeUser === 'administrador') {
+  }
+  if (typeUser === 'administrador') {
     return next({ name: 'admin-inicio' });
+  }
+  if (typeUser === 'superAdministrador') {
+    return next({ name: 'superAdmin-inicio' });
   }
 
   next({ name: 'error-not-found' });
@@ -36,9 +43,14 @@ const routes = [
     component: () => import("layouts/MainLayout.vue"),
     children: [
       {
-        path: "login",
+        path: "iniciar-sesion",
         name: "pagina-login",
         component: () => import("pages/LoginPage.vue"),
+      },
+      {
+        path: "registro",
+        name: "pagina-register",
+        component: () => import("pages/RegisterPage.vue"),
       },
       {
         path: "recuperacion",
@@ -151,6 +163,12 @@ const routes = [
         beforeEnter: [verifyLogin]
       },
       {
+        path: "alumnos-sin-empezar",
+        name: "admin-alumnos-sin-empezar",
+        component: () => import("pages/admin/AlumnosSE.vue"),
+        beforeEnter: [verifyLogin]
+      },
+      {
         path: "lista-alumnos",
         name: "admin-listaAlumnos",
         component: () => import("pages/admin/ListaAlumnos.vue"),
@@ -198,6 +216,21 @@ const routes = [
         component: () => import("pages/admin/AdministradorDetailsPage.vue"),
         beforeEnter: [verifyLogin]
       },
+
+      /* Rutas super administrador */
+      {
+        path: "",
+        name: "superAdmin-inicio",
+        component: () => import("pages/superadmin/InicioSuperAdmin.vue"),
+        beforeEnter: [verifyLogin]
+      },
+      {
+        path: "administradores",
+        name: "superAdmin-administradores",
+        component: () => import("pages/superadmin/ListaSuperAdministradores.vue"),
+        beforeEnter: [verifyLogin]
+      },
+
     ],
   },
 

@@ -1,22 +1,11 @@
 <template>
-  <UserNavbar></UserNavbar>
   <div class="container-fluid" style="background-color: #f5f5f5">
     <q-card-actions style="display: flex; justify-content: start">
-      <q-btn
-        flat
-        color="black"
-        label="Regresar"
-        icon="arrow_left"
-        style="margin: 3px; text-transform: capitalize; font-size: 16px"
-        @click="toBack"
-      ></q-btn>
+      <q-btn flat color="black" label="Regresar" icon="arrow_left"
+        style="margin: 3px; text-transform: capitalize; font-size: 16px" @click="toBack"></q-btn>
     </q-card-actions>
   </div>
-  <div
-    class="container-fluid"
-    style="background-color: #f5f5f5; height: 500px; margin-top: 0"
-    v-if="studentsLoaded"
-  >
+  <div class="container-fluid" style="background-color: #f5f5f5; height: 500px; margin-top: 0" v-if="studentsLoaded">
     <div class="row">
       <div class="col-12" style="display: flex; justify-content: center">
         <q-card class="q-ma-lg">
@@ -28,23 +17,15 @@
       </div>
     </div>
   </div>
-  <div
-    class="container-fluid q-pt-sm q-pl-xl q-pr-xl q-pb-xl"
-    style="background-color: #f5f5f5; min-height: 370px"
-    v-else
-  >
-    <div
-      class="row q-ml-xl q-mr-xl"
-      style="background-color: white; border-radius: 15px; height: 455px"
-    >
+  <div class="container-fluid q-pt-sm q-pl-xl q-pr-xl q-pb-xl" style="background-color: #f5f5f5; min-height: 73vh"
+    v-else>
+    <div class="row q-ml-xl q-mr-xl" style="background-color: white; border-radius: 15px; height: 65vh">
       <div class="col-3 q-pt-lg" style="border-right: 1px solid lightgray">
-        <div
-          style="
+        <div style="
             padding: 5px;
             text-align: center;
             border-bottom: 1px solid lightgray;
-          "
-        >
+          ">
           <p style="font-size: 16px; font-weight: 500; margin-bottom: 0">
             {{ student.nombre }}
           </p>
@@ -58,81 +39,51 @@
         </div>
         <div>
           <q-card-actions style="flex-direction: column; align-items: start">
-            <q-btn
-              flat
-              color="black"
-              label="Informacion general"
-              :style="{
-                margin: '3px',
-                textTransform: 'capitalize',
-                fontSize: '16px',
-                fontWeight: 'normal',
-                width: '100%',
-                alignItems: 'start',
-                background: actualSection === 1 ? '#e8e8e8' : '',
-              }"
-              @click="showSection(1)"
-            ></q-btn>
-            <q-btn
-              flat
-              color="black"
-              label="Carta presentación"
-              :style="{
-                margin: '3px',
-                textTransform: 'capitalize',
-                fontSize: '16px',
-                fontWeight: 'normal',
-                width: '100%',
-                alignItems: 'start',
-                background: actualSection === 3 ? '#e8e8e8' : '',
-              }"
-              @click="showSection(3)"
-            ></q-btn>
-            <q-btn
-              flat
-              color="black"
-              label="Documentación"
-              :style="{
-                margin: '3px',
-                textTransform: 'capitalize',
-                fontSize: '16px',
-                fontWeight: 'normal',
-                width: '100%',
-                alignItems: 'start',
-                background: actualSection === 2 ? '#e8e8e8' : '',
-              }"
-              @click="showSection(2)"
-            ></q-btn>
-            <q-btn
-              flat
-              color="black"
-              label="Anteproyecto"
-              :style="{
-                margin: '3px',
-                textTransform: 'capitalize',
-                fontSize: '16px',
-                fontWeight: 'normal',
-                width: '100%',
-                alignItems: 'start',
-                background: actualSection === 4 ? '#e8e8e8' : '',
-              }"
-              @click="showSection(4)"
-            ></q-btn>
-            <q-btn
-              flat
-              color="black"
-              label="Avance"
-              :style="{
-                margin: '3px',
-                textTransform: 'capitalize',
-                fontSize: '16px',
-                fontWeight: 'normal',
-                width: '100%',
-                alignItems: 'start',
-                background: actualSection === 5 ? '#e8e8e8' : '',
-              }"
-              @click="showSection(5)"
-            ></q-btn>
+            <q-btn flat color="black" label="Informacion general" :style="{
+              margin: '3px',
+              textTransform: 'capitalize',
+              fontSize: '16px',
+              fontWeight: 'normal',
+              width: '100%',
+              alignItems: 'start',
+              background: actualSection === 1 ? '#e8e8e8' : '',
+            }" @click="showSection(1)"></q-btn>
+            <q-btn flat color="black" label="Carta presentación" :style="{
+              margin: '3px',
+              textTransform: 'capitalize',
+              fontSize: '16px',
+              fontWeight: 'normal',
+              width: '100%',
+              alignItems: 'start',
+              background: actualSection === 3 ? '#e8e8e8' : '',
+            }" @click="showSection(3)"></q-btn>
+            <q-btn flat color="black" label="Documentación" :style="{
+              margin: '3px',
+              textTransform: 'capitalize',
+              fontSize: '16px',
+              fontWeight: 'normal',
+              width: '100%',
+              alignItems: 'start',
+              background: actualSection === 2 ? '#e8e8e8' : '',
+            }" @click="showSection(2)"></q-btn>
+            <q-btn flat color="black" label="Anteproyecto" :style="{
+              margin: '3px',
+              textTransform: 'capitalize',
+              fontSize: '16px',
+              fontWeight: 'normal',
+              width: '100%',
+              alignItems: 'start',
+              background: actualSection === 4 ? '#e8e8e8' : '',
+            }" @click="showSection(4)"></q-btn>
+            <q-btn flat color="black" label="Avance" :style="{
+              margin: '3px',
+              textTransform: 'capitalize',
+              fontSize: '16px',
+              fontWeight: 'normal',
+              width: '100%',
+              alignItems: 'start',
+              background: actualSection === 5 ? '#e8e8e8' : '',
+            }" @click="showSection(5)"></q-btn>
           </q-card-actions>
         </div>
       </div>
@@ -143,101 +94,87 @@
           </div>
           <div class="col-4">
             <p style="margin: 5px; font-size: 16px">Nombre</p>
-            <p
-              style="
+            <p style="
                 background-color: #d9d9d9;
                 padding: 8px;
                 width: 90%;
                 font-size: 14px;
                 border-radius: 5px;
-              "
-            >
+              ">
               {{ student.nombre }} {{ student.apPaterno }}
               {{ student.apMaterno }}
             </p>
           </div>
           <div class="col-4">
             <p style="margin: 5px; font-size: 16px">Carrera</p>
-            <p
-              style="
+            <p style="
                 background-color: #d9d9d9;
                 padding: 8px;
                 width: 90%;
                 font-size: 14px;
                 border-radius: 5px;
-              "
-            >
+              ">
               {{ student.carrera }}
             </p>
           </div>
           <div class="col-4">
             <p style="margin: 5px; font-size: 16px">Area</p>
-            <p
-              style="
+            <p style="
                 background-color: #d9d9d9;
                 padding: 8px;
                 width: 90%;
                 font-size: 14px;
                 border-radius: 5px;
-              "
-            >
+              ">
               {{ student.area }}
             </p>
           </div>
           <div class="col-12"></div>
           <div class="col-3">
             <p style="margin: 5px; font-size: 16px">Matricula</p>
-            <p
-              style="
+            <p style="
                 background-color: #d9d9d9;
                 padding: 8px;
                 width: 90%;
                 font-size: 14px;
                 border-radius: 5px;
-              "
-            >
+              ">
               {{ student.matricula }}
             </p>
           </div>
           <div class="col-2">
             <p style="margin: 5px; font-size: 16px">Grado</p>
-            <p
-              style="
+            <p style="
                 background-color: #d9d9d9;
                 padding: 8px;
                 width: 90%;
                 font-size: 14px;
                 border-radius: 5px;
-              "
-            >
+              ">
               {{ student.grado }}
             </p>
           </div>
           <div class="col-2">
             <p style="margin: 5px; font-size: 16px">Grupo</p>
-            <p
-              style="
+            <p style="
                 background-color: #d9d9d9;
                 padding: 8px;
                 width: 90%;
                 font-size: 14px;
                 border-radius: 5px;
-              "
-            >
+              ">
               {{ student.grupo }}
             </p>
           </div>
           <div class="col-5">
             <p style="margin: 5px; font-size: 16px">Nivel academico</p>
-            <p
-              style="
+            <p style="
                 background-color: #d9d9d9;
                 padding: 8px;
                 width: 90%;
                 font-size: 14px;
                 border-radius: 5px;
-              "
-            >
+              ">
               {{ student.nivelAcademico }}
             </p>
           </div>
@@ -265,97 +202,45 @@
               </q-card-section>
             </q-card>
           </q-dialog>
-          <div class="col-8">
+          <div class="col-12">
             <h5 style="font-weight: 500">Documentación</h5>
           </div>
-          <div
-            class="col-4"
-            style="display: flex; align-items: center; justify-content: right"
-          >
-            <div
-              :style="{
-                display: 'flex',
-                alignItems: 'center',
-                margin: '0',
-                padding: '7px 30%',
-                borderRadius: '8px',
-                backgroundColor: phaseState.color,
-              }"
-            >
-              <p style="color: white; font-weight: bold; margin: 0">
-                {{ phaseState.label }}
-              </p>
-              <q-btn
-                v-if="phaseState.label === 'Rechazada'"
-                flat
-                color="white"
-                icon="more_horiz"
-                size="12px"
-                @click="dialogPhaseState = true"
-              ></q-btn>
-            </div>
-          </div>
           <q-dialog v-model="dialogChangePhaseState">
-            <q-card
-              class="q-pt-md q-pl-md q-pr-md"
-              style="width: 500px; max-width: 60vw; height: 40vh"
-            >
+            <q-card class="q-pt-md q-pl-md q-pr-md" style="width: 500px; max-width: 60vw; height: 40vh">
               <div class="row q-ma-sm">
                 <div class="col-12" style="display: flex; justify-content: end">
                   <q-card-actions>
-                    <q-btn
-                      align="right"
-                      flat
-                      color="red"
-                      icon="close"
-                      v-close-popup
-                      style="
+                    <q-btn align="right" flat color="red" icon="close" v-close-popup style="
                         margin: 3px;
                         padding-left: 25px;
                         padding-right: 25px;
                         text-transform: capitalize;
                         font-size: 16px;
-                      "
-                    />
+                      " />
                   </q-card-actions>
                 </div>
                 <div class="col-12 q-pa-md">
-                  <div
-                    class="text-h6 text-center"
-                    style="font-size: 22px; font-weight: 500"
-                  >
-                    Estado de etapa {{ actualPhase }}
+                  <div class="text-h6 text-center" style="font-size: 22px; font-weight: 500">
+                    Estado de documento {{ actualDocument.label }}
                   </div>
                 </div>
                 <div class="col-12 q-pt-xl">
                   <q-card-actions class="bg-white text-teal" align="center">
                     <q-btn-group flat="">
-                      <q-btn
-                        color="primary"
-                        label="Aceptar"
-                        icon="done"
-                        style="
+                      <q-btn color="primary" label="Aceptar" icon="done" style="
                           margin: 3px;
                           padding-left: 20px;
                           padding-right: 20px;
                           text-transform: capitalize;
                           font-size: 14px;
-                        "
-                        @click="setPhaseState('Aceptada')"
-                      />
-                      <q-btn
-                        color="red"
-                        label="Rechazar"
-                        icon="close"
-                        style="
+                        " @click="setPhaseState('Aceptada')" />
+                      <q-btn color="red" label="Rechazar" icon="close" style="
                           margin: 3px;
                           padding-left: 20px;
                           padding-right: 20px;
                           text-transform: capitalize;
                           font-size: 14px;
-                        "
-                        @click="dialogDenyPhase = true"
-                      />
+                        " @click="dialogDenyPhase = true" />
                     </q-btn-group>
                   </q-card-actions>
                 </div>
@@ -363,73 +248,42 @@
             </q-card>
           </q-dialog>
           <q-dialog v-model="dialogDenyPhase">
-            <q-card
-              class="q-pt-md q-pl-md q-pr-md"
-              style="width: 500px; max-width: 60vw; height: 40vh"
-            >
+            <q-card class="q-pt-md q-pl-md q-pr-md" style="width: 500px; max-width: 60vw; height: 40vh">
               <div class="row q-ma-sm">
                 <div class="col-12" style="display: flex; justify-content: end">
                   <q-card-actions>
-                    <q-btn
-                      align="right"
-                      flat
-                      color="red"
-                      icon="close"
-                      v-close-popup
-                      style="
+                    <q-btn align="right" flat color="red" icon="close" v-close-popup style="
                         margin: 3px;
                         padding-left: 25px;
                         padding-right: 25px;
                         text-transform: capitalize;
                         font-size: 16px;
-                      "
-                    />
+                      " />
                   </q-card-actions>
                 </div>
                 <div class="col-12 q-pa-md">
-                  <div
-                    class="text-h6 text-center"
-                    style="font-size: 22px; font-weight: 500"
-                  >
-                    Rechazar etapa {{ actualPhase }}
+                  <div class="text-h6 text-center" style="font-size: 22px; font-weight: 500">
+                    Rechazar documento {{ actualDocument.label }}
                   </div>
                 </div>
                 <div class="col-12 q-pa-sm">
-                  <q-input
-                    v-model="phaseState.motive"
-                    filled
-                    autogrow
-                    style="font-size: 14px"
-                  />
+                  <q-input v-model="actualDocument.state.motive" filled autogrow style="font-size: 14px" />
                   <q-card-actions class="bg-white text-teal" align="center">
                     <q-btn-group flat="">
-                      <q-btn
-                        color="red"
-                        label="Rechazar"
-                        icon="close"
-                        style="
+                      <q-btn color="red" label="Rechazar" icon="close" style="
                           margin: 3px;
                           padding-left: 20px;
                           padding-right: 20px;
                           text-transform: capitalize;
                           font-size: 14px;
-                        "
-                        @click="setPhaseState('Rechazada', phaseState.motive)"
-                      />
-                      <q-btn
-                        flat
-                        color="white"
-                        text-color="black"
-                        label="Cancelar"
-                        style="
+                        " @click="setPhaseState('Rechazada', actualDocument.state.motive)" />
+                      <q-btn flat color="white" text-color="black" label="Cancelar" style="
                           margin: 3px;
                           padding-left: 40px;
                           padding-right: 40px;
                           text-transform: capitalize;
                           font-size: 14px;
-                        "
-                        v-close-popup
-                      />
+                        " v-close-popup />
                     </q-btn-group>
                   </q-card-actions>
                 </div>
@@ -437,175 +291,77 @@
             </q-card>
           </q-dialog>
           <q-dialog v-model="dialogPhaseState">
-            <q-card
-              class="q-pt-md q-pl-md q-pr-md"
-              style="width: 500px; max-width: 60vw; height: 45vh"
-            >
+            <q-card class="q-pt-md q-pl-md q-pr-md" style="width: 500px; max-width: 60vw; height: 45vh">
               <div class="row q-ma-sm">
                 <div class="col-12" style="display: flex; justify-content: end">
                   <q-card-actions>
-                    <q-btn
-                      align="right"
-                      flat
-                      color="red"
-                      icon="close"
-                      v-close-popup
-                      style="
+                    <q-btn align="right" flat color="red" icon="close" v-close-popup style="
                         margin: 3px;
                         padding-left: 25px;
                         padding-right: 25px;
                         text-transform: capitalize;
                         font-size: 16px;
-                      "
-                    />
+                      " />
                   </q-card-actions>
                 </div>
                 <div class="col-12 q-pa-md">
-                  <div
-                    class="text-h6 text-center"
-                    style="font-size: 22px; font-weight: 500"
-                  >
-                    Estado de etapa {{ actualPhase }}
+                  <div class="text-h6 text-center" style="font-size: 22px; font-weight: 500">
+                    Estado de etapa {{ actualDocument.label }}
                   </div>
                 </div>
                 <div class="col-12 q-pa-md q-mt-md">
                   <p style="font-size: 14px">
-                    <span style="font-weight: 500">Estado: </span
-                    >{{ phaseState.label }}
+                    <span style="font-weight: 500">Estado: </span>{{ actualDocument.state.name }}
                   </p>
                   <p style="font-size: 14px">
-                    <span style="font-weight: 500">Fecha de revisión: </span
-                    >{{ phaseState.date }}
+                    <span style="font-weight: 500">Fecha de revisión: </span>{{ actualDocument.state.date }}
                   </p>
                   <p style="font-size: 14px">
-                    <span style="font-weight: 500">Motivo: </span
-                    >{{ phaseState.motive }}
+                    <span style="font-weight: 500">Motivo: </span>{{ actualDocument.state.motive }}
                   </p>
                 </div>
               </div>
             </q-card>
           </q-dialog>
           <div class="col-12 q-pt-md">
-            <div class="row" v-if="existsDocumentos">
-              <div class="col-md-12">
-                <div class="row justify-between" v-if="actualPhase == 0">
-                  <div
-                    class="col-md-2"
-                    v-for="(phase, i) in phases"
-                    :key="i + 1"
-                  >
-                    <q-card
-                      v-ripple
-                      dark
-                      bordered
-                      class="bg-grey-4 my-card cursor-pointer"
-                      style="height: 205px"
-                      @click="toShowPhase(phase)"
-                    >
-                      <q-card-section>
-                        <div
-                          class="text-subtitle2 text-black"
-                          style="
-                            justify-content: space-between;
-                            display: flex;
-                            align-items: center;
-                          "
-                        >
-                          Etapa {{ phase }}
-                          <q-icon name="arrow_forward_ios" color="black" />
-                        </div>
-                      </q-card-section>
-                      <q-separator color="grey-5" inset />
-                      <q-card-section>
-                        <div v-for="(document, i) in documents" :key="i + 1">
-                          <p class="text-black" v-if="document.phase === phase">
-                            ∙ {{ document.label }}
-                          </p>
-                        </div>
-                      </q-card-section>
-                    </q-card>
-                  </div>
+            <div class="row" v-if="existsDocumentos" style="overflow-y: scroll; height: 45vh">
+              <div class="col-11 q-ma-sm" v-for="(document, i) in documents" :key="i + 1"
+                style="display: flex; align-items: center;">
+                <div style="width: 45%; background: lightgray; padding: 7px 10px; border-radius: 5px;">
+                  <p style="margin: 0; height: 100%;">{{ document.label }}</p>
                 </div>
-                <div class="col-md-12" v-else>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <p style="font-weight: 500; font-size: 18px">
-                        Etapa {{ actualPhase }}
-                      </p>
-                    </div>
-                    <div class="col-md-6 flex justify-end">
-                      <q-card-actions>
-                        <q-btn-group flat>
-                          <q-btn
-                            color="black"
-                            label="Regresar"
-                            icon="arrow_left"
-                            style="
-                              margin: 3px;
-                              padding-right: 15px;
-                              text-transform: capitalize;
-                              font-size: 12px;
-                            "
-                            @click="toBackPhase"
-                          ></q-btn>
-                          <q-btn
-                            color="secondary"
-                            icon="settings"
-                            label="Cambiar estado"
-                            style="
-                              margin: 3px;
-                              padding-right: 15px;
-                              text-transform: capitalize;
-                              font-size: 12px;
-                              font-weight: normal;
-                            "
-                            @click="dialogChangePhaseState = true"
-                          ></q-btn>
-                        </q-btn-group>
-                      </q-card-actions>
-                    </div>
-                    <div class="col-md-12 q-pt-xl"></div>
-                    <div
-                      class="col-4"
-                      style="padding-bottom: 30px"
-                      v-for="(document, i) in documentsToShow"
-                      :key="i + 1"
-                    >
-                      <div
-                        style="
-                          background-color: #d9d9d9;
-                          padding: 0 8px;
-                          width: 90%;
-                          border-radius: 5px;
-                          display: inline-flex;
-                          align-items: center;
-                          justify-content: space-between;
-                        "
-                      >
-                        <p style="font-size: 14px; margin: 0">
-                          {{ document.label }}
-                        </p>
-                        <q-card-actions style="justify-content: end">
-                          <q-btn-group flat>
-                            <q-btn
-                              flat
-                              color="black"
-                              icon="visibility"
-                              style="
-                                padding-right: 10px;
-                                text-transform: capitalize;
-                                font-size: 12px;
-                                font-weight: normal;
-                              "
-                              @click="
-                                toDownloadDocument(document.name, document.path)
-                              "
-                            ></q-btn>
-                          </q-btn-group>
-                        </q-card-actions>
-                      </div>
-                    </div>
-                  </div>
+                <!--ptm -->
+                <q-btn-group flat>
+                  <q-btn flat color="black" icon="visibility" style="
+                    padding-right: 10px;
+                    text-transform: capitalize;
+                    font-size: 12px;
+                    font-weight: normal;
+                  " :disable="document.state === 'Sin entregar'"
+                    @click="toDownloadDocument(document.name, document.path)" />
+                  <q-btn color="secondary" icon="settings" label="Cambiar estado" style="
+                    margin: 3px;
+                    padding: 7px 15px;
+                    text-transform: capitalize;
+                    font-size: 12px;
+                    font-weight: normal;
+                    border-radius: 3px;
+                  " :disable="document.state === 'Sin entregar'"
+                    @click="setActualDocument(document.name), dialogChangePhaseState = true" />
+                </q-btn-group>
+                <div :style="{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: '30%',
+                  color: 'white',
+                  background: defineDocumentStateColor(document.state),
+                  padding: '5px 10px',
+                  borderRadius: '5px'
+                }">
+                  <p style="margin: 2px; height: 100%;">{{ document.state }}</p>
+                  <q-btn v-if="document.state === 'Rechazada'" flat color="white" icon="more_horiz" size="10px" style="margin: 0 4px;"
+                  @click="setActualDocument(document.name), dialogPhaseState = true"></q-btn>
                 </div>
               </div>
             </div>
@@ -618,116 +374,68 @@
           <div class="col-8">
             <h5 style="font-weight: 500">Carta presentación</h5>
           </div>
-          <div
-            class="col-4"
-            style="display: flex; align-items: center; justify-content: right"
-          >
-            <div
-              :style="{
-                display: 'flex',
-                alignItems: 'center',
-                margin: '0',
-                padding: '7px 30%',
-                borderRadius: '8px',
-                backgroundColor: cpaState.color,
-              }"
-            >
+          <div class="col-4" style="display: flex; align-items: center; justify-content: right" v-if="existsCPA">
+            <div :style="{
+              display: 'flex',
+              alignItems: 'center',
+              margin: '0',
+              padding: '7px 30%',
+              borderRadius: '8px',
+              backgroundColor: cpaState.color,
+            }">
               <p style="color: white; font-weight: bold; margin: 0">
                 {{ cpaState.label }}
               </p>
-              <q-btn
-                v-if="cpaState.label === 'Rechazada'"
-                flat
-                color="white"
-                icon="more_horiz"
-                size="12px"
-                @click="dialogCpaState = true"
-              ></q-btn>
+              <q-btn v-if="cpaState.label === 'Rechazada'" flat color="white" icon="more_horiz" size="12px"
+                @click="dialogCpaState = true"></q-btn>
             </div>
           </div>
-          <div class="col-12 flex justify-end" style="padding-bottom: 10px">
+          <div class="col-12 flex justify-end" style="padding-bottom: 10px" v-if="existsCPA">
             <q-card-actions>
               <q-btn-group flat v-if="!isEditingCPA">
-                <q-btn
-                  color="secondary"
-                  icon="settings"
-                  label="Cambiar estado"
-                  style="
+                <q-btn color="secondary" icon="settings" label="Cambiar estado" style="
                     margin: 3px;
                     padding-right: 15px;
                     text-transform: capitalize;
                     font-size: 12px;
                     font-weight: normal;
-                  "
-                  @click="dialogChangeCPAState = true"
-                ></q-btn>
+                  " @click="dialogChangeCPAState = true"></q-btn>
                 <q-dialog v-model="dialogChangeCPAState">
-                  <q-card
-                    class="q-pt-md q-pl-md q-pr-md"
-                    style="width: 500px; max-width: 60vw; height: 40vh"
-                  >
+                  <q-card class="q-pt-md q-pl-md q-pr-md" style="width: 500px; max-width: 60vw; height: 40vh">
                     <div class="row q-ma-sm">
-                      <div
-                        class="col-12"
-                        style="display: flex; justify-content: end"
-                      >
+                      <div class="col-12" style="display: flex; justify-content: end">
                         <q-card-actions>
-                          <q-btn
-                            align="right"
-                            flat
-                            color="red"
-                            icon="close"
-                            v-close-popup
-                            style="
+                          <q-btn align="right" flat color="red" icon="close" v-close-popup style="
                               margin: 3px;
                               padding-left: 25px;
                               padding-right: 25px;
                               text-transform: capitalize;
                               font-size: 16px;
-                            "
-                          />
+                            " />
                         </q-card-actions>
                       </div>
                       <div class="col-12 q-pa-md">
-                        <div
-                          class="text-h6 text-center"
-                          style="font-size: 22px; font-weight: 500"
-                        >
+                        <div class="text-h6 text-center" style="font-size: 22px; font-weight: 500">
                           Estado de carta presentación
                         </div>
                       </div>
                       <div class="col-12 q-pt-xl">
-                        <q-card-actions
-                          class="bg-white text-teal"
-                          align="center"
-                        >
+                        <q-card-actions class="bg-white text-teal" align="center">
                           <q-btn-group flat="">
-                            <q-btn
-                              color="primary"
-                              label="Aceptar"
-                              icon="done"
-                              style="
+                            <q-btn color="primary" label="Aceptar" icon="done" style="
                                 margin: 3px;
                                 padding-left: 20px;
                                 padding-right: 20px;
                                 text-transform: capitalize;
                                 font-size: 14px;
-                              "
-                              @click="setCpaState('Aceptada')"
-                            />
-                            <q-btn
-                              color="red"
-                              label="Rechazar"
-                              icon="close"
-                              style="
+                              " @click="setCpaState('Aceptada')" />
+                            <q-btn color="red" label="Rechazar" icon="close" style="
                                 margin: 3px;
                                 padding-left: 20px;
                                 padding-right: 20px;
                                 text-transform: capitalize;
                                 font-size: 14px;
-                              "
-                              @click="dialogDenyCpa = true"
-                            />
+                              " @click="dialogDenyCpa = true" />
                           </q-btn-group>
                         </q-card-actions>
                       </div>
@@ -735,79 +443,42 @@
                   </q-card>
                 </q-dialog>
                 <q-dialog v-model="dialogDenyCpa">
-                  <q-card
-                    class="q-pt-md q-pl-md q-pr-md"
-                    style="width: 500px; max-width: 60vw; height: 40vh"
-                  >
+                  <q-card class="q-pt-md q-pl-md q-pr-md" style="width: 500px; max-width: 60vw; height: 40vh">
                     <div class="row q-ma-sm">
-                      <div
-                        class="col-12"
-                        style="display: flex; justify-content: end"
-                      >
+                      <div class="col-12" style="display: flex; justify-content: end">
                         <q-card-actions>
-                          <q-btn
-                            align="right"
-                            flat
-                            color="red"
-                            icon="close"
-                            v-close-popup
-                            style="
+                          <q-btn align="right" flat color="red" icon="close" v-close-popup style="
                               margin: 3px;
                               padding-left: 25px;
                               padding-right: 25px;
                               text-transform: capitalize;
                               font-size: 16px;
-                            "
-                          />
+                            " />
                         </q-card-actions>
                       </div>
                       <div class="col-12 q-pa-md">
-                        <div
-                          class="text-h6 text-center"
-                          style="font-size: 22px; font-weight: 500"
-                        >
+                        <div class="text-h6 text-center" style="font-size: 22px; font-weight: 500">
                           Rechazar documento
                         </div>
                       </div>
                       <div class="col-12 q-pa-sm">
-                        <q-input
-                          v-model="cpaState.motive"
-                          filled
-                          autogrow
-                          style="font-size: 14px"
-                        />
-                        <q-card-actions
-                          class="bg-white text-teal"
-                          align="center"
-                        >
+                        <q-input v-model="cpaState.motive" filled autogrow style="font-size: 14px" />
+                        <q-card-actions class="bg-white text-teal" align="center">
                           <q-btn-group flat="">
-                            <q-btn
-                              color="red"
-                              label="Rechazar"
-                              icon="close"
-                              style="
+                            <q-btn color="red" label="Rechazar" icon="close" style="
                                 margin: 3px;
                                 padding-left: 20px;
                                 padding-right: 20px;
                                 text-transform: capitalize;
                                 font-size: 14px;
-                              "
-                              @click="setCpaState('Rechazada', cpaState.motive)"
-                            />
-                            <q-btn
-                              flat
-                              color="white"
-                              text-color="black"
-                              label="Cancelar"
-                              style="
+                              " @click="setCpaState('Rechazada', cpaState.motive)" />
+                            <q-btn flat color="white" text-color="black" label="Cancelar" style="
                                 margin: 3px;
                                 padding-left: 40px;
                                 padding-right: 40px;
                                 text-transform: capitalize;
                                 font-size: 14px;
-                              "
-                              v-close-popup
-                            />
+                              " v-close-popup />
                           </q-btn-group>
                         </q-card-actions>
                       </div>
@@ -815,237 +486,148 @@
                   </q-card>
                 </q-dialog>
                 <q-dialog v-model="dialogCpaState">
-                  <q-card
-                    class="q-pt-md q-pl-md q-pr-md"
-                    style="width: 500px; max-width: 60vw; height: 45vh"
-                  >
+                  <q-card class="q-pt-md q-pl-md q-pr-md" style="width: 500px; max-width: 60vw; height: 45vh">
                     <div class="row q-ma-sm">
-                      <div
-                        class="col-12"
-                        style="display: flex; justify-content: end"
-                      >
+                      <div class="col-12" style="display: flex; justify-content: end">
                         <q-card-actions>
-                          <q-btn
-                            align="right"
-                            flat
-                            color="red"
-                            icon="close"
-                            v-close-popup
-                            style="
+                          <q-btn align="right" flat color="red" icon="close" v-close-popup style="
                               margin: 3px;
                               padding-left: 25px;
                               padding-right: 25px;
                               text-transform: capitalize;
                               font-size: 16px;
-                            "
-                          />
+                            " />
                         </q-card-actions>
                       </div>
                       <div class="col-12 q-pa-md">
-                        <div
-                          class="text-h6 text-center"
-                          style="font-size: 22px; font-weight: 500"
-                        >
+                        <div class="text-h6 text-center" style="font-size: 22px; font-weight: 500">
                           Estado de carta presentación
                         </div>
                       </div>
                       <div class="col-12 q-pa-md q-mt-md">
                         <p style="font-size: 14px">
-                          <span style="font-weight: 500">Estado: </span
-                          >{{ cpaState.label }}
+                          <span style="font-weight: 500">Estado: </span>{{ cpaState.label }}
                         </p>
                         <p style="font-size: 14px">
-                          <span style="font-weight: 500"
-                            >Fecha de revisión: </span
-                          >{{ cpaState.date }}
+                          <span style="font-weight: 500">Fecha de revisión: </span>{{ cpaState.date }}
                         </p>
                         <p style="font-size: 14px">
-                          <span style="font-weight: 500">Motivo: </span
-                          >{{ cpaState.motive }}
+                          <span style="font-weight: 500">Motivo: </span>{{ cpaState.motive }}
                         </p>
                       </div>
                     </div>
                   </q-card>
                 </q-dialog>
-                <q-btn
-                  color="orange"
-                  icon="print"
-                  label="Imprimir"
-                  style="
+                <q-btn color="orange" icon="print" label="Imprimir" style="
                     margin: 3px;
                     padding-right: 15px;
                     text-transform: capitalize;
                     font-size: 12px;
                     font-weight: normal;
-                  "
-                  @click="dialogPrintOptions = true"
-                ></q-btn>
+                  " @click="dialogPrintOptions = true"></q-btn>
                 <q-dialog v-model="dialogPrintOptions">
-                  <q-card
-                    class="q-pt-md q-pl-md q-pr-md"
-                    style="width: 500px; max-width: 60vw; height: 40vh"
-                  >
+                  <q-card class="q-pt-md q-pl-md q-pr-md" style="width: 500px; max-width: 60vw; height: 40vh">
                     <div class="row q-ma-sm">
-                      <div
-                        class="col-12"
-                        style="display: flex; justify-content: end"
-                      >
+                      <div class="col-12" style="display: flex; justify-content: end">
                         <q-card-actions>
-                          <q-btn
-                            align="right"
-                            flat
-                            color="red"
-                            icon="close"
-                            v-close-popup
-                            style="
+                          <q-btn align="right" flat color="red" icon="close" v-close-popup style="
                               margin: 3px;
                               padding-left: 25px;
                               padding-right: 25px;
                               text-transform: capitalize;
                               font-size: 16px;
-                            "
-                          />
+                            " />
                         </q-card-actions>
                       </div>
                       <div class="col-12 q-pa-md">
-                        <div
-                          class="text-h6 text-center"
-                          style="font-size: 22px; font-weight: 500"
-                        >
+                        <div class="text-h6 text-center" style="font-size: 22px; font-weight: 500">
                           Imprimir carta presentacion
                         </div>
                       </div>
                       <div class="col-12 q-pt-xl">
-                        <q-card-actions
-                          class="bg-white text-teal"
-                          align="center"
-                        >
+                        <q-card-actions class="bg-white text-teal" align="center">
                           <q-btn-group flat>
-                            <q-btn
-                              color="primary"
-                              label="Con firma"
-                              icon="done"
-                              style="
+                            <q-btn color="primary" label="Con firma" icon="done" style="
                                 margin: 3px;
                                 padding-left: 20px;
                                 padding-right: 20px;
                                 text-transform: capitalize;
                                 font-size: 14px;
-                              "
-                              @click="printCPA('Con-Firma')"
-                            />
-                            <q-btn
-                              color="red"
-                              label="Sin firma"
-                              icon="close"
-                              style="
+                              " @click="printCPA('Con-Firma')" />
+                            <q-btn color="red" label="Sin firma" icon="close" style="
                                 margin: 3px;
                                 padding-left: 20px;
                                 padding-right: 20px;
                                 text-transform: capitalize;
                                 font-size: 14px;
-                              "
-                              @click="printCPA('Sin-Firma')"
-                            />
+                              " @click="printCPA('Sin-Firma')" />
                           </q-btn-group>
                         </q-card-actions>
                       </div>
                     </div>
                   </q-card>
                 </q-dialog>
+                <q-dialog v-model="dialogPrinting">
+                  <q-card class="q-pa-lg" style="width: 300px">
+                    <q-card-section>
+                      <div class="text-h6 text-center">Descargando documento</div>
+                    </q-card-section>
+                    <q-card-section class="q-pt-none text-center">
+                      <q-spinner color="primary" size="50px" />
+                    </q-card-section>
+                  </q-card>
+                </q-dialog>
 
-                <q-btn
-                  color="primary"
-                  icon="edit"
-                  label="Editar"
-                  style="
+                <q-btn color="primary" icon="edit" label="Editar" style="
                     margin: 3px;
                     padding-right: 15px;
                     text-transform: capitalize;
                     font-size: 12px;
                     font-weight: normal;
-                  "
-                  @click="toEditCPA"
-                ></q-btn>
-                <q-btn
-                  color="red"
-                  icon="delete"
-                  label="Borrar"
-                  style="
+                  " @click="toEditCPA"></q-btn>
+                <q-btn color="red" icon="delete" label="Borrar" style="
                     margin: 3px;
                     padding-right: 15px;
                     text-transform: capitalize;
                     font-size: 12px;
                     font-weight: normal;
-                  "
-                  @click="dialogDeleteCPA = true"
-                ></q-btn>
+                  " @click="dialogDeleteCPA = true"></q-btn>
                 <q-dialog v-model="dialogDeleteCPA">
-                  <q-card
-                    class="q-pt-md q-pl-md q-pr-md"
-                    style="width: 500px; max-width: 60vw; height: 40vh"
-                  >
+                  <q-card class="q-pt-md q-pl-md q-pr-md" style="width: 500px; max-width: 60vw; height: 40vh">
                     <div class="row q-ma-sm">
-                      <div
-                        class="col-12"
-                        style="display: flex; justify-content: end"
-                      >
+                      <div class="col-12" style="display: flex; justify-content: end">
                         <q-card-actions>
-                          <q-btn
-                            align="right"
-                            flat
-                            color="red"
-                            icon="close"
-                            v-close-popup
-                            style="
+                          <q-btn align="right" flat color="red" icon="close" v-close-popup style="
                               margin: 3px;
                               padding-left: 25px;
                               padding-right: 25px;
                               text-transform: capitalize;
                               font-size: 16px;
-                            "
-                          />
+                            " />
                         </q-card-actions>
                       </div>
                       <div class="col-12 q-pa-md">
-                        <div
-                          class="text-h6 text-center"
-                          style="font-size: 22px; font-weight: 500"
-                        >
+                        <div class="text-h6 text-center" style="font-size: 22px; font-weight: 500">
                           ¿Estas seguro de borrarlo?
                         </div>
                       </div>
                       <div class="col-12 q-pt-xl">
-                        <q-card-actions
-                          class="bg-white text-teal"
-                          align="center"
-                        >
+                        <q-card-actions class="bg-white text-teal" align="center">
                           <q-btn-group flat="">
-                            <q-btn
-                              color="red"
-                              label="Borrar"
-                              icon="delete"
-                              style="
+                            <q-btn color="red" label="Borrar" icon="delete" style="
                                 margin: 3px;
                                 padding-left: 20px;
                                 padding-right: 20px;
                                 text-transform: capitalize;
                                 font-size: 14px;
-                              "
-                              @click="toDeleteCPA"
-                            />
-                            <q-btn
-                              color="black"
-                              label="Cancelar"
-                              style="
+                              " @click="toDeleteCPA" />
+                            <q-btn color="black" label="Cancelar" style="
                                 margin: 3px;
                                 padding-left: 20px;
                                 padding-right: 20px;
                                 text-transform: capitalize;
                                 font-size: 14px;
-                              "
-                              v-close-popup
-                            />
+                              " v-close-popup />
                           </q-btn-group>
                         </q-card-actions>
                       </div>
@@ -1054,32 +636,20 @@
                 </q-dialog>
               </q-btn-group>
               <q-btn-group flat v-else>
-                <q-btn
-                  color="positive"
-                  icon="save"
-                  label="Guardar"
-                  style="
+                <q-btn color="positive" icon="save" label="Guardar" style="
                     margin: 3px;
                     padding-right: 15px;
                     text-transform: capitalize;
                     font-size: 12px;
                     font-weight: normal;
-                  "
-                  @click="saveEditCPA"
-                ></q-btn>
-                <q-btn
-                  color="red"
-                  icon="cancel"
-                  label="Cancelar"
-                  style="
+                  " @click="saveEditCPA"></q-btn>
+                <q-btn color="red" icon="cancel" label="Cancelar" style="
                     margin: 3px;
                     padding-right: 15px;
                     text-transform: capitalize;
                     font-size: 12px;
                     font-weight: normal;
-                  "
-                  @click="showSection(3)"
-                ></q-btn>
+                  " @click="showSection(3)"></q-btn>
               </q-btn-group>
             </q-card-actions>
           </div>
@@ -1088,157 +658,135 @@
               <div class="row" v-if="!isEditingCPA">
                 <div class="col-4">
                   <p style="margin: 5px; font-size: 16px">Nombre</p>
-                  <p
-                    style="
+                  <p style="
                       background-color: #d9d9d9;
                       padding: 8px;
                       width: 90%;
                       font-size: 14px;
                       border-radius: 5px;
-                    "
-                  >
+                    ">
                     {{ student.nombre }} {{ student.apPaterno }}
                     {{ student.apMaterno }}
                   </p>
                 </div>
                 <div class="col-4">
                   <p style="margin: 5px; font-size: 16px">Carrera</p>
-                  <p
-                    style="
+                  <p style="
                       background-color: #d9d9d9;
                       padding: 8px;
                       width: 90%;
                       font-size: 14px;
                       border-radius: 5px;
-                    "
-                  >
+                    ">
                     {{ student.carrera }}
                   </p>
                 </div>
                 <div class="col-4">
                   <p style="margin: 5px; font-size: 16px">Area</p>
-                  <p
-                    style="
+                  <p style="
                       background-color: #d9d9d9;
                       padding: 8px;
                       width: 90%;
                       font-size: 14px;
                       border-radius: 5px;
-                    "
-                  >
+                    ">
                     {{ student.area }}
                   </p>
                 </div>
                 <div class="col-12"></div>
                 <div class="col-3">
                   <p style="margin: 5px; font-size: 16px">Matricula</p>
-                  <p
-                    style="
+                  <p style="
                       background-color: #d9d9d9;
                       padding: 8px;
                       width: 90%;
                       font-size: 14px;
                       border-radius: 5px;
-                    "
-                  >
+                    ">
                     {{ student.matricula }}
                   </p>
                 </div>
                 <div class="col-3">
                   <p style="margin: 5px; font-size: 16px">NSS</p>
-                  <p
-                    style="
+                  <p style="
                       background-color: #d9d9d9;
                       padding: 8px;
                       width: 90%;
                       font-size: 14px;
                       border-radius: 5px;
-                    "
-                  >
+                    ">
                     {{ student.cartaPresentacion.datosAlumno.nss }}
                   </p>
                 </div>
                 <div class="col-4">
                   <p style="margin: 5px; font-size: 16px">CURP</p>
-                  <p
-                    style="
+                  <p style="
                       background-color: #d9d9d9;
                       padding: 8px;
                       width: 90%;
                       font-size: 14px;
                       border-radius: 5px;
-                    "
-                  >
+                    ">
                     {{ student.cartaPresentacion.datosAlumno.curp }}
                   </p>
                 </div>
                 <div class="col-1">
                   <p style="margin: 5px; font-size: 16px">Grado</p>
-                  <p
-                    style="
+                  <p style="
                       background-color: #d9d9d9;
                       padding: 8px;
                       width: 90%;
                       font-size: 14px;
                       border-radius: 5px;
-                    "
-                  >
+                    ">
                     {{ student.grado }}
                   </p>
                 </div>
                 <div class="col-1">
                   <p style="margin: 5px; font-size: 16px">Grupo</p>
-                  <p
-                    style="
+                  <p style="
                       background-color: #d9d9d9;
                       padding: 8px;
                       width: 90%;
                       font-size: 14px;
                       border-radius: 5px;
-                    "
-                  >
+                    ">
                     {{ student.grupo }}
                   </p>
                 </div>
                 <div class="col-4">
                   <p style="margin: 5px; font-size: 16px">Nivel academico</p>
-                  <p
-                    style="
+                  <p style="
                       background-color: #d9d9d9;
                       padding: 8px;
                       width: 90%;
                       font-size: 14px;
                       border-radius: 5px;
-                    "
-                  >
+                    ">
                     {{ student.nivelAcademico }}
                   </p>
                 </div>
                 <div class="col-3">
                   <p style="margin: 5px; font-size: 16px">Periodo</p>
-                  <p
-                    style="
+                  <p style="
                       background-color: #d9d9d9;
                       padding: 8px;
                       width: 90%;
                       font-size: 14px;
                       border-radius: 5px;
-                    "
-                  >
+                    ">
                     {{ student.cartaPresentacion.datosAcademicos.periodo }}
                   </p>
                 </div>
                 <div class="col-2">
                   <p style="margin: 5px; font-size: 16px">Año</p>
-                  <p
-                    style="
+                  <p style="
                       background-color: #d9d9d9;
                       padding: 8px;
                       width: 90%;
                       font-size: 14px;
                       border-radius: 5px;
-                    "
-                  >
+                    ">
                     {{ student.cartaPresentacion.datosAcademicos.año }}
                   </p>
                 </div>
@@ -1247,112 +795,79 @@
                 <div class="col-4">
                   <p style="margin: 5px; font-size: 16px">Nombre</p>
                   <div style="width: 90%">
-                    <q-input
-                      dense
-                      v-model="fullname"
-                      input-style="background-color: #D9D9D9; padding: 8px; font-size: 14px; border-radius: 5px;"
-                    />
+                    <q-input dense v-model="fullname"
+                      input-style="background-color: #D9D9D9; padding: 8px; font-size: 14px; border-radius: 5px;" />
                   </div>
                 </div>
                 <div class="col-4">
                   <p style="margin: 5px; font-size: 16px">Carrera</p>
                   <div style="width: 90%">
-                    <q-input
-                      dense
-                      v-model="career"
-                      input-style="background-color: #D9D9D9; padding: 8px; font-size: 14px; border-radius: 5px;"
-                    />
+                    <q-input dense v-model="career"
+                      input-style="background-color: #D9D9D9; padding: 8px; font-size: 14px; border-radius: 5px;" />
                   </div>
                 </div>
                 <div class="col-4">
                   <p style="margin: 5px; font-size: 16px">Area</p>
                   <div style="width: 90%">
-                    <q-input
-                      dense
-                      v-model="area"
-                      input-style="background-color: #D9D9D9; padding: 8px; font-size: 14px; border-radius: 5px;"
-                    />
+                    <q-input dense v-model="area"
+                      input-style="background-color: #D9D9D9; padding: 8px; font-size: 14px; border-radius: 5px;" />
                   </div>
                 </div>
                 <div class="col-12"></div>
                 <div class="col-3">
                   <p style="margin: 5px; font-size: 16px">Matricula</p>
                   <div style="width: 90%">
-                    <q-input
-                      dense
-                      v-model="matricula"
-                      input-style="background-color: #D9D9D9; padding: 8px; font-size: 14px; border-radius: 5px;"
-                    />
+                    <q-input dense v-model="matricula"
+                      input-style="background-color: #D9D9D9; padding: 8px; font-size: 14px; border-radius: 5px;" />
                   </div>
                 </div>
                 <div class="col-3">
                   <p style="margin: 5px; font-size: 16px">NSS</p>
                   <div style="width: 90%">
-                    <q-input
-                      dense
-                      v-model="nss"
-                      input-style="background-color: #D9D9D9; padding: 8px; font-size: 14px; border-radius: 5px;"
-                    />
+                    <q-input dense v-model="nss"
+                      input-style="background-color: #D9D9D9; padding: 8px; font-size: 14px; border-radius: 5px;" />
                   </div>
                 </div>
                 <div class="col-4">
                   <p style="margin: 5px; font-size: 16px">CURP</p>
                   <div style="width: 90%">
-                    <q-input
-                      dense
-                      v-model="curp"
-                      input-style="background-color: #D9D9D9; padding: 8px; font-size: 14px; border-radius: 5px;"
-                    />
+                    <q-input dense v-model="curp"
+                      input-style="background-color: #D9D9D9; padding: 8px; font-size: 14px; border-radius: 5px;" />
                   </div>
                 </div>
                 <div class="col-1">
                   <p style="margin: 5px; font-size: 16px">Grado</p>
                   <div style="width: 90%">
-                    <q-input
-                      dense
-                      v-model="grade"
-                      input-style="background-color: #D9D9D9; padding: 8px; font-size: 14px; border-radius: 5px;"
-                    />
+                    <q-input dense v-model="grade"
+                      input-style="background-color: #D9D9D9; padding: 8px; font-size: 14px; border-radius: 5px;" />
                   </div>
                 </div>
                 <div class="col-1">
                   <p style="margin: 5px; font-size: 16px">Grupo</p>
                   <div style="width: 90%">
-                    <q-input
-                      dense
-                      v-model="group"
-                      input-style="background-color: #D9D9D9; padding: 8px; font-size: 14px; border-radius: 5px;"
-                    />
+                    <q-input dense v-model="group"
+                      input-style="background-color: #D9D9D9; padding: 8px; font-size: 14px; border-radius: 5px;" />
                   </div>
                 </div>
                 <div class="col-4">
                   <p style="margin: 5px; font-size: 16px">Nivel academico</p>
                   <div style="width: 90%">
-                    <q-input
-                      dense
-                      v-model="academicLevel"
-                      input-style="background-color: #D9D9D9; padding: 8px; font-size: 14px; border-radius: 5px;"
-                    />
+                    <q-input dense v-model="academicLevel"
+                      input-style="background-color: #D9D9D9; padding: 8px; font-size: 14px; border-radius: 5px;" />
                   </div>
                 </div>
                 <div class="col-3">
                   <p style="margin: 5px; font-size: 16px">Periodo</p>
                   <div style="width: 90%">
-                    <q-input
-                      dense
-                      v-model="period"
-                      input-style="background-color: #D9D9D9; padding: 8px; font-size: 14px; border-radius: 5px;"
-                    />
+                    <q-input dense v-model="period"
+                      input-style="background-color: #D9D9D9; padding: 8px; font-size: 14px; border-radius: 5px;" />
                   </div>
                 </div>
                 <div class="col-2">
                   <p style="margin: 5px; font-size: 16px">Año</p>
                   <div style="width: 90%">
-                    <q-input
-                      dense
-                      v-model="year"
-                      input-style="background-color: #D9D9D9; padding: 8px; font-size: 14px; border-radius: 5px;"
-                    />
+                    <q-input dense v-model="year"
+                      input-style="background-color: #D9D9D9; padding: 8px; font-size: 14px; border-radius: 5px;" />
                   </div>
                 </div>
               </div>
@@ -1366,78 +881,48 @@
           <div class="col-8">
             <h5 style="font-weight: 500">Anteproyecto</h5>
           </div>
-          <div
-            class="col-4"
-            style="display: flex; align-items: center; justify-content: right"
-          >
-            <div
-              :style="{
-                display: 'flex',
-                alignItems: 'center',
-                margin: '0',
-                padding: '7px 30%',
-                borderRadius: '8px',
-                backgroundColor: projectState.color,
-              }"
-            >
+          <div class="col-4" style="display: flex; align-items: center; justify-content: right">
+            <div :style="{
+              display: 'flex',
+              alignItems: 'center',
+              margin: '0',
+              padding: '7px 30%',
+              borderRadius: '8px',
+              backgroundColor: projectState.color,
+            }">
               <p style="color: white; font-weight: bold; margin: 0">
                 {{ projectState.label }}
               </p>
-              <q-btn
-                v-if="projectState.label === 'Rechazada'"
-                flat
-                color="white"
-                icon="more_horiz"
-                size="12px"
-                @click="dialogProjectState = true"
-              ></q-btn>
+              <q-btn v-if="projectState.label === 'Rechazada'" flat color="white" icon="more_horiz" size="12px"
+                @click="dialogProjectState = true"></q-btn>
               <q-dialog v-model="dialogProjectState">
-                <q-card
-                  class="q-pt-md q-pl-md q-pr-md"
-                  style="width: 500px; max-width: 60vw; height: 45vh"
-                >
+                <q-card class="q-pt-md q-pl-md q-pr-md" style="width: 500px; max-width: 60vw; height: 45vh">
                   <div class="row q-ma-sm">
-                    <div
-                      class="col-12"
-                      style="display: flex; justify-content: end"
-                    >
+                    <div class="col-12" style="display: flex; justify-content: end">
                       <q-card-actions>
-                        <q-btn
-                          align="right"
-                          flat
-                          color="red"
-                          icon="close"
-                          v-close-popup
-                          style="
+                        <q-btn align="right" flat color="red" icon="close" v-close-popup style="
                             margin: 3px;
                             padding-left: 25px;
                             padding-right: 25px;
                             text-transform: capitalize;
                             font-size: 16px;
-                          "
-                        />
+                          " />
                       </q-card-actions>
                     </div>
                     <div class="col-12 q-pa-md">
-                      <div
-                        class="text-h6 text-center"
-                        style="font-size: 22px; font-weight: 500"
-                      >
+                      <div class="text-h6 text-center" style="font-size: 22px; font-weight: 500">
                         Estado de anteproyecto
                       </div>
                     </div>
                     <div class="col-12 q-pa-md q-mt-md">
                       <p style="font-size: 14px">
-                        <span style="font-weight: 500">Estado: </span
-                        >{{ projectState.label }}
+                        <span style="font-weight: 500">Estado: </span>{{ projectState.label }}
                       </p>
                       <p style="font-size: 14px">
-                        <span style="font-weight: 500">Fecha de revisión: </span
-                        >{{ projectState.date }}
+                        <span style="font-weight: 500">Fecha de revisión: </span>{{ projectState.date }}
                       </p>
                       <p style="font-size: 14px">
-                        <span style="font-weight: 500">Motivo: </span
-                        >{{ projectState.motive }}
+                        <span style="font-weight: 500">Motivo: </span>{{ projectState.motive }}
                       </p>
                     </div>
                   </div>
@@ -1446,53 +931,43 @@
             </div>
           </div>
           <div class="col-12">
-            <div
-              class="row"
-              v-if="existAnteproyecto"
-              style="overflow-y: scroll; height: 35vh"
-            >
+            <div class="row" v-if="existAnteproyecto" style="overflow-y: scroll; height: 48vh">
               <div class="col-12">
                 <p class="project-title">Datos del asesor academico</p>
               </div>
               <div class="col-4">
                 <p style="margin: 5px; font-size: 16px">Nombre</p>
-                <p
-                  style="
+                <p style="
                     background-color: #d9d9d9;
                     padding: 8px;
                     width: 90%;
                     font-size: 14px;
                     border-radius: 5px;
-                  "
-                >
+                  ">
                   {{ project.datosAsesorAcademico.nombre }}
                 </p>
               </div>
               <div class="col-4">
                 <p style="margin: 5px; font-size: 16px">Email</p>
-                <p
-                  style="
+                <p style="
                     background-color: #d9d9d9;
                     padding: 8px;
                     width: 90%;
                     font-size: 14px;
                     border-radius: 5px;
-                  "
-                >
+                  ">
                   {{ project.datosAsesorAcademico.email }}
                 </p>
               </div>
               <div class="col-4">
                 <p style="margin: 5px; font-size: 16px">Telefono</p>
-                <p
-                  style="
+                <p style="
                     background-color: #d9d9d9;
                     padding: 8px;
                     width: 90%;
                     font-size: 14px;
                     border-radius: 5px;
-                  "
-                >
+                  ">
                   {{ project.datosAsesorAcademico.telefono }}
                 </p>
               </div>
@@ -1502,43 +977,37 @@
               </div>
               <div class="col-4">
                 <p style="margin: 5px; font-size: 16px">Nombre</p>
-                <p
-                  style="
+                <p style="
                     background-color: #d9d9d9;
                     padding: 8px;
                     width: 90%;
                     font-size: 14px;
                     border-radius: 5px;
-                  "
-                >
+                  ">
                   {{ project.datosAsesorEmpresarial.nombre }}
                 </p>
               </div>
               <div class="col-4">
                 <p style="margin: 5px; font-size: 16px">Email</p>
-                <p
-                  style="
+                <p style="
                     background-color: #d9d9d9;
                     padding: 8px;
                     width: 90%;
                     font-size: 14px;
                     border-radius: 5px;
-                  "
-                >
+                  ">
                   {{ project.datosAsesorEmpresarial.email }}
                 </p>
               </div>
               <div class="col-4">
                 <p style="margin: 5px; font-size: 16px">Telefono</p>
-                <p
-                  style="
+                <p style="
                     background-color: #d9d9d9;
                     padding: 8px;
                     width: 90%;
                     font-size: 14px;
                     border-radius: 5px;
-                  "
-                >
+                  ">
                   {{ project.datosAsesorEmpresarial.telefono }}
                 </p>
               </div>
@@ -1548,43 +1017,37 @@
               </div>
               <div class="col-4">
                 <p style="margin: 5px; font-size: 16px">Nombre</p>
-                <p
-                  style="
+                <p style="
                     background-color: #d9d9d9;
                     padding: 8px;
                     width: 90%;
                     font-size: 14px;
                     border-radius: 5px;
-                  "
-                >
+                  ">
                   {{ project.datosProyecto.nombre }}
                 </p>
               </div>
               <div class="col-8">
                 <p style="margin: 5px; font-size: 16px">Objetivo</p>
-                <p
-                  style="
+                <p style="
                     background-color: #d9d9d9;
                     padding: 8px;
                     width: 90%;
                     font-size: 14px;
                     border-radius: 5px;
-                  "
-                >
+                  ">
                   {{ project.datosProyecto.objetivo }}
                 </p>
               </div>
               <div class="col-12">
                 <p style="margin: 5px; font-size: 16px">Descripción</p>
-                <p
-                  style="
+                <p style="
                     background-color: #d9d9d9;
                     padding: 8px;
                     width: 90%;
                     font-size: 14px;
                     border-radius: 5px;
-                  "
-                >
+                  ">
                   {{ project.datosProyecto.descripcion }}
                 </p>
               </div>
@@ -1601,30 +1064,18 @@
           </div>
           <div class="col-12">
             <div class="row" v-if="existsAvance">
-              <div
-                class="col-md-3 col-lg-2 q-pt-md"
-                v-for="(progressPhase, i) in progress"
-                :key="i + 1"
-              >
-                <q-card
-                  v-ripple
-                  class="card my-card cursor-pointer q-hoverable"
-                  :style="{
-                    background: progressPhase.color,
-                    opacity: progressPhase.state === 'false' ? '0.7' : '1',
-                  }"
-                >
-                  <p
-                    class="text-white text-capitalize"
-                    style="font-size: 17px; margin: 0; user-select: none"
-                  >
+              <div class="col-md-3 col-lg-2 q-pt-md" v-for="(progressPhase, i) in progress" :key="i + 1">
+                <q-card v-ripple class="card my-card cursor-pointer q-hoverable" :style="{
+                  background: progressPhase.color,
+                  opacity: progressPhase.state === 'false' ? '0.7' : '1',
+                }" @click="
+                    toggleProgress(progressPhase.label, progressPhase.state)
+                  " >
+                  <p class="text-white text-capitalize" style="font-size: 17px; margin: 0; user-select: none">
                     {{ progressPhase.label }}
                   </p>
                 </q-card>
-                <p
-                  v-if="progressPhase.state !== 'false'"
-                  style="margin: 5px 0 0 15px; font-size: 12px; color: #777767"
-                >
+                <p v-if="progressPhase.state !== 'false'" style="margin: 5px 0 0 15px; font-size: 12px; color: #777767">
                   Revisado el {{ progressPhase.date }}
                 </p>
               </div>
@@ -1647,13 +1098,9 @@ import { useFilterStore } from "src/stores/filter-store";
 import { useDataApiStore } from "src/stores/data-api-store";
 import { api } from "src/boot/axios";
 import { format } from "date-fns";
-import UserNavbar from "src/components/UserNavbar.vue";
 
 export default defineComponent({
   name: "admin-alumnoId",
-  components: {
-    UserNavbar,
-  },
   setup() {
     const dataApiStore = useDataApiStore();
     const filterStore = useFilterStore();
@@ -1664,6 +1111,15 @@ export default defineComponent({
     const actualSection = ref(1);
 
     const actualPhase = ref(0);
+    const actualDocument = ref({
+      label: "",
+      name: "",
+      state: {
+        name: "",
+        motive: "",
+        date: "",
+      },
+    });
 
     // Dialogs
     const dialogCpaState = ref(false);
@@ -1688,6 +1144,7 @@ export default defineComponent({
     const isEditingProject = ref(false);
 
     const dialogPrintOptions = ref(false);
+    const dialogPrinting = ref(false);
 
     const dialogDeleteCPA = ref(false);
     const dialogDeleteProject = ref(false);
@@ -1730,69 +1187,97 @@ export default defineComponent({
       color: "",
     });
     const documentsToShow = ref(null);
+
     const documents = ref([
       {
-        label: "Curriculum Vitae",
-        name: "curriculum",
+        label: "Curriculum Vitae Español",
+        name: "cve",
+        icon: "description",
+        state: "Sin entregar",
+        motive: "",
+        date: "",
         path: "",
-        phase: 1,
-        dialog: false,
       },
       {
-        label: "Seguro facultativo",
-        name: "nss",
+        label: "Curriculum Vitae Inglés",
+        name: "cvi",
+        icon: "description",
+        state: "Sin entregar",
+        motive: "",
+        date: "",
         path: "",
-        phase: 1,
-        dialog: false,
       },
       {
-        label: "Carta presentación",
+        label: "Carta Presentación",
         name: "cpa",
+        icon: "mail",
+        state: "Sin entregar",
+        motive: "",
+        date: "",
         path: "",
-        phase: 1,
-        dialog: false,
       },
       {
-        label: "Carta de aceptación",
+        label: "Carta Aceptación",
         name: "caa",
+        icon: "mail",
+        state: "Sin entregar",
+        motive: "",
+        date: "",
         path: "",
-        phase: 2,
-        dialog: false,
       },
       {
-        label: "Reporte de proyecto",
-        name: "reporte",
+        label: "Constancia de Vigencia de Seguro Social",
+        name: "nss",
+        icon: "contact_page",
+        state: "Sin entregar",
+        motive: "",
+        date: "",
         path: "",
-        phase: 3,
-        dialog: false,
       },
       {
-        label: "Rubrica de evaluación",
-        name: "rubrica",
-        path: "",
-        phase: 4,
-        dialog: false,
-      },
-      {
-        label: "Dictamen",
+        label: "F-PSE-DICA-17 Estadias en Sector Productivo",
         name: "dictamen",
+        icon: "summarize",
+        state: "Sin entregar",
+        motive: "",
+        date: "",
         path: "",
-        phase: 4,
-        dialog: false,
       },
       {
-        label: "Protesta de ley",
+        label: "F-PSE-DICA-18 Protesta de ley",
         name: "protesta",
+        icon: "gavel",
+        state: "Sin entregar",
+        motive: "",
+        date: "",
         path: "",
-        phase: 4,
-        dialog: false,
       },
       {
-        label: "Carta terminación",
-        name: "cta",
+        label: "F-PSE-DICA-19 Rubrica de Evaluación",
+        name: "rubrica",
+        icon: "assignment",
+        state: "Sin entregar",
+        motive: "",
+        date: "",
         path: "",
-        phase: 5,
-        dialog: false,
+      },
+      {
+        label: "Reporte Proyecto de Estadias",
+        name: "reporte",
+        icon: "article",
+        state: "Sin entregar",
+        motive: "",
+        date: "",
+        path: "",
+      },
+      {
+        label: "Carta Terminación Proyecto",
+        name: "ctp",
+        icon: "mail",
+        state: "Sin entregar",
+        motive: "",
+        date: "",
+        path: "",
       },
     ]);
 
@@ -1815,7 +1300,7 @@ export default defineComponent({
       try {
         studentsLoaded.value = true;
         api
-          .post(`http://localhost:3000/admin/alumno/perfil`, {
+          .post(`./admin/alumno/perfil`, {
             idAlumno: idStudent._value,
           })
           .then((res) => {
@@ -1823,7 +1308,8 @@ export default defineComponent({
             if (res.data.msg) {
               console.log(res.data.msg);
             } else {
-              if (res.data.cartaPresentacion) {
+              
+              if (res.data.cartaPresentacion && res.data.cartaPresentacion != null) {
                 existsCPA.value = true;
                 const cpa = res.data.cartaPresentacion;
                 cpaState.value.label = cpa.estado.nombre;
@@ -1831,7 +1317,7 @@ export default defineComponent({
                 cpaState.value.date = formatDate(cpa.estado.fecha);
                 cpaState.value.color = definePhaseColor(cpa.estado.nombre);
               }
-              if (res.data.anteproyecto) {
+              if (res.data.anteproyecto && res.data.anteproyecto != null) {
                 existAnteproyecto.value = true;
                 const projectData = res.data.anteproyecto;
                 project.value = projectData;
@@ -1845,7 +1331,8 @@ export default defineComponent({
               } else {
                 existAnteproyecto.value = false;
               }
-              if (res.data.avance) {
+              if (res.data.avance && res.data.avance != null) {
+                console.log(res.data);
                 existsAvance.value = true;
                 const progressData = res.data.avance;
                 const progressArray = [];
@@ -1862,27 +1349,24 @@ export default defineComponent({
               } else {
                 existsAvance.value = false;
               }
-              if (res.data.documentos) {
+              if (res.data.documentos && res.data.documentos != null) {
                 existsDocumentos.value = true;
-                const documentos = res.data.documentos;
-                allPhasesState.value = documentos.etapas;
-                Object.keys(documentos).map((key, i) => {
-                  const allDocuments = documents.value;
-                  allDocuments.map((document) => {
-                    if (key === document.name) {
-                      document.path = documentos[key].archivo;
-                    }
-                  });
+                const documentsData = res.data.documentos;
+                Object.keys(documentsData).map((document) => {
+                  const name = document.replace('.pdf', '');
+                  const foundDocument = documents.value.findIndex(document => document.name === name);
+                  documents.value[foundDocument].path = documentsData[document].archivo;
+                  documents.value[foundDocument].state = documentsData[document].estado;
+                  documents.value[foundDocument].motive = documentsData[document].motivo !== undefined ? documentsData[document].motivo : "";
+                  documents.value[foundDocument].date = documentsData[document].fecha;
                 });
               } else {
                 existsDocumentos.value = false;
               }
-              res.data.avance
-                ? (existsAvance.value = true)
-                : (existsAvance.value = false);
               student.value = res.data;
               setTimeout(() => {
                 studentsLoaded.value = false;
+                console.log("Loaded")
               }, 2000);
             }
           })
@@ -1902,36 +1386,10 @@ export default defineComponent({
     }
 
     function toBackPhase() {
-      actualPhase.value = 0;
       phaseState.value.label = "";
       phaseState.value.motive = "";
       phaseState.value.date = "";
       phaseState.value.color = "";
-    }
-
-    function toShowPhase(phase) {
-      actualPhase.value = phase;
-      const phaseData = allPhasesState.value[phase];
-      console.log(phaseData);
-      if (phaseData !== undefined) {
-        phaseState.value.label = phaseData.estado;
-        phaseState.value.motive = phaseData.motivo;
-        phaseState.value.date = phaseData.fecha;
-        phaseState.value.color = definePhaseColor(phaseData.estado);
-      } else {
-        phaseState.value.label = "Sin comenzar";
-        phaseState.value.motive = "";
-        phaseState.value.date = "";
-        phaseState.value.color = definePhaseColor("Sin comenzar");
-      }
-      const allDocuments = documents.value;
-      const depuredDocuments = [];
-      allDocuments.map((document) => {
-        if (document.phase === phase) {
-          depuredDocuments.push(document);
-        }
-      });
-      documentsToShow.value = depuredDocuments;
     }
 
     function toBack() {
@@ -1990,7 +1448,7 @@ export default defineComponent({
         },
       };
       api
-        .patch(`http://localhost:3000/admin/alumno/perfil/cpa/modificar`, {
+        .patch(`./admin/alumno/perfil/cpa/modificar`, {
           idAlumno: idStudent._value,
           cpa,
         })
@@ -2044,11 +1502,11 @@ export default defineComponent({
         }, 1000);
         return;
       }
-      const nameFile = `${name}_${extractNameFromPath(path)}`;
+      const nameFile = `${name}`;
       downloadingDocument.value = true;
       api
         .post(
-          `http://localhost:3000/admin/alumno/perfil/documento/descargar`,
+          `./admin/alumno/perfil/documento/descargar`,
           {
             idAlumno: idStudent._value,
             nombreDocumento: name,
@@ -2085,6 +1543,19 @@ export default defineComponent({
         });
     }
 
+    function setActualDocument(nameDocument) {
+      console.log(nameDocument);
+      const foundDocument = documents.value.find(document => document.name === nameDocument);
+      console.log(foundDocument);
+      actualDocument.value.label = foundDocument.label;
+      actualDocument.value.name = foundDocument.name;
+      actualDocument.value.path = foundDocument.path;
+      actualDocument.value.state.name = foundDocument.state;
+      actualDocument.value.state.motive = foundDocument.motive !== undefined ? foundDocument.motive : '';
+      actualDocument.value.state.date = foundDocument.date;
+      console.log(actualDocument.value.state);
+    }
+
     function extractNameFromPath(path) {
       const regex = /documents\\(.+)_\w{24}\\/;
       const match = path.match(regex);
@@ -2098,7 +1569,7 @@ export default defineComponent({
     }
 
     function definePhaseColor(state) {
-      if (state === "Sin comenzar") {
+      if (state === "Sin comenzar" || state === "Sin finalizar") {
         return "#FFC107";
       }
       if (state === "En revision" || state === "En revisión") {
@@ -2114,21 +1585,40 @@ export default defineComponent({
     }
 
     function defineProgressBackground(phase) {
-      if (phase === "anteproyecto" || phase === "revision") {
-        return "#000";
+      if (phase === "anteproyecto") {
+        return "#ff0000";
       }
       if (phase === "25%") {
-        return "#F44336";
+        return "#ff2f2f";
       }
       if (phase === "50%") {
-        return "#FF9800";
+        return "#FF8C00";
       }
       if (phase === "75%") {
-        return "#ffc107";
+        return "#FFA500";
       }
       if (phase === "100%") {
+        return "#ffc107";
+      }
+      if (phase === "revision") {
         return "#8BC34A";
       }
+    }
+
+    function defineDocumentStateColor(state) {
+      if (state === "Sin entregar") {
+        return "#FFC107";
+      }
+      if (state === "En revision" || state === "En revisión") {
+        return "#FF8D4D";
+      }
+      if (state === "Aceptada") {
+        return "#0ECC43";
+      }
+      if (state === "Rechazada") {
+        return "#F44336";
+      }
+      return "black";
     }
 
     function formatDate(dateString) {
@@ -2137,23 +1627,25 @@ export default defineComponent({
     }
 
     function setPhaseState(state, motive = "") {
+      console.log({ state, motive });
       api
         .post(
-          `http://localhost:3000/admin/alumno/perfil/documentos/etapa-toggle`, // http://localhost:3000/admin/alumno/perfil/documentos/etapa-toggle
+          `./admin/alumno/perfil/documentos/documento-toggle`,
           {
             idAlumno: idStudent._value,
-            etapa: actualPhase.value,
+            documento: actualDocument.value.name + ".pdf",
             estado: state,
             motivo: motive,
           }
         )
         .then((res) => {
           console.log(res.data);
-          phaseState.label;
-          phaseState.value.label = res.data.estado;
-          phaseState.value.motive = res.data.motivo;
-          phaseState.value.date = res.data.fecha;
-          phaseState.value.color = definePhaseColor(res.data.estado);
+          const updatedDocument = res.data;
+          const nameDocument = updatedDocument.documento.replace(".pdf", "");
+          const foundDocument = documents.value.findIndex(document => document.name === nameDocument);
+          documents.value[foundDocument].state = updatedDocument.estado;
+          documents.value[foundDocument].motive = updatedDocument.motivo;
+          documents.value[foundDocument].date = updatedDocument.fecha;
           dialogChangePhaseState.value = false;
           dialogDenyPhase.value = false;
         })
@@ -2210,7 +1702,7 @@ export default defineComponent({
         },
       };
       api
-        .patch(`http://localhost:3000/admin/alumno/perfil/cpa/modificar`, {
+        .patch(`./admin/alumno/perfil/cpa/modificar`, {
           idAlumno: idStudent._value,
           cpa,
         })
@@ -2238,8 +1730,9 @@ export default defineComponent({
 
     function printCPA(type) {
       console.log(student.value);
+      dialogPrintOptions.value = false;
+      dialogPrinting.value = true;
       const career = student.value.nivelAcademico;
-      console.log(career);
       let careerLabel = "";
       if (
         career === "Tecnico Superior Universitario" ||
@@ -2253,14 +1746,28 @@ export default defineComponent({
       const fullname =
         `${student.value.nombre} ${student.value.apPaterno} ${student.value.apMaterno}`.toUpperCase();
       const actualDate = new Date();
+      const month = (actualDate.getMonth() + 1).toString();
+      let monthString = "";
+      month == "1" ? monthString = "Enero" : "";
+      month == "2" ? monthString = "Febrero" : "";
+      month == "3" ? monthString = "Marzo" : "";
+      month == "4" ? monthString = "Abril" : "";
+      month == "5" ? monthString = "Mayo" : "";
+      month == "6" ? monthString = "Junio" : "";
+      month == "7" ? monthString = "Julio" : "";
+      month == "8" ? monthString = "Agosto" : "";
+      month == "9" ? monthString = "Septiembre" : "";
+      month == "10" ? monthString = "Octubre" : "";
+      month == "11" ? monthString = "Noviembre" : "";
+      month == "12" ? monthString = "Diciembre" : "";
       console.log(typeCPA);
       api
         .post(
-          `http://localhost:3000/admin/alumno/perfil/cpa/imprimir`,
+          `./admin/alumno/perfil/cpa/imprimir`,
           {
             tipo: typeCPA,
             dia: actualDate.getDate().toString(),
-            mes: (actualDate.getMonth() + 1).toString(),
+            mes: monthString,
             año: actualDate.getFullYear().toString(),
             carrera: student.value.carrera.toUpperCase(),
             area: student.value.area.toUpperCase(),
@@ -2272,12 +1779,11 @@ export default defineComponent({
           }
         )
         .then((res) => {
-          // Crear un objeto Blob a partir del contenido del archivo Word
+          dialogPrinting.value = false;
           const blob = new Blob([res.data], {
             type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
           });
 
-          // Crear una URL temporal para descargar el archivo Word
           const url = URL.createObjectURL(blob);
 
           // Crear un enlace de descarga
@@ -2285,20 +1791,19 @@ export default defineComponent({
           link.href = url;
           link.setAttribute("download", `carta_generada.docx`);
 
-          // Hacer clic en el enlace para iniciar la descarga
           link.click();
 
-          // Liberar la URL temporal
           URL.revokeObjectURL(url);
         })
         .catch((err) => {
           console.error(err);
+          dialogPrinting.value = false;
         });
     }
 
     function toDeleteCPA() {
       api
-        .patch(`http://localhost:3000/admin/alumno/perfil/cpa/eliminar`, {
+        .patch(`./admin/alumno/perfil/cpa/eliminar`, {
           idAlumno: idStudent._value,
         })
         .then((res) => {
@@ -2313,7 +1818,35 @@ export default defineComponent({
         });
     }
 
-    function toDeleteProject() {}
+    function toggleProgress(phase, state) {
+      console.log({
+        phase,
+        state,
+      });
+      const stateBool = !JSON.parse(state);
+      const finalState = stateBool.toString();
+      api
+        .post(
+          `./asesor/alumno/perfil/avance/etapa-toggle`,
+          {
+            idAlumno: idStudent._value,
+            etapa: phase,
+            estado: finalState,
+          }
+        )
+        .then((res) => {
+          console.log(res.data);
+          const data = res.data;
+          const index = progress.value.findIndex(
+            (element) => element.label === phase
+          );
+          progress.value[index].state = data.estado;
+          progress.value[index].date = data.fecha;
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    }
 
     onMounted(() => {
       loadStudent();
@@ -2330,7 +1863,7 @@ export default defineComponent({
       toBack,
       phases,
       actualPhase,
-      toShowPhase,
+      actualDocument,
       showSection,
       actualSection,
       dialogChangeCPAState,
@@ -2392,7 +1925,10 @@ export default defineComponent({
       dialogDeleteCPA,
       dialogDeleteProject,
       toDeleteCPA,
-      toDeleteProject,
+      dialogPrinting,
+      defineDocumentStateColor,
+      setActualDocument,
+      toggleProgress,
     };
   },
 });
@@ -2402,6 +1938,7 @@ export default defineComponent({
 .my-card:hover {
   background-color: #f0f0f0;
 }
+
 .project-title {
   margin: 10px 5px;
   padding-bottom: 3px;
@@ -2409,6 +1946,7 @@ export default defineComponent({
   font-weight: 500;
   border-bottom: 1px solid #e0e0e0;
 }
+
 .card {
   width: 120px;
   height: 120px;
@@ -2418,7 +1956,8 @@ export default defineComponent({
   align-items: center;
   font-size: 25px;
   font-weight: bold;
-  margin: 0 10px; /* Ajusta el espacio entre los recuadros */
+  margin: 0 10px;
+  /* Ajusta el espacio entre los recuadros */
   user-select: none;
 }
 
@@ -2517,24 +2056,30 @@ input {
   padding: 5px;
   border-radius: 4px;
   border: 1px solid #000;
-  background-color: #ddd; /* Fondo gris por defecto */
-  font-size: 20px; /* Tamaño de fuente más grande */
+  background-color: #ddd;
+  /* Fondo gris por defecto */
+  font-size: 20px;
+  /* Tamaño de fuente más grande */
 }
 
 input:focus {
-  background-color: #fff; /* Fondo blanco al recibir clic */
+  background-color: #fff;
+  /* Fondo blanco al recibir clic */
 }
 
 .custom-select .q-field__native {
-  font-size: 20px; /* Tamaño de fuente más grande */
+  font-size: 20px;
+  /* Tamaño de fuente más grande */
 }
 
 .custom-select .q-field__native:focus {
-  outline: none; /* Quita el contorno por defecto al enfocar */
+  outline: none;
+  /* Quita el contorno por defecto al enfocar */
 }
 
 .custom-select .q-field__native::selection {
-  background-color: transparent; /* Evita el recuadro adicional al seleccionar texto */
+  background-color: transparent;
+  /* Evita el recuadro adicional al seleccionar texto */
 }
 
 @media (max-width: 768px) {
@@ -2618,17 +2163,11 @@ input:focus {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:hover:before {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:hover:before {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:hover:after {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:hover:after {
     background-color: transparent;
   }
 
@@ -2636,17 +2175,11 @@ input:focus {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:active:before {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:active:before {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:active:after {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:active:after {
     background-color: transparent;
   }
 
@@ -2654,17 +2187,11 @@ input:focus {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:focus:before {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:focus:before {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:focus:after {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:focus:after {
     background-color: transparent;
   }
 
@@ -2672,17 +2199,11 @@ input:focus {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:visited:before {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:visited:before {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:visited:after {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:visited:after {
     background-color: transparent;
   }
 
@@ -2690,17 +2211,11 @@ input:focus {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:disabled:before {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:disabled:before {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:disabled:after {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:disabled:after {
     background-color: transparent;
   }
 
@@ -2747,17 +2262,11 @@ input:focus {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:hover:before {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:hover:before {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:hover:after {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:hover:after {
     background-color: transparent;
   }
 
@@ -2765,17 +2274,11 @@ input:focus {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:active:before {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:active:before {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:active:after {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:active:after {
     background-color: transparent;
   }
 
@@ -2783,17 +2286,11 @@ input:focus {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:focus:before {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:focus:before {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:focus:after {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:focus:after {
     background-color: transparent;
   }
 
@@ -2801,17 +2298,11 @@ input:focus {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:visited:before {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:visited:before {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:visited:after {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:visited:after {
     background-color: transparent;
   }
 
@@ -2819,17 +2310,11 @@ input:focus {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:disabled:before {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:disabled:before {
     background-color: transparent;
   }
 
-  .container-fluid
-    div:nth-child(2)
-    div:last-child
-    q-btn.q-btn--flat:disabled:after {
+  .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:disabled:after {
     background-color: transparent;
   }
 
@@ -2848,5 +2333,28 @@ input:focus {
   .container-fluid div:nth-child(2) div:last-child q-btn.q-btn--flat:after {
     background-color: transparent;
   }
+}
+
+
+.file-name {
+  font-size: 12px !important;
+  opacity: 0.8;
+  text-transform: lowercase !important;
+}
+
+.custom-upload-button {
+  display: inline-block;
+  background-color: black;
+  color: white;
+  padding: 4px 15px;
+  margin: 3px;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  text-transform: none;
+}
+
+.custom-upload-button:hover {
+  background-color: #333;
 }
 </style>

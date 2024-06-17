@@ -34,9 +34,18 @@ const upload = multer({ storage: storage });
 // POST - Obtener toda la informacion de un alumno por id
 router.post('/id', async (req, res) => {
     try {
-        const alumno = await Alumno.findById(req.body.id);
+        const idAlumno = req.body.id
+        console.log({idAlumno})
+
+        // Validación del ID
+        if (!mongoose.Types.ObjectId.isValid(idAlumno)) {
+            return res.status(400).json({ message: 'ID de alumno no válido' });
+        }
+
+        const alumno = await Alumno.findById(idAlumno);
         res.json(alumno);
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: error.message });
     }
 });
@@ -52,6 +61,7 @@ router.post('/cpa', async (req, res) => {
         }
         const estadia = await Estadia.findOne(filtro);
 
+        if (!estadia) return res.json("No se encontro ninguna carta presentacion");
         if (estadia.cartaPresentacion !== null && estadia.cartaPresentacion !== undefined) {
             const infoCPA = {
                 estado: {
@@ -93,10 +103,9 @@ router.post('/cpa', async (req, res) => {
                 },
                 fechaRegistro: estadia.cartaPresentacion.fechaRegistro
             };
-            res.json(infoCPA);
-        } else {
-            res.json("No se encontro ninguna carta presentacion");
+            return res.json(infoCPA);
         }
+        res.json("No se encontro ninguna carta presentacion");
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -120,7 +129,7 @@ router.post('/cpa/crear', async (req, res) => {
             datosAlumno: {
                 nombres: {
                     nombre: req.body.cartaPresentacion.datosAlumno.nombres.nombre,
-                    apPaterno: req.body.cartaPresentacion.datosAlumno.nombres.apMaterno,
+                    apPaterno: req.body.cartaPresentacion.datosAlumno.nombres.apPaterno,
                     apMaterno: req.body.cartaPresentacion.datosAlumno.nombres.apMaterno
                 },
                 privado: {
@@ -152,6 +161,92 @@ router.post('/cpa/crear', async (req, res) => {
             fechaRegistro: new Date(req.body.cartaPresentacion.fechaRegistro)
         }
         estadia.cartaPresentacion = cpa;
+        
+        estadia.avance = {
+            "anteproyecto": {
+                "estado": "false",
+                "fecha": new Date(),
+            },
+            "25%": {
+                "estado": "false",
+                "fecha": new Date(),
+            },
+            "50%": {
+                "estado": "false",
+                "fecha": new Date(),
+            },
+            "75%": {
+                "estado": "false",
+                "fecha": new Date(),
+            },
+            "100%": {
+                "estado": "false",
+                "fecha": new Date(),
+            },
+            "revision": {
+                "estado": "false",
+                "fecha": new Date(),
+            }
+        }
+        
+        const updatedEstadia = estadia.save();
+        res.status(201).json(updatedEstadia);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+});
+
+// POST - Guardar datos para carta presentacion
+router.post('/cpa/guardar', async (req, res) => {
+    try {
+        const idAlumno = req.body.idAlumno;
+        const filtro = {
+            idAlumno: new ObjectId(idAlumno)
+        }
+        const estadia = await Estadia.findOne(filtro);
+
+        const cpa = {
+            estado: {
+                nombre: req.body.cartaPresentacion.estado.nombre,
+                motivo: req.body.cartaPresentacion.estado.motivo,
+                fecha: new Date(req.body.cartaPresentacion.estado.fecha)
+            },
+            datosAlumno: {
+                nombres: {
+                    nombre: req.body.cartaPresentacion.datosAlumno.nombres.nombre,
+                    apPaterno: req.body.cartaPresentacion.datosAlumno.nombres.apPaterno,
+                    apMaterno: req.body.cartaPresentacion.datosAlumno.nombres.apMaterno
+                },
+                privado: {
+                    matricula: req.body.cartaPresentacion.datosAlumno.privado.matricula,
+                    email: req.body.cartaPresentacion.datosAlumno.privado.email
+                },
+                telefonoCelular: req.body.cartaPresentacion.datosAlumno.telefonoCelular,
+                telefonoCasa: req.body.cartaPresentacion.datosAlumno.telefonoCasa,
+                nss: req.body.cartaPresentacion.datosAlumno.nss,
+                curp: req.body.cartaPresentacion.datosAlumno.curp
+            },
+            datosAcademicos: {
+                datosAcademicosAlumno: {
+                    nivelAcademico: req.body.cartaPresentacion.datosAcademicos.datosAcademicosAlumno.nivelAcademico,
+                    turno: req.body.cartaPresentacion.datosAcademicos.datosAcademicosAlumno.turno,
+                    carrera: req.body.cartaPresentacion.datosAcademicos.datosAcademicosAlumno.carrera,
+                    area: req.body.cartaPresentacion.datosAcademicos.datosAcademicosAlumno.area,
+                    grado: req.body.cartaPresentacion.datosAcademicos.datosAcademicosAlumno.grado,
+                    grupo: req.body.cartaPresentacion.datosAcademicos.datosAcademicosAlumno.grupo
+                },
+                periodo: req.body.cartaPresentacion.datosAcademicos.periodo,
+                año: req.body.cartaPresentacion.datosAcademicos.año
+            },
+            datosEmpresa: {
+                nombreEmpresa: req.body.cartaPresentacion.datosEmpresa.nombreEmpresa,
+                nombreEmpresario: req.body.cartaPresentacion.datosEmpresa.nombreEmpresario,
+                puestoEmpresario: req.body.cartaPresentacion.datosEmpresa.puestoEmpresario
+            },
+            fechaRegistro: new Date(req.body.cartaPresentacion.fechaRegistro)
+        }
+
+        estadia.cartaPresentacion = cpa;
         const updatedEstadia = estadia.save();
         res.status(201).json(updatedEstadia);
     } catch (error) {
@@ -176,9 +271,9 @@ router.patch('/cpa/modificar', async (req, res) => {
 
         const datosAlumno = cpa.datosAlumno;
         const nombres = datosAlumno.nombres;
-        estadia.cartaPresentacion.datosAlumno.nombres.nombre = nombres.nombre || estadia.cartaPresentacion.datosAlumno.nombres.nombre;
-        estadia.cartaPresentacion.datosAlumno.nombres.apPaterno = nombres.apPaterno || estadia.cartaPresentacion.datosAlumno.nombres.apPaterno;
-        estadia.cartaPresentacion.datosAlumno.nombres.apMaterno = nombres.apMaterno || estadia.cartaPresentacion.datosAlumno.nombres.apMaterno;
+        estadia.cartaPresentacion.datosAlumno.nombres.nombre = nombres.nombre || "";
+        estadia.cartaPresentacion.datosAlumno.nombres.apPaterno = nombres.apPaterno || "";
+        estadia.cartaPresentacion.datosAlumno.nombres.apMaterno = nombres.apMaterno || "";
 
         const privado = datosAlumno.privado;
         estadia.cartaPresentacion.datosAlumno.privado.matricula = privado.matricula || estadia.cartaPresentacion.datosAlumno.privado.matricula;
@@ -230,34 +325,21 @@ router.get('/etapas', async (req, res) => {
 // POST - Subir documentos y/o actualizar documentos
 router.post('/documentos/subir', upload.array('archivos'), async (req, res) => {
     try {
-        const { idAlumno, apellidoPaterno, apellidoMaterno, nombre, etapa } = req.body;
+        const { idAlumno, apellidoPaterno, apellidoMaterno, nombre } = req.body;
         const filtro = {
             idAlumno: new ObjectId(idAlumno)
         }
         const estadia = await Estadia.findOne(filtro);
         if (!estadia.documentos) {
-            estadia.documentos = {
-                etapas: {}
-            };
-        }
-
-        if (estadia.documentos.etapas[etapa] === null || estadia.documentos.etapas[etapa] === undefined) {
-            estadia.documentos.etapas[etapa] = {
-                estado: 'En revision',
-                motivo: 'Se estan validando tus documentos',
-                fecha: new Date()
-            }
-        } else {
-            estadia.documentos.etapas[etapa].estado = "En reivision";
-            estadia.documentos.etapas[etapa].estado = "Se estan validando tus documentos";
-            estadia.documentos.etapas[etapa].estado = new Date();
+            estadia.documentos = {};
         }
 
         const alumnoFolderName = `${apellidoPaterno}_${apellidoMaterno}_${nombre}_${idAlumno}`;
 
         for (const archivo of req.files) {
             let objKey = archivo.filename;
-            archivo.filename === "CurriculumVitae.pdf" ? objKey = "curriculum" : '';
+            archivo.filename === "CurriculumVitaeEspanol.pdf" ? objKey = "curriculumEspanol" : '';
+            archivo.filename === "CurriculumVitaeIngles.pdf" ? objKey = "curriculumIngles" : '';
             archivo.filename === "Segurofacultativo.pdf" ? objKey = "nss" : '';
             archivo.filename === "Cartapresentacion.pdf" ? objKey = "cpa" : '';
             archivo.filename === "Cartaaceptacion.pdf" ? objKey = "caa" : '';
@@ -270,9 +352,13 @@ router.post('/documentos/subir', upload.array('archivos'), async (req, res) => {
 
             if (estadia.documentos[objKey]) {
                 estadia.documentos[objKey].archivo = pathFile;
+                estadia.documentos[objKey].estado = "En revision"
+                estadia.documentos[objKey].fecha = new Date();
             } else {
                 estadia.documentos[objKey] = {
                     archivo: pathFile,
+                    estado: "En revision",
+                    fecha: new Date(),
                 };
             }
         }
@@ -399,7 +485,6 @@ router.post('/academico/anteproyecto/crear', async (req, res) => {
             fechaRegistro: req.body.anteproyecto.fechaRegistro
         }
 
-        // Corregir objeto
         estadia.avance = {
             "anteproyecto": {
                 "estado": "false",
@@ -427,6 +512,78 @@ router.post('/academico/anteproyecto/crear', async (req, res) => {
             }
         }
 
+        const newAnteproyecto = await estadia.save();
+        res.status(201).json(newAnteproyecto);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+});
+
+// POST - Guardar anteproyecto
+router.post('/academico/anteproyecto/guardar', async (req, res) => {
+    try {
+        const idAlumno = req.body.idAlumno;
+        const idAsesor = req.body.idAsesor;
+        const filtro = {
+            idAlumno: new ObjectId(idAlumno)
+        }
+        const estadia = await Estadia.findOne(filtro);
+
+        estadia.idAsesor = new ObjectId(idAsesor);
+
+        estadia.anteproyecto = {
+            datosAsesorAcademico: {
+                nombre: req.body.anteproyecto.datosAsesorAcademico.nombre,
+                email: req.body.anteproyecto.datosAsesorAcademico.email,
+                telefono: req.body.anteproyecto.datosAsesorAcademico.telefono
+            },
+            datosAsesorEmpresarial: {
+                nombre: req.body.anteproyecto.datosAsesorEmpresarial.nombre,
+                email: req.body.anteproyecto.datosAsesorEmpresarial.email,
+                telefono: req.body.anteproyecto.datosAsesorEmpresarial.telefono
+            },
+            datosProyecto: {
+                nombre: req.body.anteproyecto.datosProyecto.nombre,
+                objetivo: req.body.anteproyecto.datosProyecto.objetivo,
+                descripcion: req.body.anteproyecto.datosProyecto.descripcion
+            },
+            estado: {
+                nombre: req.body.anteproyecto.estado.nombre,
+                motivo: req.body.anteproyecto.estado.motivo,
+                fecha: req.body.anteproyecto.estado.fecha
+            },
+            fechaRegistro: req.body.anteproyecto.fechaRegistro
+        }
+
+        if (!estadia.avance){
+            estadia.avance = {
+                "anteproyecto": {
+                    "estado": "false",
+                    "fecha": new Date(),
+                },
+                "25%": {
+                    "estado": "false",
+                    "fecha": new Date(),
+                },
+                "50%": {
+                    "estado": "false",
+                    "fecha": new Date(),
+                },
+                "75%": {
+                    "estado": "false",
+                    "fecha": new Date(),
+                },
+                "100%": {
+                    "estado": "false",
+                    "fecha": new Date(),
+                },
+                "revision": {
+                    "estado": "false",
+                    "fecha": new Date(),
+                }
+            }
+        }
+        
         const newAnteproyecto = await estadia.save();
         res.status(201).json(newAnteproyecto);
     } catch (error) {

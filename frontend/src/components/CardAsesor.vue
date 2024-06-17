@@ -38,9 +38,10 @@
             font-weight: 400;
             text-transform: capitalize;
             padding: 10px 40px;
+            background: #1ab192;
+            color: white;
           "
           rounded
-          color="black"
           label="Ver perfil"
           :to="{ name: 'admin-asesorId', params: { id: idAsesor } }"
         ></q-btn>

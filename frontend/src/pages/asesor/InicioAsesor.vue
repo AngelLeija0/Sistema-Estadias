@@ -3,6 +3,7 @@
     <AdminNabvar
       @filter-students="loadStudents"
       @clear-filter-students="loadStudents"
+      style="display: none;"
     ></AdminNabvar>
   </div>
   <div class="container-fluid">
@@ -458,7 +459,7 @@ export default defineComponent({
       }
       api
         .post(
-          `http://localhost:3000/asesor/inicio/excel`,
+          `./asesor/inicio/excel`,
           {
             idAsesor: idAsesor,
             filtro: filter,

@@ -3,6 +3,7 @@
     ref="adminNavbar"
     @filter-advisors="loadAdvisors"
     @clear-filter-advisors="loadAdvisors"
+    style="display: none;"
   ></AdminNabvar>
   <div class="container-fluid">
     <q-card-actions
@@ -25,12 +26,12 @@
           Buscando registros por:
         </h5>
         <p
-          style="text-transform: capitalize; font-size: 14px"
+          style="text-transform: normal; font-size: 14px"
           v-if="filteringBy === ''"
         >
           Todos los registros
         </p>
-        <p style="text-transform: capitalize; font-size: 14px" v-else>
+        <p style="text-transform: normal; font-size: 14px" v-else>
           {{ filteringBy }}
         </p>
       </div>
@@ -97,11 +98,12 @@
       <q-card-actions>
         <q-btn
           class="q-icon-sm"
-          color="black"
           text-color="white"
           label="Agregar un nuevo asesor"
           icon="add"
           style="
+            background: #1ab192;
+            color: white;
             margin: 3px;
             padding: 1px 15px;
             text-transform: none;
@@ -113,7 +115,7 @@
       <q-dialog v-model="dialogAddAdvisor">
         <q-card
           class="q-pt-md q-pl-md q-pr-md"
-          style="width: 700px; max-width: 80vw; height: 60vh"
+          style="width: 700px; max-width: 80vw; height: 63vh"
         >
           <div class="row q-ma-md">
             <div
@@ -147,9 +149,9 @@
                   <p style="margin: 5px; font-size: 16px">Nombre</p>
                   <div style="width: 90%">
                     <q-input
-                      dense
+                      outlined
                       v-model="dialogName"
-                      input-style="background-color: #D9D9D9; padding: 8px; font-size: 14px; border-radius: 5px;"
+                      input-style="padding: 8px; font-size: 14px; border-radius: 5px;"
                     />
                   </div>
                 </div>
@@ -157,9 +159,9 @@
                   <p style="margin: 5px; font-size: 16px">Apellido paterno</p>
                   <div style="width: 90%">
                     <q-input
-                      dense
+                      outlined
                       v-model="dialogLastname2"
-                      input-style="background-color: #D9D9D9; padding: 8px; font-size: 14px; border-radius: 5px;"
+                      input-style="padding: 8px; font-size: 14px; border-radius: 5px;"
                     />
                   </div>
                 </div>
@@ -167,9 +169,9 @@
                   <p style="margin: 5px; font-size: 16px">Apellido materno</p>
                   <div style="width: 90%">
                     <q-input
-                      dense
+                      outlined
                       v-model="dialogLastname1"
-                      input-style="background-color: #D9D9D9; padding: 8px; font-size: 14px; border-radius: 5px;"
+                      input-style="padding: 8px; font-size: 14px; border-radius: 5px;"
                     />
                   </div>
                 </div>
@@ -177,9 +179,9 @@
                   <p style="margin: 5px; font-size: 16px">Nombre de usuario</p>
                   <div style="width: 90%">
                     <q-input
-                      dense
+                      outlined
                       v-model="dialogUsername"
-                      input-style="background-color: #D9D9D9; padding: 8px; font-size: 14px; border-radius: 5px;"
+                      input-style="padding: 8px; font-size: 14px; border-radius: 5px;"
                     />
                   </div>
                 </div>
@@ -187,9 +189,10 @@
                   <p style="margin: 5px; font-size: 16px">Email</p>
                   <div style="width: 90%">
                     <q-input
-                      dense
+                      outlined
+                      suffix="@uttn.mx"
                       v-model="dialogEmail"
-                      input-style="background-color: #D9D9D9; padding: 8px; font-size: 14px; border-radius: 5px;"
+                      input-style="padding: 8px; font-size: 14px; border-radius: 5px;"
                     />
                   </div>
                 </div>
@@ -197,9 +200,9 @@
                   <p style="margin: 5px; font-size: 16px">Contraseña</p>
                   <div style="width: 90%">
                     <q-input
-                      dense
+                      outlined
                       v-model="dialogPassword"
-                      input-style="background-color: #D9D9D9; padding: 8px; font-size: 14px; border-radius: 5px;"
+                      input-style="padding: 8px; font-size: 14px; border-radius: 5px;"
                     />
                   </div>
                 </div>
@@ -207,19 +210,9 @@
                   <p style="margin: 5px; font-size: 16px">Numero de telefono</p>
                   <div style="width: 90%">
                     <q-input
-                      dense
+                      outlined
                       v-model="dialogPhonenumber"
-                      input-style="background-color: #D9D9D9; padding: 8px; font-size: 14px; border-radius: 5px;"
-                    />
-                  </div>
-                </div>
-                <div class="col-4 q-pb-lg">
-                  <p style="margin: 5px; font-size: 16px">Carrera</p>
-                  <div style="width: 90%">
-                    <q-input
-                      dense
-                      v-model="dialogCareer"
-                      input-style="background-color: #D9D9D9; padding: 8px; font-size: 14px; border-radius: 5px;"
+                      input-style="padding: 8px; font-size: 14px; border-radius: 5px;"
                     />
                   </div>
                 </div>
@@ -382,6 +375,7 @@ import { useFilterStore } from "src/stores/filter-store";
 import { useRouter } from "vue-router";
 import { useDataApiStore } from "src/stores/data-api-store";
 import { api } from "src/boot/axios";
+import { useUserStore } from "src/stores/user-store";
 import AdminNabvar from "src/components/AdminNavbar.vue";
 import CardAsesor from "src/components/CardAsesor.vue";
 
@@ -392,6 +386,7 @@ export default defineComponent({
     CardAsesor,
   },
   setup() {
+    const userStore = useUserStore();
     const dataApiStore = useDataApiStore();
     const advisors = ref([]);
     const filterStore = useFilterStore();
@@ -419,7 +414,7 @@ export default defineComponent({
     const dialogEmail = ref(null);
     const dialogPassword = ref(null);
     const dialogPhonenumber = ref(null);
-    const dialogCareer = ref(null);
+    const dialogCareer = ref(userStore.user.carrera);
 
     function loadFilter() {
       const filterData = window.sessionStorage.getItem("filter");
@@ -556,6 +551,7 @@ export default defineComponent({
     });
 
     return {
+      userStore,
       filterStore,
       dataApiStore,
       advisors,
@@ -642,7 +638,7 @@ export default defineComponent({
         this.dialogStateAdvisorAdded = true;
         api
           .post(
-            `http://localhost:3000/admin/asesores/crear`,
+            `./admin/asesores/crear`,
             {
               asesor: newAdvisor,
             }
@@ -731,7 +727,7 @@ export default defineComponent({
       }
       api
         .post(
-          `http://localhost:3000/admin/asesores/excel`,
+          `./admin/asesores/excel`,
           {
             filtro: filter,
           },

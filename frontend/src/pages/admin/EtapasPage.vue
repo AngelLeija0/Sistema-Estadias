@@ -1,5 +1,4 @@
 <template>
-  <UserNavbar></UserNavbar>
   <div class="container-fluid">
     <q-card-actions style="display: flex; justify-content: start">
       <q-btn
@@ -222,13 +221,9 @@ import { useDataApiStore } from "src/stores/data-api-store";
 import { useRouter } from "vue-router";
 import { api } from "src/boot/axios";
 import { format } from "date-fns";
-import UserNavbar from "src/components/UserNavbar.vue";
 
 export default defineComponent({
   name: "admin-etapas",
-  components: {
-    UserNavbar,
-  },
   setup() {
     const dataApiStore = useDataApiStore();
     const filterStore = useFilterStore();
@@ -263,7 +258,7 @@ export default defineComponent({
       console.log("Buscando etapas ...");
       api
         .post(
-          `http://localhost:3000/admin/administracion/etapas`,
+          `./admin/administracion/etapas`,
           {
             carrera: "Tecnologias de la Informacion",
           }
@@ -293,7 +288,7 @@ export default defineComponent({
       console.log("Cambiando estado de etapa ...");
       api
         .post(
-          `http://localhost:3000/admin/administracion/etapa/toggle`,
+          `./admin/administracion/etapa/toggle`,
           {
             carrera: "Tecnologias de la Informacion",
             etapa: phase,

@@ -1,29 +1,11 @@
 <template>
-  <div v-if="isNavbarWithDate">
-    <AdminNavbarWithDate
-      @filter-students="loadStudents"
-      @clear-filter-students="loadStudents"
-    >
-    </AdminNavbarWithDate>
-  </div>
-  <div v-else>
-    <AdminNabvar
-      @filter-students="loadStudents"
-      @clear-filter-students="loadStudents"
-    ></AdminNabvar>
+  <div>
+    <AdminNavbar @reload-students="loadStudents" style="display: none;"></AdminNavbar>
   </div>
   <div class="container-fluid">
-    <q-card-actions
-      style="background-color: #f5f5f5; display: flex; justify-content: start"
-    >
-      <q-btn
-        flat
-        color="black"
-        label="Regresar"
-        icon="arrow_left"
-        style="margin: 3px; text-transform: capitalize; font-size: 16px"
-        @click="toBack"
-      ></q-btn>
+    <q-card-actions style="background-color: #f5f5f5; display: flex; justify-content: start">
+      <q-btn flat color="black" label="Regresar" icon="arrow_left"
+        style="margin: 3px; text-transform: capitalize; font-size: 16px" @click="toBack"></q-btn>
     </q-card-actions>
   </div>
   <div class="container-fluid q-pb-lg" style="background-color: #f5f5f5">
@@ -32,73 +14,41 @@
         <h5 style="margin: 0 0 10px 0; font-size: 18px; font-weight: 500">
           Buscando registros por:
         </h5>
-        <p style="text-transform: capitalize; font-size: 14px">
+        <p style="text-transform: normal; font-size: 14px">
           {{ filteringBy }}
         </p>
       </div>
-      <div
-        class="col-6"
-        style="display: flex; justify-content: end; align-items: flex-start"
-      >
+      <div class="col-6" style="display: flex; justify-content: end; align-items: flex-start">
         <q-card-actions style="padding-top: 0">
           <q-btn-group flat>
-            <q-btn
-              class="q-icon-sm"
-              color="green-7"
-              text-color="white"
-              label="Excel"
-              bg-color="green"
-              icon="file_download"
-              style="
+            <q-btn class="q-icon-sm" color="green-7" text-color="white" label="Excel" bg-color="green"
+              icon="file_download" style="
                 margin: 3px;
                 padding: 1px 15px;
                 text-transform: capitalize;
                 font-size: 16px;
-              "
-              @click="dialogExcel = true"
-            ></q-btn>
+              " @click="dialogExcel = true"></q-btn>
             <q-dialog v-model="dialogExcel">
-              <q-card
-                class="q-pa-xl q-ma-lg"
-                style="width: 600px; background-color: #f5f5f5"
-              >
+              <q-card class="q-pa-xl q-ma-lg" style="width: 600px; background-color: #f5f5f5">
                 <div class="row">
                   <div class="col-6 q-px-md">
-                    <q-btn
-                      color="green-7"
-                      text-color="white"
-                      label="Excel General"
-                      style="
+                    <q-btn color="green-7" text-color="white" label="Excel General" style="
                         height: 100px;
                         text-transform: capitalize;
                         font-size: 16px;
                         width: 100%;
-                      "
-                      @click="toGenerateExcel('general')"
-                    />
+                      " @click="toGenerateExcel('general')" />
                   </div>
                   <div class="col-6 q-px-md">
-                    <q-btn
-                      color="green-7"
-                      text-color="white"
-                      label="Excel con filtros actuales"
-                      style="
+                    <q-btn color="green-7" text-color="white" label="Excel con filtros actuales" style="
                         height: 100px;
                         text-transform: capitalize;
                         font-size: 16px;
                         width: 100%;
-                      "
-                      @click="toGenerateExcel('specific')"
-                    />
+                      " @click="toGenerateExcel('specific')" />
                   </div>
                   <div class="col-12 q-pt-lg">
-                    <q-btn
-                      outline
-                      color="red"
-                      label="Cancelar"
-                      v-close-popup
-                      style="width: 100%"
-                    />
+                    <q-btn outline color="red" label="Cancelar" v-close-popup style="width: 100%" />
                   </div>
                 </div>
               </q-card>
@@ -107,26 +57,15 @@
             <div style="display: flex; align-items: center; padding-left: 30px">
               <p style="font-size: 16px; margin: 0">Mostrar</p>
             </div>
-            <q-btn-dropdown
-              outline
-              color="black"
-              :label="quantityRecords"
-              style="
+            <q-btn-dropdown outline color="black" :label="quantityRecords" style="
                 margin: 3px 5px;
                 padding: 0px 0px 0 10px;
                 text-transform: capitalize;
                 font-size: 16px;
-              "
-            >
+              ">
               <q-list>
-                <q-item
-                  v-for="record in filteredRecords"
-                  :key="record"
-                  :label="record"
-                  @click="setRecords(record)"
-                  clickable
-                  v-close-popup
-                >
+                <q-item v-for="record in filteredRecords" :key="record" :label="record" @click="setRecords(record)"
+                  clickable v-close-popup>
                   <q-item-section>
                     <q-item-label>{{ record }}</q-item-label>
                   </q-item-section>
@@ -141,16 +80,9 @@
       </div>
     </div>
   </div>
-  <div
-    class="container-fluid"
-    style="background-color: #f5f5f5; min-height: 50vh; margin-top: 0"
-  >
+  <div class="container-fluid" style="background-color: #f5f5f5; min-height: 50vh; margin-top: 0">
     <div class="row">
-      <div
-        class="col-12"
-        style="display: flex; justify-content: center"
-        v-if="studentsLoaded"
-      >
+      <div class="col-12" style="display: flex; justify-content: center" v-if="studentsLoaded">
         <q-card class="q-ma-lg">
           <q-card-section class="q-ml-xl q-mr-xl q-mt-sm q-mb-xl text-center">
             <h1 style="font-size: 24px; font-weight: 400">Cargando alumnos</h1>
@@ -158,22 +90,11 @@
           </q-card-section>
         </q-card>
       </div>
-      <div
-        class="col-lg-3 col-md-4 col-sm-6 col-6"
-        v-else
-        v-for="(student, i) in students"
-        :key="i"
-      >
-        <CardAlumno
-          v-bind="student"
-          class="q-ml-xl q-mr-xl q-mb-xl"
-        ></CardAlumno>
+      <div class="col-lg-3 col-md-4 col-sm-6 col-6" v-else v-for="(student, i) in students" :key="i">
+        <CardAlumno v-if="typeCard !== 'liberados'" v-bind="student" class="q-ml-xl q-mr-xl q-mb-xl"></CardAlumno>
+        <CardProyecto v-else v-bind="student" class="q-ml-xl q-mr-xl q-mb-xl"></CardProyecto>
       </div>
-      <div
-        class="col-12"
-        style="display: flex; justify-content: center"
-        v-if="studentsEmpty"
-      >
+      <div class="col-12" style="display: flex; justify-content: center" v-if="studentsEmpty">
         <q-card class="q-ma-lg">
           <q-card-section class="q-ml-xl q-mr-xl q-mt-sm q-mb-xl text-center">
             <h1 style="font-size: 24px; font-weight: 400">
@@ -196,46 +117,27 @@
       <div class="col-6" style="display: flex; justify-content: end">
         <q-card-actions>
           <q-btn-group flat>
-            <q-btn
-              v-if="actualPage > 1"
-              label="Anterior"
-              icon="navigate_before"
-              style="
+            <q-btn v-if="actualPage > 1" label="Anterior" icon="navigate_before" style="
                 margin: 3px;
                 padding: 1px 15px;
                 text-transform: capitalize;
                 font-size: 14px;
                 font-weight: 400;
-              "
-              @click="setPage(actualPage - 1)"
-            ></q-btn>
-            <q-btn
-              v-for="page in pages"
-              :key="page"
-              :color="page === actualPage ? 'dark' : 'grey-7'"
-              :label="page"
-              text-color="white"
-              style="
+              " @click="setPage(actualPage - 1)"></q-btn>
+            <q-btn v-for="page in pages" :key="page" :color="page === actualPage ? 'dark' : 'grey-7'" :label="page"
+              text-color="white" style="
                 margin: 3px;
                 padding: 1px 15px;
                 text-transform: capitalize;
                 font-size: 14px;
-              "
-              @click="setPage(page)"
-            ></q-btn>
-            <q-btn
-              v-if="actualPage + 1 <= pages.length"
-              label="Siguiente"
-              icon-right="navigate_next"
-              style="
+              " @click="setPage(page)"></q-btn>
+            <q-btn v-if="actualPage + 1 <= pages.length" label="Siguiente" icon-right="navigate_next" style="
                 margin: 3px;
                 padding: 1px 15px;
                 text-transform: capitalize;
                 font-size: 14px;
                 font-weight: 400;
-              "
-              @click="setPage(actualPage + 1)"
-            ></q-btn>
+              " @click="setPage(actualPage + 1)"></q-btn>
           </q-btn-group>
         </q-card-actions>
       </div>
@@ -256,19 +158,18 @@ import { useFilterStore } from "src/stores/filter-store";
 import { useRouter } from "vue-router";
 import { useDataApiStore } from "src/stores/data-api-store";
 import { api } from "src/boot/axios";
-import AdminNabvar from "src/components/AdminNavbar.vue";
-import AdminNavbarWithDate from "src/components/AdminNavbarWithDate.vue";
+import AdminNavbar from "src/components/AdminNavbar.vue";
 import CardAlumno from "src/components/CardAlumno.vue";
+import CardProyecto from "src/components/CardProyecto.vue";
 
 export default defineComponent({
   name: "admin-listaAlumnos",
   components: {
-    AdminNabvar,
-    AdminNavbarWithDate,
+    AdminNavbar,
     CardAlumno,
+    CardProyecto,
   },
   setup() {
-    const isNavbarWithDate = ref(false);
 
     const dataApiStore = useDataApiStore();
     const students = ref([]);
@@ -279,23 +180,14 @@ export default defineComponent({
     const filteringBy = ref(null);
     const dialogExcel = ref();
 
+    const typeCard = ref(filterStore.filter.estado);
+
     const quantityRecords = ref(8);
     const actualPage = ref(1);
     const pages = ref([]);
     const records = ref([8, 12, 14, 16, 18, 20]);
     const qStudentsShowing = ref(0);
     const qTotalStudents = ref(0);
-
-    function searchTypeOfNavbar() {
-      const filterData = window.sessionStorage.getItem("filter");
-      const filter = JSON.parse(filterData.replace("__q_objt|", ""));
-      const typeEstadia = filter.estado;
-      if (typeEstadia === "liberados" || typeEstadia === "historial") {
-        return (isNavbarWithDate.value = true);
-      } else {
-        return (isNavbarWithDate.value = false);
-      }
-    }
 
     function loadFilter() {
       const filterData = window.sessionStorage.getItem("filter");
@@ -330,6 +222,7 @@ export default defineComponent({
             /__q_objt\||__q_strn\|/g,
             ""
           );
+          console.log(depuredStudentsData);
           if (depuredStudentsData === "No se encontraron alumnos") {
             students.value = [];
             qStudentsShowing.value = 0;
@@ -437,7 +330,6 @@ export default defineComponent({
     onMounted(() => {
       loadFilter();
       loadStudents();
-      searchTypeOfNavbar();
       router.afterEach((to, from) => {
         if (to.name === "admin-listaAlumnos") {
           loadStudents();
@@ -451,8 +343,6 @@ export default defineComponent({
 
     return {
       filterStore,
-      searchTypeOfNavbar,
-      isNavbarWithDate,
       dataApiStore,
       students,
       router,
@@ -472,6 +362,7 @@ export default defineComponent({
       setPage,
       generatePages,
       dialogExcel,
+      typeCard,
     };
   },
   computed: {
@@ -495,7 +386,7 @@ export default defineComponent({
       window.sessionStorage.removeItem("data-api");
       this.dataApiStore.clearDataApi();
       console.clear();
-      this.router.go(-1);
+      this.router.push({ name: "admin-alumnos" });
     },
     toGenerateExcel(type) {
       console.log("Fetching Excel ...");
@@ -526,10 +417,10 @@ export default defineComponent({
 
       let url = "";
       type == "general"
-        ? (url = `http://localhost:3000/admin/alumnos/${typeEstadia}/excel-general`)
+        ? (url = `./admin/alumnos/${typeEstadia}/excel-general`)
         : "";
       type == "specific"
-        ? (url = `http://localhost:3000/admin/alumnos/${typeEstadia}/excel`)
+        ? (url = `./admin/alumnos/${typeEstadia}/excel`)
         : "";
       api
         .post(
@@ -569,9 +460,11 @@ export default defineComponent({
   justify-content: center;
   align-items: flex-start;
   flex-wrap: wrap;
-  padding-top: 40px; /* Agregar un espacio superior para evitar solapamiento con la barra de navegación */
+  padding-top: 40px;
+  /* Agregar un espacio superior para evitar solapamiento con la barra de navegación */
   padding-bottom: 40px;
-  box-sizing: border-box; /* Asegurar que el padding no afecte el tamaño total */
+  box-sizing: border-box;
+  /* Asegurar que el padding no afecte el tamaño total */
 }
 
 .btn-filter {
