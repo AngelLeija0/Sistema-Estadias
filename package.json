@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "@quasar/cli": "^2.4.1",
+    "bcrypt": "^5.1.1",
+    "docxtemplater": "^3.48.0",
+    "dotenv": "^16.4.5",
+    "exceljs": "^4.4.0",
+    "express": "^4.19.2",
+    "mongoose": "^8.5.0",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.14",
+    "pdf-lib": "^1.17.1",
+    "pizzip": "^3.1.7"
+  }
+}

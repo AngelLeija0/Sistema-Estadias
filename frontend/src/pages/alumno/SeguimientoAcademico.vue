@@ -36,6 +36,17 @@
       </div>
       <p class="box-text"><strong>Avance</strong></p>
     </div>
+    <div class="small-box" @click="redirectToSection('estadias')">
+      <div class="img-container">
+        <img
+          src="../../assets/alumno/card-estadias.png"
+          alt="Imagen 4"
+          class="img-fluid"
+          @load="adjustContainerPosition"
+        />
+      </div>
+      <p class="box-text"><strong>Estadías</strong></p>
+    </div>
   </div>
 </template>
 

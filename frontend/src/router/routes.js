@@ -78,6 +78,12 @@ const routes = [
         beforeEnter: [verifyLogin]
       },
       {
+        path: "estadias",
+        name: "alumno-estadias",
+        component: () => import("pages/alumno/SolicitarEstadias.vue"),
+        beforeEnter: [verifyLogin]
+      },
+      {
         path: "seguimiento-academico",
         name: "alumno-seguimientoAcademico",
         component: () => import("pages/alumno/SeguimientoAcademico.vue"),
