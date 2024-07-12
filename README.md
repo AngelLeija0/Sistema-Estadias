@@ -6,4 +6,4 @@ Command to init: npm start
 
 **Frontend**
 
-Commando to init: npm run dev
+Command to init: npm run dev
