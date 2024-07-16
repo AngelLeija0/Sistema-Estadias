@@ -12,6 +12,17 @@
     </q-card-actions>
   </div>
   <div class="container text-center" style="margin-top: 0; padding-top: 0">
+    <div class="small-box" style="margin-top: 0px" @click="() => router.push({ name: 'admin-alumnos-sin-empezar' })">
+      <div class="img-container">
+        <img src="../../assets/admin/card-alumnos.jpg" alt="Imagen 1" class="img-fluid" @load="adjustContainerPosition" />
+      </div>
+      <p class="box-text">
+        <strong>Alumnos sin <br>empezar</strong>
+      </p>
+      <q-btn-actions style="width: 95%; padding: 0px 15px;">
+        <p class="q-ma-md" style="width: 100%; height: 50px;">&nbsp;</p>
+      </q-btn-actions>
+    </div>
     <div class="small-box" style="margin-top: 0px">
       <div class="img-container">
         <img
