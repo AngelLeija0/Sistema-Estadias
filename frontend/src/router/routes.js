@@ -153,6 +153,12 @@ const routes = [
         component: () => import("pages/vinculacion/VinculadorDetailsPage.vue"),
         beforeEnter: [verifyLogin]
       },
+      {
+        path: "alumnos-sin-empezar",
+        name: "vinculacion-alumnos-sin-empezar",
+        component: () => import("pages/vinculacion/AlumnosSE.vue"),
+        beforeEnter: [verifyLogin]
+      },
       /* ------------------------------------------------------------------ */
 
       /* Rutas admin */

@@ -12,7 +12,7 @@
     </q-card-actions>
   </div>
   <div class="container text-center" style="margin-top: 0; padding-top: 0">
-    <div class="small-box" style="margin-top: 0px" @click="() => router.push({ name: 'admin-alumnos-sin-empezar' })">
+    <div class="small-box" style="margin-top: 0px" @click="() => router.push({ name: 'vinculacion-alumnos-sin-empezar' })">
       <div class="img-container">
         <img src="../../assets/admin/card-alumnos.jpg" alt="Imagen 1" class="img-fluid" @load="adjustContainerPosition" />
       </div>
