@@ -6,9 +6,9 @@
       <hr/>
       <h3>¿Ya cuentas con una empresa donde hacer tus estadías?</h3>
       <div class="buttons">
-        <button class="btn btn-green">Sí, ya tengo una empresa donde hacer mis estadías</button>
-        <button class="btn btn-orange">En proceso de búsqueda</button>
-        <button class="btn btn-red">No, todavía no tengo empresa para las estadías</button>
+        <button @click="goToSpecificConfirmation" class="btn btn-green">Sí, ya tengo una empresa donde hacer mis estadías</button>
+        <button @click="nextStep" class="btn btn-orange">En proceso de búsqueda</button>
+        <button @click="nextStep" class="btn btn-red">No, todavía no tengo empresa para las estadías</button>
       </div>
       <button class="next-button" @click="nextStep">Siguiente</button>
     </div>
@@ -37,6 +37,17 @@
         <button @click="goHome" class="next-button">Regresar al Inicio</button>
       </div>
     </div>
+
+    <div class="solicitud" v-if="step === 4">
+      <h2>Solicitud</h2>
+      <h4>③ Confirmación</h4>
+      <hr />
+      <h3>Si necesitas ayuda no dudes en cambiar tu respuesta</h3>
+      <div class="buttons">
+        <button @click="changeResponse" class="back-button">Quiero cambiar mi respuesta</button>
+        <button @click="goHome" class="next-button">Regresar al Inicio</button>
+      </div>
+    </div>
   </q-page>
 </template>
 
@@ -58,8 +69,8 @@ export default defineComponent({
     previousStep() {
       this.step--;
     },
-    submit() {
-      // Logic for submitting the form
+    goToSpecificConfirmation() {
+      this.step = 4;
     },
     goHome() {
       this.$router.push('/');

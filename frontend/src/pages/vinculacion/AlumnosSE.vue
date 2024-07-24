@@ -116,12 +116,8 @@
         { name: 'carrera', required: true, label: 'Carrera', align: 'left', field: 'carrera' },
         { name: 'area', required: true, label: 'Área', align: 'left', field: 'area' },
         { name: 'fechaRegistro', required: true, label: 'Fecha registro', align: 'left', field: 'fechaRegistro', sortable: true },
-        {
-          name: "actions",
-          align: "left",
-          label: "Acciones",
-          field: "actions"
-        }
+        { name: 'ayudaestadias', label: '¿Necesita ayuda para encontrar estadias?', align: 'left', field: 'ayudaestadias', sortable: true },
+        { name: 'curriculum', label: 'Curriculum', align: 'left', field: 'curriculum'},
       ];
   
       const tableRows = ref([]);
