@@ -85,6 +85,7 @@ export default defineComponent({
       { name: 'area', required: true, label: 'Área', align: 'left', field: 'area' },
       { name: 'fechaRegistro', required: true, label: 'Fecha registro', align: 'left', field: 'fechaRegistro', sortable: true },
       { name: 'solicituv', label: '¿Necesita ayuda para encontrar estadias?', align: 'left', field: 'solicitud', sortable: true },
+      { name: 'empresaspreferidas', label: 'Empresas preferidas', align: 'left', field: 'empresaspreferidas'},
       { name: 'cv', label: 'Curriculum', align: 'left', field: 'cv' },
     ];
 
