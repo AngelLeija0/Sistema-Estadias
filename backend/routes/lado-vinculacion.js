@@ -263,7 +263,8 @@ router.get("/alumnos/sin-iniciar", async (req, res) => {
             grado: alumno.datosAcademicos.grado,
             grupo: alumno.datosAcademicos.grupo,
             fechaRegistro: alumno.fechaRegistro,
-            solicitud: solicitud ? solicitud.progreso : 'Solicitud no realizada',
+            ayuda: solicitud ? solicitud.progreso : 'Solicitud no realizada',
+            empresa: solicitud ? solicitud.nombreEmpresa : 'Solicitud no realizada',
             cv: cv || "No se encontro CV"
           };
           alumnos.push(infoAlumno);
