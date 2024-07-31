@@ -27,6 +27,12 @@
                       <q-btn v-else icon="download" flat round size="12px" @click="toDownloadCV(props.row)" />
                     </div>
                   </template>
+                  <template v-else-if="col.name === 'ayuda'">
+                    <div style="display: flex; justify-content: center;">
+                      <span v-if="props.row.ayuda == 'Con empresa'">No</span>
+                      <span v-else>Si ({{ props.row.ayuda.toLowerCase() }})</span>
+                    </div>
+                  </template>
                   <template v-else>
                     {{ props.row[col.field] }}
                   </template>
@@ -83,9 +89,9 @@ export default defineComponent({
       { name: 'nivelAcademico', required: true, label: 'Nivel Académico', align: 'left', field: 'nivelAcademico' },
       { name: 'carrera', required: true, label: 'Carrera', align: 'left', field: 'carrera' },
       { name: 'area', required: true, label: 'Área', align: 'left', field: 'area' },
-      { name: 'fechaRegistro', required: true, label: 'Fecha registro', align: 'left', field: 'fechaRegistro', sortable: true },
-      { name: 'solicituv', label: '¿Necesita ayuda para encontrar estadias?', align: 'left', field: 'solicitud', sortable: true },
-      { name: 'empresaspreferidas', label: 'Empresas preferidas', align: 'left', field: 'empresaspreferidas'},
+      { name: 'fechaRegistro', required: true, label: 'Fecha registro', align: 'left', field: 'fechaRegistro', sortable: true, format: (val, row) => formatDate(val) },
+      { name: 'ayuda', required: true, label: '¿Necesita ayuda para encontrar estadias?', align: 'left', field: 'ayuda', sortable: true },
+      { name: 'empresa', label: 'Empresas preferidas', align: 'left', field: 'empresa' },
       { name: 'cv', label: 'Curriculum', align: 'left', field: 'cv' },
     ];
 
@@ -97,7 +103,6 @@ export default defineComponent({
         api.get('./vinculacion/alumnos/sin-iniciar')
           .then((res) => {
             const students = res.data;
-            console.log(students)
             if (students == "No se encontraron alumnos") {
               studentsEmpty.value = false;
               studentsLoaded.value = false;
@@ -152,7 +157,6 @@ export default defineComponent({
           }, 1500);
         })
         .catch((err) => {
-          console.error(err);
           setTimeout(() => {
             downloadingDocument.value = false;
             downloadingError.value = true;
@@ -164,7 +168,6 @@ export default defineComponent({
     }
 
     function formatDate(dateString) {
-      console.log(dateString);
       const dateObj = new Date(dateString);
       return format(dateObj, "dd-MM-yyyy HH:mm:ss");
     }

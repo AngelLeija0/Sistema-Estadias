@@ -1,20 +1,16 @@
 <template>
-  <div class="container-fluid" style="padding-top: 80;">
+  <div class="container-fluid">
     <q-card-actions style="display: flex; justify-content: start">
-      <q-btn
-        flat
-        color="black"
-        label="Regresar"
-        icon="arrow_left"
-        style="margin: 3px; text-transform: capitalize; font-size: 16px"
-        @click="toBack"
-      ></q-btn>
+      <q-btn flat color="black" label="Regresar" icon="arrow_left"
+        style="margin: 3px; text-transform: capitalize; font-size: 16px" @click="toBack"></q-btn>
     </q-card-actions>
   </div>
-  <div class="container text-center" style="margin-top: 0; padding-top: 0">
-    <div class="small-box" style="margin-top: 0px" @click="() => router.push({ name: 'vinculacion-alumnos-sin-empezar' })">
+  <div class="container text-center" style="margin-top: 0; padding-top: 20px;">
+    <div class="small-box" style="margin-top: 0px"
+      @click="() => router.push({ name: 'vinculacion-alumnos-sin-empezar' })">
       <div class="img-container">
-        <img src="../../assets/admin/card-alumnos.jpg" alt="Imagen 1" class="img-fluid" @load="adjustContainerPosition" />
+        <img src="../../assets/admin/card-alumnos.jpg" alt="Imagen 1" class="img-fluid"
+          @load="adjustContainerPosition" />
       </div>
       <p class="box-text">
         <strong>Alumnos sin <br>empezar</strong>
@@ -24,34 +20,22 @@
       </q-btn-actions>
     </div>
     <div class="small-box" style="margin-top: 0px">
-      <div class="img-container">
-        <img
-          src="../../assets/admin/card-alumnos.jpg"
-          alt="Imagen 1"
-          class="img-fluid"
-          @load="adjustContainerPosition"
-        />
+      <div class="img-container" @click="redirectToSection('proceso')">
+        <img src="../../assets/admin/card-alumnos.jpg" alt="Imagen 1" class="img-fluid"
+          @load="adjustContainerPosition" />
       </div>
-      <p class="box-text">
+      <p class="box-text" @click="redirectToSection('proceso')">
         <strong>Alumnos en proceso</strong>
       </p>
       <div class="line"></div>
-      <q-btn-actions>
-        <q-btn
-          color="white"
-          label="Filtrar"
-          class="q-ma-md btn-filter-dark"
-          text-color="white"
-          icon-color="white"
-          @click="dialogProceso = true"
-          flat
-        >
-          <q-icon
-            name="filter_list"
-            size="20px"
-            color="white"
-            style="padding-left: 5px"
-          />
+      <q-btn-actions style="width: 95%;
+        padding: 0px 15px;
+        justify-content: center;
+        display: flex;
+        align-items: center;">
+        <q-btn color="white" label="Filtrar" class="q-ma-md btn-filter-dark" text-color="white" icon-color="white"
+          @click="dialogProceso = true" flat style="width: 100%;">
+          <q-icon name="filter_list" size="20px" color="white" style="padding-left: 5px" />
         </q-btn>
         <q-dialog v-model="dialogProceso">
           <q-card class="q-pa-md" style="width: 700px; max-width: 80vw">
@@ -60,144 +44,45 @@
             </q-card-section>
 
             <q-card-section class="q-pt-none">
-              <q-select
-                label-color="black"
-                borderless
-                flat
-                clearable
-                v-model="selectedLevel"
-                label="Nivel de estudio"
-                :options="levelOptions"
-                emit-value
-                map-options
-                option-label="label"
-                option-value="value"
-              />
-              <q-select
-                label-color="black"
-                borderless
-                flat
-                clearable
-                v-model="selectedCareer"
-                label="Carreras"
-                :options="careersOptions"
-                emit-value
-                map-options
-                option-label="label"
-                option-value="value"
-                @update:model-value="updateAreas"
-              />
-              <q-select
-                label-color="black"
-                borderless
-                flat
-                clearable
-                v-model="selectedArea"
-                label="Áreas"
-                :options="areasOptions"
-                emit-value
-                map-options
-                option-label="label"
-                option-value="value"
-              />
-              <q-select
-                label-color="black"
-                borderless
-                flat
-                clearable
-                v-model="selectedGrade"
-                label="Grado"
-                :options="gradeOptions"
-                emit-value
-                map-options
-                option-label="label"
-                option-value="value"
-              />
-              <q-select
-                label-color="black"
-                borderless
-                flat
-                clearable
-                v-model="selectedGroup"
-                label="Grupo"
-                :options="groupOptions"
-                emit-value
-                map-options
-                option-label="label"
-                option-value="value"
-              />
-              <q-select
-                label-color="black"
-                borderless
-                flat
-                clearable
-                v-model="selectedProgress"
-                label="Avance"
-                :options="progressOptions"
-                emit-value
-                map-options
-                option-label="label"
-                option-value="value"
-              />
+              <q-select label-color="black" borderless flat clearable v-model="selectedLevel" label="Nivel de estudio"
+                :options="levelOptions" emit-value map-options option-label="label" option-value="value" />
+              <q-select label-color="black" borderless flat clearable v-model="selectedCareer" label="Carreras" @update:model-value="searchAreas()"
+                :options="careersOptions" emit-value map-options option-label="label" option-value="value" />
+              <q-select label-color="black" borderless flat clearable v-model="selectedArea" label="Áreas"
+                :options="areasOptions" emit-value map-options option-label="label" option-value="value" />
+              <q-select label-color="black" borderless flat clearable v-model="selectedGrade" label="Grado"
+                :options="gradeOptions" emit-value map-options option-label="label" option-value="value" />
+              <q-select label-color="black" borderless flat clearable v-model="selectedGroup" label="Grupo"
+                :options="groupOptions" emit-value map-options option-label="label" option-value="value" />
+              <q-select label-color="black" borderless flat clearable v-model="selectedProgress" label="Avance"
+                :options="progressOptions" emit-value map-options option-label="label" option-value="value" />
             </q-card-section>
 
             <q-card-actions align="right" class="bg-white text-teal">
-              <q-btn
-                color="black"
-                label="Buscar"
-                @click="redirectToSection('proceso')"
-              />
+              <q-btn color="black" label="Buscar" @click="redirectToSection('proceso')" />
               <q-btn color="black" label="Cancelar" flat v-close-popup />
             </q-card-actions>
           </q-card>
         </q-dialog>
-        <q-btn
-          color="white"
-          label="Buscar"
-          class="q-ma-md btn-filter"
-          text-color="black"
-          @click="redirectToSection('proceso')"
-          flat
-        >
-          <q-icon
-            name="search"
-            size="20px"
-            color="black"
-            style="padding-left: 5px"
-          />
-        </q-btn>
       </q-btn-actions>
     </div>
-
     <div class="small-box" style="margin-top: 0px">
-      <div class="img-container">
-        <img
-          src="../../assets/admin/card-alumnos-liberados.jpg"
-          alt="Imagen 2"
-          class="img-fluid"
-          @load="adjustContainerPosition"
-        />
+      <div class="img-container" @click="redirectToSection('liberados')">
+        <img src="../../assets/admin/card-alumnos-liberados.jpg" alt="Imagen 2" class="img-fluid"
+          @load="adjustContainerPosition" />
       </div>
-      <p class="box-text">
+      <p class="box-text" @click="redirectToSection('liberados')">
         <strong>Alumnos liberados</strong>
       </p>
       <div class="line"></div>
-      <q-btn-actions>
-        <q-btn
-          color="white"
-          label="Filtrar"
-          class="q-ma-md btn-filter-dark"
-          text-color="white"
-          icon-color="white"
-          @click="dialogLiberado = true"
-          flat
-        >
-          <q-icon
-            name="filter_list"
-            size="20px"
-            color="white"
-            style="padding-left: 5px"
-          />
+      <q-btn-actions style="width: 95%;
+    padding: 0px 15px;
+    justify-content: center;
+    display: flex;
+    align-items: center;">
+        <q-btn color="white" label="Filtrar" class="q-ma-md btn-filter-dark" text-color="white" icon-color="white"
+          style="width: 100%;" @click="dialogLiberado = true" flat>
+          <q-icon name="filter_list" size="20px" color="white" style="padding-left: 5px" />
         </q-btn>
         <q-dialog v-model="dialogLiberado">
           <q-card class="q-pa-md" style="width: 700px; max-width: 80vw">
@@ -206,131 +91,44 @@
             </q-card-section>
 
             <q-card-section class="q-pt-none">
-              <q-select
-                label-color="black"
-                borderless
-                flat
-                clearable
-                v-model="selectedLevel"
-                label="Nivel de estudio"
-                :options="levelOptions"
-                emit-value
-                map-options
-                option-label="label"
-                option-value="value"
-              />
-              <q-select
-                label-color="black"
-                borderless
-                flat
-                clearable
-                v-model="selectedCareer"
-                label="Carreras"
-                :options="careersOptions"
-                emit-value
-                map-options
-                option-label="label"
-                option-value="value"
-                @update:model-value="updateAreas"
-              />
-              <q-select
-                label-color="black"
-                borderless
-                flat
-                clearable
-                v-model="selectedArea"
-                label="Áreas"
-                :options="areasOptions"
-                emit-value
-                map-options
-                option-label="label"
-                option-value="value"
-              />
-              <q-select
-                label-color="black"
-                borderless
-                flat
-                clearable
-                v-model="selectedGrade"
-                label="Grado"
-                :options="gradeOptions"
-                emit-value
-                map-options
-                option-label="label"
-                option-value="value"
-              />
-              <q-select
-                label-color="black"
-                borderless
-                flat
-                clearable
-                v-model="selectedGroup"
-                label="Grupo"
-                :options="groupOptions"
-                emit-value
-                map-options
-                option-label="label"
-                option-value="value"
-              />
+              <q-select label-color="black" borderless flat clearable v-model="selectedLevel" label="Nivel de estudio"
+                :options="levelOptions" emit-value map-options option-label="label" option-value="value" />
+              <q-select label-color="black" borderless flat clearable v-model="selectedCareer" label="Carreras" @update:model-value="searchAreas()"
+                :options="careersOptions" emit-value map-options option-label="label" option-value="value" />
+              <q-select label-color="black" borderless flat clearable v-model="selectedArea" label="Áreas"
+                :options="areasOptions" emit-value map-options option-label="label" option-value="value" />
+              <q-select label-color="black" borderless flat clearable v-model="selectedGrade" label="Grado"
+                :options="gradeOptions" emit-value map-options option-label="label" option-value="value" />
+              <q-select label-color="black" borderless flat clearable v-model="selectedGroup" label="Grupo"
+                :options="groupOptions" emit-value map-options option-label="label" option-value="value" />
             </q-card-section>
 
             <q-card-actions align="right" class="bg-white text-teal">
-              <q-btn
-                color="black"
-                label="Buscar"
-                @click="redirectToSection('liberados')"
-              />
+              <q-btn color="black" label="Buscar" @click="redirectToSection('liberados')" />
               <q-btn color="black" label="Cancelar" flat v-close-popup />
             </q-card-actions>
           </q-card>
         </q-dialog>
-        <q-btn
-          color="white"
-          label="Buscar"
-          class="q-ma-md btn-filter"
-          text-color="black"
-          icon-color="black"
-          @click="redirectToSection('liberados')"
-          flat
-        >
-          <q-icon
-            name="search"
-            size="20px"
-            color="black"
-            style="padding-left: 5px"
-          />
-        </q-btn>
       </q-btn-actions>
     </div>
     <div class="small-box" style="margin-top: 0px">
-      <div class="img-container">
-        <img
-          src="../../assets/admin/card-historial.jpg"
-          alt="Imagen 3"
-          class="img-fluid"
-          @load="adjustContainerPosition"
-        />
+      <div class="img-container" @click="redirectToSection('historial')">
+        <img src="../../assets/admin/card-historial.jpg" alt="Imagen 3" class="img-fluid"
+          @load="adjustContainerPosition" />
       </div>
-      <p class="box-text">
+      <p class="box-text" @click="redirectToSection('historial')">
         <strong>Historial</strong>
       </p>
       <div class="line"></div>
-      <q-btn-actions>
-        <q-btn
-          color="white"
-          label="Filtrar"
-          class="q-ma-md btn-filter-dark"
-          text-color="white"
-          icon-color="white"
-          @click="dialogHistorial = true"
-          flat
-        >
-          <q-icon
-            name="filter_list"
-            size="20px"
-            color="white"
-            style="padding-left: 5px"
-          />
+      <q-btn-actions style="
+          width: 95%;
+          padding: 0px 15px;
+          justify-content: center;
+          display: flex;
+          align-items: center;">
+        <q-btn color="white" label="Filtrar" class="q-ma-md btn-filter-dark" text-color="white" icon-color="white"
+          style="width: 100%;" @click="dialogHistorial = true" flat>
+          <q-icon name="filter_list" size="20px" color="white" style="padding-left: 5px" />
         </q-btn>
         <q-dialog v-model="dialogHistorial">
           <q-card class="q-pa-md" style="width: 700px; max-width: 80vw">
@@ -339,100 +137,28 @@
             </q-card-section>
 
             <q-card-section class="q-pt-none">
-              <q-select
-                label-color="black"
-                borderless
-                flat
-                clearable
-                v-model="selectedLevel"
-                label="Nivel de estudio"
-                :options="levelOptions"
-                emit-value
-                map-options
-                option-label="label"
-                option-value="value"
-              />
-              <q-select
-                label-color="black"
-                borderless
-                flat
-                clearable
-                v-model="selectedCareer"
-                label="Carreras"
-                :options="careersOptions"
-                emit-value
-                map-options
-                option-label="label"
-                option-value="value"
-                @update:model-value="updateAreas"
-              />
-              <q-select
-                label-color="black"
-                borderless
-                flat
-                clearable
-                v-model="selectedArea"
-                label="Áreas"
-                :options="areasOptions"
-                emit-value
-                map-options
-                option-label="label"
-                option-value="value"
-              />
-              <q-select
-                label-color="black"
-                borderless
-                flat
-                clearable
-                v-model="selectedGrade"
-                label="Grado"
-                :options="gradeOptions"
-                emit-value
-                map-options
-                option-label="label"
-                option-value="value"
-              />
-              <q-select
-                label-color="black"
-                borderless
-                flat
-                clearable
-                v-model="selectedGroup"
-                label="Grupo"
-                :options="groupOptions"
-                emit-value
-                map-options
-                option-label="label"
-                option-value="value"
-              />
+              <q-select label-color="black" borderless flat clearable v-model="selectedLevel" label="Nivel de estudio"
+                :options="levelOptions" emit-value map-options option-label="label" option-value="value" />
+              <q-select label-color="black" borderless flat clearable v-model="selectedCareer" label="Carreras"
+                :options="careersOptions" emit-value map-options option-label="label" option-value="value" @update:model-value="searchAreas()" />
+              <q-select label-color="black" borderless flat clearable v-model="selectedArea" label="Áreas"
+                :options="areasOptions" emit-value map-options option-label="label" option-value="value" />
+              <q-select label-color="black" borderless flat clearable v-model="selectedGrade" label="Grado"
+                :options="gradeOptions" emit-value map-options option-label="label" option-value="value" />
+              <q-select label-color="black" borderless flat clearable v-model="selectedGroup" label="Grupo"
+                :options="groupOptions" emit-value map-options option-label="label" option-value="value" />
+              <q-select label-color="black" borderless flat clearable v-model="selectedYear" label="Año"
+                :options="yearOptions" emit-value map-options option-label="label" option-value="value" />
+              <q-select label-color="black" borderless flat clearable v-model="selectedPeriod" label="Periodo"
+                :options="periodOptions" emit-value map-options option-label="label" option-value="value" />
             </q-card-section>
 
             <q-card-actions align="right" class="bg-white text-teal">
-              <q-btn
-                color="black"
-                label="Buscar"
-                @click="redirectToSection('historial')"
-              />
+              <q-btn color="black" label="Buscar" @click="redirectToSection('historial')" />
               <q-btn color="black" label="Cancelar" flat v-close-popup />
             </q-card-actions>
           </q-card>
         </q-dialog>
-        <q-btn
-          color="white"
-          label="Buscar"
-          class="q-ma-md btn-filter"
-          text-color="black"
-          icon-color="black"
-          @click="redirectToSection('historial')"
-          flat
-        >
-          <q-icon
-            name="search"
-            size="20px"
-            color="black"
-            style="padding-left: 5px"
-          />
-        </q-btn>
       </q-btn-actions>
     </div>
   </div>
@@ -443,28 +169,35 @@ import { defineComponent, ref, onMounted } from "vue";
 import { SessionStorage } from "quasar";
 import { useFilterStore } from "src/stores/filter-store";
 import { useDataApiStore } from "src/stores/data-api-store";
+import { useUserStore } from "src/stores/user-store";
 import { useRouter } from "vue-router";
 import { api } from "src/boot/axios";
 
 export default defineComponent({
   name: "vinculacion-alumnos",
   setup() {
+    const userStore = useUserStore();
     const dataApiStore = useDataApiStore();
     const filterStore = useFilterStore();
     const router = useRouter();
+
+    const selectedCareer = ref(userStore.user.carrera);
 
     const dialogProceso = ref();
     const dialogLiberado = ref();
     const dialogHistorial = ref();
 
-    const selectedCareer = ref(null);
-    const selectedArea = ref(null);
+    const carrersInfo = ref([]);
     const careersOptions = ref([]);
+    const selectedCarrer = ref(null);
+
+    const selectedArea = ref(null);
     const areasOptions = ref([]);
     const selectedLevel = ref(null);
     const levelOptions = ref([
       { label: "TSU", value: "Tecnico Superior Universitario" },
       { label: "Ingeniería", value: "Ingenieria" },
+      { label: "Posgrado", value: "Posgrado" }
     ]);
     const selectedGrade = ref(null);
     const selectedGroup = ref(null);
@@ -487,6 +220,14 @@ export default defineComponent({
       { label: "100%", value: "etapa5" },
       { label: "Revisión ortografica", value: "etapa6" },
     ]);
+    const selectedYear = ref();
+    const yearOptions = ref(['2019', '2020', '2021', '2022', '2023']);
+    const selectedPeriod = ref();
+    const periodOptions = ref([
+      { label: "Enero - Abril", value: "enero-abril" },
+      { label: "Mayo - Agosto", value: "mayo-agosto" },
+      { label: "Septiembre - Diciembre", value: "septiembre-diciembre" },
+    ])
 
     if (window.sessionStorage.getItem("data-api")) {
       window.sessionStorage.removeItem("data-api");
@@ -504,41 +245,21 @@ export default defineComponent({
           if (res.data.msg) {
             console.log(res.data.msg);
           } else {
-            const resCareers = res.data;
-            let options = [];
-
-            resCareers.forEach((career) => {
-              let careerOption = {
-                label: career.nombre,
-                value: career.nombre,
-                areas: [],
-              };
-              career.area.nombre.forEach((area) => {
-                careerOption.areas.push({
-                  label: area,
-                  value: area,
-                });
-              });
-              options.push(careerOption);
-            });
-
-            careersOptions.value = options;
+            carrersInfo.value = res.data
+            const allCareers = res.data.map((career) => career.nombre)
+            careersOptions.value = allCareers            
           }
         })
         .catch((err) => console.error(err));
     }
 
-    function updateAreas() {
-      const selected = careersOptions.value.find(
-        (career) => career.value === selectedCareer.value
-      );
-
-      areasOptions.value = selected ? selected.areas : [];
-      selectedArea.value = null;
+    function toBack() {
+      router.push({ name: "vinculacion-inicio" });
     }
 
-    function toBack() {
-      router.push("/");
+    function searchAreas() {
+      const carrer = carrersInfo.value.find((career) => career.nombre == selectedCareer.value)
+      areasOptions.value = carrer.area.nombre
     }
 
     onMounted(() => {
@@ -546,6 +267,7 @@ export default defineComponent({
     });
 
     return {
+      userStore,
       dataApiStore,
       filterStore,
       router,
@@ -559,13 +281,19 @@ export default defineComponent({
       selectedArea,
       careersOptions,
       areasOptions,
-      updateAreas,
       selectedGrade,
       selectedGroup,
       selectedProgress,
       gradeOptions,
       groupOptions,
       progressOptions,
+      selectedYear,
+      selectedPeriod,
+      yearOptions,
+      periodOptions,
+      selectedCarrer,
+      searchAreas,
+      carrersInfo,
     };
   },
   methods: {
@@ -585,6 +313,8 @@ export default defineComponent({
       this.selectedProgress !== null
         ? (filter.avance = this.selectedProgress)
         : "";
+      this.selectedYear !== null ? (filter.año = this.selectedYear) : "";
+      this.selectedPeriod !== null ? (filter.periodo = this.selectedPeriod) : "";
       SessionStorage.set("filter", filter);
       this.filterStore.setFilter(filter);
       this.$router.push({ name: "vinculacion-listaAlumnos" });
@@ -599,9 +329,11 @@ export default defineComponent({
   justify-content: center;
   align-items: flex-start;
   flex-wrap: wrap;
-  padding-top: 40px; /* Agregar un espacio superior para evitar solapamiento con la barra de navegación */
+  padding-top: 40px;
+  /* Agregar un espacio superior para evitar solapamiento con la barra de navegación */
   padding-bottom: 40px;
-  box-sizing: border-box; /* Asegurar que el padding no afecte el tamaño total */
+  box-sizing: border-box;
+  /* Asegurar que el padding no afecte el tamaño total */
 }
 
 .btn-filter {
@@ -641,7 +373,7 @@ export default defineComponent({
   height: 520px;
   border: 1px solid #ccc;
   border-radius: 10px;
-  margin: 80px;
+  margin: 40px;
   margin-top: 70px;
   margin-bottom: 40px;
   background-color: #fff;

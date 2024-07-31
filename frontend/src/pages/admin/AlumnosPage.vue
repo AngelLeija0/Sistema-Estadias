@@ -8,7 +8,8 @@
   <div class="container text-center" style="margin-top: 0; padding-top: 20px;">
     <div class="small-box" style="margin-top: 0px" @click="() => router.push({ name: 'admin-alumnos-sin-empezar' })">
       <div class="img-container">
-        <img src="../../assets/admin/card-alumnos.jpg" alt="Imagen 1" class="img-fluid" @load="adjustContainerPosition" />
+        <img src="../../assets/admin/card-alumnos.jpg" alt="Imagen 1" class="img-fluid"
+          @load="adjustContainerPosition" />
       </div>
       <p class="box-text">
         <strong>Alumnos sin <br>empezar</strong>
@@ -19,7 +20,8 @@
     </div>
     <div class="small-box" style="margin-top: 0px">
       <div class="img-container" @click="redirectToSection('proceso')">
-        <img src="../../assets/admin/card-alumnos.jpg" alt="Imagen 1" class="img-fluid" @load="adjustContainerPosition" />
+        <img src="../../assets/admin/card-alumnos.jpg" alt="Imagen 1" class="img-fluid"
+          @load="adjustContainerPosition" />
       </div>
       <p class="box-text" @click="redirectToSection('proceso')">
         <strong>Alumnos en proceso</strong>
@@ -113,11 +115,13 @@
         <strong>Historial</strong>
       </p>
       <div class="line"></div>
-      <q-btn-actions style="width: 95%;
-    padding: 0px 15px;
-    justify-content: center;
-    display: flex;
-    align-items: center;">
+      <q-btn-actions 
+        style="
+          width: 95%;
+          padding: 0px 15px;
+          justify-content: center;
+          display: flex;
+          align-items: center;">
         <q-btn color="white" label="Filtrar" class="q-ma-md btn-filter-dark" text-color="white" icon-color="white"
           style="width: 100%;" @click="dialogHistorial = true" flat>
           <q-icon name="filter_list" size="20px" color="white" style="padding-left: 5px" />
